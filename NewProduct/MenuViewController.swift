@@ -21,6 +21,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var loggedUser = FIRAuth.auth()?.currentUser
     var skills = ""
     var name: String!
+    var loc = ""
     var email: String!
     /**
     *  Array to display menu options
@@ -178,6 +179,11 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
                                 self.skills = tempskills
                             }
                             
+                            if let temploc = snapshotValueSkill?["Location"] as? String {
+                                // print(tempskills)
+                                self.loc = temploc
+                            }
+                            
                             let snapshotValueName = snapshot.value as? NSDictionary
                             let tempname = snapshotValueName?["Name"] as? String
                           //  print(tempname!)
@@ -197,7 +203,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
                             
                             if self.skills == ""{
                                 
-                                let alertContoller2 = UIAlertController(title: "Oops!", message: "You haven't filled out necessary information. \n Go to My Foto and fill out the information", preferredStyle: .alert)
+                                let alertContoller2 = UIAlertController(title: "Oops!", message: "You haven't filled out necessary information. \n Go to My Foto and fill out the your skills!", preferredStyle: .alert)
                                 
                                 let defaultAction = UIAlertAction(title: "Okay", style: .default, handler: {
                                     alert -> Void in
@@ -211,14 +217,31 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
                                 
                                 
                             }
-                            else if self.skills != ""{
+                            else if self.skills == ""{
+                                
+                                let alertContoller2 = UIAlertController(title: "Oops!", message: "You haven't filled out necessary information. \n Go to My Foto and fill out your Location!", preferredStyle: .alert)
+                                
+                                let defaultAction = UIAlertAction(title: "Okay", style: .default, handler: {
+                                    alert -> Void in
+                                    sender.isOn = false
+                                    myVCHome.artistOn = false
+                                    UserDefaults.standard.removeObject(forKey: "artistOn")
+                                    
+                                })
+                                alertContoller2.addAction(defaultAction)
+                                self.present(alertContoller2, animated:true, completion: nil)
+                                
+                                
+                            }
+                            else if self.skills != "" && self.loc != ""{
 //                                
                                 
                                 let inquirePost: [String : AnyObject] = ["Name": self.name as                                                      AnyObject,
                                                                                                                                           "token": self.loggedUser!.uid as AnyObject,
                                                                                                      "Rating": Int(0) as AnyObject,
                                                                                                      "Skills": self.skills as AnyObject,
-                                                                                                     "Email": self.email as AnyObject]
+                                                                                                     "Email": self.email as AnyObject,
+                                                                                                     "Location": self.email as AnyObject]
 
                                self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).setValue(inquirePost)
                                 

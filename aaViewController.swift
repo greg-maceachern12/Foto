@@ -72,12 +72,12 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
                     let Price2 = snapshotValuePrice2?["Price2"] as? Float
                         
                   
-                    var loc = snapshotValuePrice2?["Location"] as? String
+                    let loc = snapshotValuePrice2?["Location"] as? String
                         
-                    if let exactLoc = snapshotValuePrice2?["location(LL)"] as? String
-                    {
-                      loc = exactLoc
-                    }
+//                    if let exactLoc = snapshotValuePrice2?["location(LL)"] as? String
+//                    {
+//                      loc = exactLoc
+//                    }
                         
                         
                 
@@ -184,6 +184,9 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
                 
                 let label1 = cell?.viewWithTag(1) as! UILabel
                 label1.text = searchPosts[indexPath.row].name
+                
+                let label5 = cell?.viewWithTag(5) as! UILabel
+                label5.text = "(\(searchPosts[indexPath.row].location!))"
                 
             
                 let label2 = cell?.viewWithTag(2) as! UILabel

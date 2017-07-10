@@ -66,8 +66,27 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         
         SetUp()
 
-       
+
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
+        
+        toolbar.setItems([flexibleSpace, doneButton], animated: false)
+        
+        tvNotes.inputAccessoryView = toolbar
+      
+        
+        
+        //print(takenPosts)
+        // Do any additional setup after loading the view.
     }
+    func doneClicked(){
+        self.view.endEditing(true)
+    }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -83,7 +83,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
        
         
         //setting the scroll view size
-        Scroller.contentSize = CGSize(width: self.view.frame.width, height: 1410)
+        
         
         
         //if the artist profile page is NOT the current user, disable the ability to edit
@@ -93,6 +93,9 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
             Long1.isEnabled = false
             LongPrice.isEnabled = false
             LongPrice2.isEnabled = false
+            self.view.frame = CGRect(x: 0, y: 0, width: 1410, height: 1410)
+         
+            Scroller.contentSize = CGSize(width: self.view.frame.width, height: 1410)
             
            
             
@@ -116,6 +119,8 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                 self.btnPin.isHidden = true
                 self.btnBook.isHidden = true
                 self.btnMessage.isHidden = true
+                self.view.frame = CGRect(x: 0, y: 0, width: 375, height: 1390)
+                self.Scroller.contentSize = CGSize(width: self.view.frame.width, height: 1390)
             }
         }
         
@@ -140,10 +145,27 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         SetPic()
         
        
-    
         
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
+        
+        toolbar.setItems([flexibleSpace, doneButton], animated: false)
+        
+        tbDescription.inputAccessoryView = toolbar
+       
+        
+        
+        //print(takenPosts)
         // Do any additional setup after loading the view.
     }
+    func doneClicked(){
+        self.view.endEditing(true)
+    }
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
         tbDescription.resignFirstResponder()

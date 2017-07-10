@@ -7,29 +7,46 @@
 //
 import UIKit
 
-class FilterViewController: UIViewController, UITextFieldDelegate {
+class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
 
  
     @IBOutlet weak var tbSkills: UITextField!
     @IBOutlet weak var tbMaximum: UITextField!
      @IBOutlet weak var FingerClick: UIButton!
+    @IBOutlet weak var RegionPicker: UIPickerView!
     
     var takenPosts = [postStruct2]()
     var filteredTakenPosts = [postStruct2]()
     //var newarray = [postStruct2]()
     let step: Float = 5
     var skill: String!
+    var loc: String!
     var maxNumber: Float!
+     var pickerData = ["All of Ontario", "Barrie", "Belleville Area", "Brantford", "Brockville", "Chatham-Kent", "Cornwall","Guelph", "Hamilton", "Kapuskasing", "Kenora", "Kingston Area", "Kitchener Area", "Leamington", "London", "Muskoka", "Norfolk Country", "North Bay", "Ottawa Area", "Owen Sound", "Peterborough", "Renfrew County", "Sarnia", "Saugeen Shores", "Sault Ste. Marie", "St.Catharines", "Sudbury", "Thunder Bay", "Timmins", "Toronto (GTA)", "Windsor", "Woodstock"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tbMaximum.delegate = self
         tbSkills.delegate = self
         
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
+        
+        toolbar.setItems([flexibleSpace, doneButton], animated: false)
+        
+        tbSkills.inputAccessoryView = toolbar
+        tbMaximum.inputAccessoryView = toolbar
 
         
         //print(takenPosts)
         // Do any additional setup after loading the view.
+    }
+    func doneClicked(){
+        self.view.endEditing(true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -37,7 +54,23 @@ class FilterViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+  
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerData.count;
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return pickerData[row]
+    }
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        loc = pickerData[row].lowercased()
+        FingerClick.isHidden = false
+    }
 
     @IBAction func back(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
@@ -55,11 +88,16 @@ class FilterViewController: UIViewController, UITextFieldDelegate {
         if tbMaximum.text != "" && tbSkills.text != ""{
             
             skill = tbSkills.text?.lowercased()
-            print(takenPosts)
             
+          
             maxNumber = Float(tbMaximum.text!)
             
-             filteredTakenPosts  = self.takenPosts.filter{$0.skills.lowercased().contains(skill!)}
+            if loc != "All of Ontario"{
+    
+             filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains(loc!)}
+            }
+            
+             filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(skill!)}
             
             
             filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
@@ -73,20 +111,34 @@ class FilterViewController: UIViewController, UITextFieldDelegate {
             
             maxNumber = Float(tbMaximum.text!)
             
-            filteredTakenPosts  = self.takenPosts.filter{$0.price2 < maxNumber}
+            if loc != "All of Ontario"{
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains(loc!)}
+            }
+            
+            filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
     
         }
         else if tbMaximum.text == "" && tbSkills.text != ""{
             
             
             skill = tbSkills.text?.lowercased()
-          
             
+          
+            if loc != "All of Ontario"{
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains(loc!)}
+            }
    
             self.filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(self.skill!)}
             print(self.filteredTakenPosts)
             
             
+        }
+        else if tbMaximum.text == "" && tbSkills.text == ""{
+            if loc != "All of Ontario"{
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains(loc!)}
+            }
         }
         
         myVC.searchPosts.removeAll()
