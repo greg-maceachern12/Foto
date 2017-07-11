@@ -20,7 +20,7 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
     //var newarray = [postStruct2]()
     let step: Float = 5
     var skill: String!
-    var loc: String!
+    var loc: String! = "all of ontario"
     var maxNumber: Float!
      var pickerData = ["All of Ontario", "Barrie", "Belleville Area", "Brantford", "Brockville", "Chatham-Kent", "Cornwall","Guelph", "Hamilton", "Kapuskasing", "Kenora", "Kingston Area", "Kitchener Area", "Leamington", "London", "Muskoka", "Norfolk Country", "North Bay", "Ottawa Area", "Owen Sound", "Peterborough", "Renfrew County", "Sarnia", "Saugeen Shores", "Sault Ste. Marie", "St.Catharines", "Sudbury", "Thunder Bay", "Timmins", "Toronto (GTA)", "Windsor", "Woodstock"]
     
@@ -41,9 +41,6 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
         tbSkills.inputAccessoryView = toolbar
         tbMaximum.inputAccessoryView = toolbar
 
-        
-        //print(takenPosts)
-        // Do any additional setup after loading the view.
     }
     func doneClicked(){
         self.view.endEditing(true)
@@ -83,6 +80,7 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
    
     @IBAction func FingerApply(_ sender: Any) {
         
+        print(loc!)
         let myVC = storyboard?.instantiateViewController(withIdentifier: "ArtistTable") as! aaViewController
 //        
         if tbMaximum.text != "" && tbSkills.text != ""{
@@ -92,15 +90,22 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
           
             maxNumber = Float(tbMaximum.text!)
             
-            if loc != "All of Ontario"{
+            if loc != "all of ontario"{
     
-             filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains(loc!)}
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains(loc!)}
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(skill!)}
+            
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                
+            }
+            else{
+                filteredTakenPosts  = self.takenPosts.filter{$0.skills.lowercased().contains(skill!)}
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
             }
             
-             filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(skill!)}
             
-            
-            filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
             
             
            
@@ -111,11 +116,17 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
             
             maxNumber = Float(tbMaximum.text!)
             
-            if loc != "All of Ontario"{
+            if loc != "all of ontario"{
+                
                 filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains(loc!)}
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                
             }
-            
-            filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+            else{
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.price2 < maxNumber}
+            }
     
         }
         else if tbMaximum.text == "" && tbSkills.text != ""{
@@ -124,13 +135,16 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
             skill = tbSkills.text?.lowercased()
             
           
-            if loc != "All of Ontario"{
+            if loc != "all of ontario"{
                 
                 filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains(loc!)}
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(skill!)}
+                
             }
-   
-            self.filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(self.skill!)}
-            print(self.filteredTakenPosts)
+            else{
+                filteredTakenPosts  = self.takenPosts.filter{$0.skills.lowercased().contains(skill!)}
+            }
             
             
         }

@@ -36,7 +36,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
     @IBOutlet weak var lblID: UILabel!
     @IBOutlet weak var btnEdit: UIButton!
    
-    
+    //MARK: Declaration of variables
     
     let NameRef = FIRDatabase.database().reference()
     let storageRef = FIRStorage.storage().reference()
@@ -44,7 +44,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
     var upload = false
     
     var ableToSwitch = false
-    //giving these values of nothing
     var loc = ""
     var birth = ""
     var gend = ""
@@ -85,7 +84,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         {
             LogoutSeq()
             //this removes every saved thing
-            UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
+            
+            
         }
         
         //set profile qualities
@@ -105,72 +105,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
             manager.stopUpdatingLocation()
         }
     
-    }
-
-
-    //when save button is clicked
-    @IBAction func SaveChanges(_ sender: Any) {
-        
-        self.manager.startUpdatingLocation()
-        
-       // saveChange()
-        
-        print(artistCreate)
-       
-        
-        //"upload" is if the image has been changed. If not (false), then the image isn't reuploaded which saves data, memory and database storage
-        
-        if upload == true{
-            saveChange()
-            upload = false
-        }
-        else{
-            self.NameRef.child("users").child(self.user!.uid).child("Name").setValue(lblName.text)
-           
-            btnSave.isHidden=true
-            
-            if loc == ""{
-                
-            }
-            else{
-            self.NameRef.child("users").child(self.user!.uid).child("Location").setValue(loc)
-            }
-            
-            if birth == ""{
-            }
-            else{
-            self.NameRef.child("users").child(self.user!.uid).child("Birthday").setValue(birth)
-            }
-            if gend == ""{
-            }
-            else{
-            self.NameRef.child("users").child(self.user!.uid).child("Gender").setValue(gend)
-            }
-            if skills == ""{
-            }
-            else
-            {
-                
-                self.NameRef.child("users").child(self.user!.uid).child("Skills").setValue(skills)
-            }
-            
-            
-                if artistCreate == true
-                {
-                    
-                    
-                    if skills == ""{
-                    }
-                    else
-                    {
-                        
-                        self.NameRef.child("artistProfiles").child(self.user!.uid).child("Skills").setValue(skills)
-                    }
-                    
-                   
-                    self.NameRef.child("artistProfiles").child(self.user!.uid).child("Name").setValue(lblName.text)
-                }
-        }
     }
 
 
@@ -252,14 +186,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
                                 }
                             }
                     })
-            self.Loader.stopAnimating()
+            
         
         }
         
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
         
-                                            //Loading all the default value
+                                            //MARK: Grabbing Data
         NameLoad.observe(.value){
             (snap: FIRDataSnapshot) in
             self.lblName.text = snap.value as? String
@@ -310,7 +244,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     
-    //image picker
+    //MARK: Image Pickers
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         //btnSave.isHidden = false
@@ -330,11 +264,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         
         if let selectedImage2 = selectedImage
         {
-            Loader.startAnimating()
+//            Loader.startAnimating()
             imgMain.image = selectedImage2
             upload = true
             saveChange()
-            Loader.stopAnimating()
+//            Loader.stopAnimating()
             
             
         }
@@ -377,13 +311,22 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
             storedImage.put(uploadData, metadata: nil, completion: { ( metadata, error) in
                 if error != nil
                 {
-                    //print(error!)
+                    let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
+                    
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                    alertContoller.addAction(defaultAction)
+                    self.present(alertContoller, animated: true, completion: nil)
                     return
                 }
                 storedImage.downloadURL(completion: { (url,error) in
                     if error != nil
                     {
-                        //print(error!)
+                        let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
+                        
+                        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                        alertContoller.addAction(defaultAction)
+                        self.present(alertContoller, animated: true, completion: nil)
+                        
                         return
                     }
                     if let urlText = url?.absoluteString{
@@ -394,7 +337,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
                         self.NameRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).updateChildValues(["pic" : urlText], withCompletionBlock: { (error,ref) in
                             if error != nil
                             {
-                               // print(error!)
+                                let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
+                                
+                                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                                alertContoller.addAction(defaultAction)
+                                self.present(alertContoller, animated: true, completion: nil)
+                            
                                 return
                             }
                             self.Loader.stopAnimating()
@@ -408,7 +356,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
                         self.NameRef.child("artistProfiles").child((FIRAuth.auth()?.currentUser?.uid)!).updateChildValues(["pic" : urlText], withCompletionBlock: { (error,ref) in
                             if error != nil
                             {
-                               // print(error!)
+                                let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
+                                
+                                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                                alertContoller.addAction(defaultAction)
+                                self.present(alertContoller, animated: true, completion: nil)
+                                
                                 return
                             }
                             self.Loader.stopAnimating()
@@ -432,6 +385,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         UserDefaults.standard.removeObject(forKey: "savedImage")
         }
         UserDefaults.standard.removeObject(forKey: "artistOn")
+        UserDefaults.standard.removeObject(forKey: "artistCreate")
+        
+        let allKeys = UserDefaults.standard.dictionaryRepresentation().keys
+        
+        // Now remove the object for the keys starting with "ProfilePic"
+        
+        for key in allKeys{
+            
+            if key.hasPrefix("ProfilePic"){
+                UserDefaults.standard.removeObject(forKey: key)
+            }
+            
+        }
+
         
         self.present(loginVC, animated: true, completion: nil)
         

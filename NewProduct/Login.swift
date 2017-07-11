@@ -245,9 +245,24 @@ override func viewDidLoad() {
         if FIRAuth.auth()?.currentUser != nil {
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             
-            let vc: UIViewController = storyboard.instantiateViewController(withIdentifier: "Home")
+            self.NameRef.child("artistProfiles").child((FIRAuth.auth()?.currentUser!.uid)!).observe(.value, with: { (snapshot) in
+                if snapshot.exists() == true
+                {
+                    UserDefaults.standard.set(true, forKey: "artistCreate")
+                    let vc: UIViewController = storyboard.instantiateViewController(withIdentifier: "Home")
+                    
+                    self.present(vc, animated: true, completion: nil)
+                }
+                else
+                {
+                     UserDefaults.standard.set(false, forKey: "artistCreate")
+                    let vc: UIViewController = storyboard.instantiateViewController(withIdentifier: "Home")
+                    
+                    self.present(vc, animated: true, completion: nil)
+                }
+            })
             
-            self.present(vc, animated: true, completion: nil)
+            
         }
     }
     

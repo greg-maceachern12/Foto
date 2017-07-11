@@ -1106,7 +1106,7 @@
                         <viewControllerLayoutGuide type="bottom" id="iVi-d9-8dJ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="OiW-Cx-ymm">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="800"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="825"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JsB-U0-psa">
@@ -1127,7 +1127,7 @@
                                 </items>
                             </navigationBar>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kuQ-Oe-Cny">
-                                <rect key="frame" x="0.0" y="60" width="375" height="940"/>
+                                <rect key="frame" x="0.0" y="60" width="375" height="965"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5aB-wy-YW7">
                                         <rect key="frame" x="259" y="69" width="100" height="156"/>
@@ -1294,13 +1294,16 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="In one word, what is the theme of the event?" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CmL-ik-IF6">
-                                        <rect key="frame" x="13" y="432" width="343" height="30"/>
+                                        <rect key="frame" x="13" y="432" width="343" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="q0u-aW-iAi"/>
+                                        </constraints>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Extra Notes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yed-dq-cjY">
-                                        <rect key="frame" x="132" y="488" width="95" height="21"/>
+                                        <rect key="frame" x="132" y="508" width="95" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="im8-ym-wkP"/>
                                         </constraints>
@@ -1317,22 +1320,8 @@
                                         <color key="textColor" red="0.92413634060000005" green="0.6443168521" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KCE-2q-9yG">
-                                        <rect key="frame" x="0.0" y="691" width="375" height="50"/>
-                                        <color key="backgroundColor" red="1" green="0.59544295072555542" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="Fhu-By-Jqk"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="21"/>
-                                        <state key="normal" title="Confirm">
-                                            <color key="titleColor" red="0.93725490570000003" green="0.93725490570000003" blue="0.95686274770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="nextAction:" destination="YrJ-m6-iaY" eventType="touchUpInside" id="8mf-11-zWD"/>
-                                        </connections>
-                                    </button>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="0Sa-EO-3Pz">
-                                        <rect key="frame" x="16" y="529" width="343" height="117"/>
+                                        <rect key="frame" x="16" y="549" width="343" height="117"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="117" id="eL7-Wv-AhW"/>
@@ -1343,6 +1332,20 @@
                                             <outlet property="delegate" destination="YrJ-m6-iaY" id="433-Ah-ifN"/>
                                         </connections>
                                     </textView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KCE-2q-9yG">
+                                        <rect key="frame" x="0.0" y="695" width="375" height="71"/>
+                                        <color key="backgroundColor" red="1" green="0.59544295072555542" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="71" id="Fhu-By-Jqk"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="21"/>
+                                        <state key="normal" title="Confirm">
+                                            <color key="titleColor" red="0.93725490570000003" green="0.93725490570000003" blue="0.95686274770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="nextAction:" destination="YrJ-m6-iaY" eventType="touchUpInside" id="8mf-11-zWD"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="gVH-NF-sht" firstAttribute="bottom" secondItem="5aB-wy-YW7" secondAttribute="bottom" id="0Yl-bI-Yjq"/>
@@ -1393,7 +1396,7 @@
                                     <constraint firstItem="HlI-Dw-NqQ" firstAttribute="top" secondItem="x8H-QO-9lF" secondAttribute="bottom" constant="2" id="jCD-nL-sfN"/>
                                     <constraint firstItem="Gvd-BX-J0m" firstAttribute="leading" secondItem="5aB-wy-YW7" secondAttribute="leading" id="k3k-Y3-BVf"/>
                                     <constraint firstItem="rvm-0l-D95" firstAttribute="top" secondItem="KOZ-Cr-V2Q" secondAttribute="bottom" id="kiA-2C-hDx"/>
-                                    <constraint firstItem="KCE-2q-9yG" firstAttribute="top" secondItem="0Sa-EO-3Pz" secondAttribute="bottom" constant="45" id="oiA-Tk-W1s"/>
+                                    <constraint firstItem="KCE-2q-9yG" firstAttribute="top" secondItem="0Sa-EO-3Pz" secondAttribute="bottom" constant="29" id="oiA-Tk-W1s"/>
                                     <constraint firstItem="5aB-wy-YW7" firstAttribute="trailing" secondItem="0Sa-EO-3Pz" secondAttribute="trailing" id="qOG-nM-Nak"/>
                                     <constraint firstItem="Gvd-BX-J0m" firstAttribute="trailing" secondItem="5aB-wy-YW7" secondAttribute="trailing" id="r90-2s-LT9"/>
                                     <constraint firstItem="0Sa-EO-3Pz" firstAttribute="top" secondItem="Yed-dq-cjY" secondAttribute="bottom" constant="20" id="rpj-Ik-pEA"/>
@@ -1421,7 +1424,7 @@
                         </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="375" height="800"/>
+                    <size key="freeformSize" width="375" height="825"/>
                     <connections>
                         <outlet property="dateWheelEnd" destination="OZw-74-AGF" id="iA7-WS-dSx"/>
                         <outlet property="dateWheelStart" destination="rvm-0l-D95" id="jb6-7i-iHy"/>
@@ -1437,7 +1440,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xrW-U7-U89" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1454" y="199"/>
+            <point key="canvasLocation" x="1453.5999999999999" y="198.80059970014995"/>
         </scene>
         <!--Filter View Controller-->
         <scene sceneID="mH0-vk-UdQ">

@@ -40,9 +40,7 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
 //            
 //        }
         
-        self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("token").observe(.value){
-            (snap: FIRDataSnapshot) in
-            if snap.exists() == true
+            if UserDefaults.standard.bool(forKey: "artistCreate") == true
             {
                 self.artistCreate = true
             }
@@ -50,7 +48,7 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
             {
                 self.artistCreate = false
             }
-        }
+        
         
         
     }

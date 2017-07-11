@@ -15,7 +15,6 @@
 		0231DA721F07033300A787F8 /* starryStars_half@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0231DA6F1F07033300A787F8 /* starryStars_half@2x.png */; };
 		0231DA731F07033300A787F8 /* starryStars_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0231DA701F07033300A787F8 /* starryStars_off@2x.png */; };
 		0231DA741F07033300A787F8 /* starryStars_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0231DA711F07033300A787F8 /* starryStars_on@2x.png */; };
-		02395B4E1EFD9F0B00F883CA /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02395B4D1EFD9F0B00F883CA /* MessagesViewController.swift */; };
 		02484B571EEB2320006B9806 /* inquireViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02484B561EEB2320006B9806 /* inquireViewController.swift */; };
 		0253D3F71EB4FE360003763C /* HomeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0253D3F61EB4FE360003763C /* HomeViewCell.swift */; };
 		026351FB1E7332F1008245C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026351FA1E7332F1008245C7 /* AppDelegate.swift */; };
@@ -76,7 +75,6 @@
 		0231DA6F1F07033300A787F8 /* starryStars_half@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "starryStars_half@2x.png"; sourceTree = "<group>"; };
 		0231DA701F07033300A787F8 /* starryStars_off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "starryStars_off@2x.png"; sourceTree = "<group>"; };
 		0231DA711F07033300A787F8 /* starryStars_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "starryStars_on@2x.png"; sourceTree = "<group>"; };
-		02395B4D1EFD9F0B00F883CA /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		02484B561EEB2320006B9806 /* inquireViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = inquireViewController.swift; sourceTree = "<group>"; };
 		0253D3F61EB4FE360003763C /* HomeViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewCell.swift; sourceTree = "<group>"; };
 		026351F71E7332F1008245C7 /* NewProduct.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewProduct.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -195,7 +193,6 @@
 				027CAC951F0C728F00922D77 /* ArtistTable */,
 				02C085451F06F4F7006DEBCD /* StarryStars */,
 				02F511951F05B16E002E36A6 /* Seguee.swift */,
-				02395B4D1EFD9F0B00F883CA /* MessagesViewController.swift */,
 				026351FA1E7332F1008245C7 /* AppDelegate.swift */,
 				026351FC1E7332F1008245C7 /* ViewController.swift */,
 				026351FE1E7332F1008245C7 /* Main.storyboard */,
@@ -606,7 +603,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				027CAC941F0C728500922D77 /* FilterViewController.swift in Sources */,
-				02395B4E1EFD9F0B00F883CA /* MessagesViewController.swift in Sources */,
 				02484B571EEB2320006B9806 /* inquireViewController.swift in Sources */,
 				02A3413F1EFCACD900429FC0 /* sentInquireViewController.swift in Sources */,
 				02C0854E1F06F4F7006DEBCD /* RatingView.swift in Sources */,

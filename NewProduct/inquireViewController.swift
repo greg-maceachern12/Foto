@@ -171,7 +171,7 @@ func SetUp()
 
             self.dataRef.child("users").child(self.token).child("Sent Inquires").child(self.code).child("Status").setValue("Accepted")
             
-            let myVC = self.storyboard?.instantiateViewController(withIdentifier: "Messager") as! MessagesViewController
+            let myVC = self.storyboard?.instantiateViewController(withIdentifier: "Mess") as! MessViewController
              myVC.token = self.token
           
             self.present(myVC, animated: true)

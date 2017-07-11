@@ -20,9 +20,8 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("token").observe(.value){
-            (snap: FIRDataSnapshot) in
-            if snap.exists() == true
+  
+        if UserDefaults.standard.bool(forKey: "artistCreate") == true
             {
                 self.artistCreate = true
             }
@@ -30,7 +29,7 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
             {
                 self.artistCreate = false
             }
-        }
+        
     }
     
     override func didReceiveMemoryWarning() {

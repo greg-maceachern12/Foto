@@ -53,14 +53,16 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
     
             
-            if UserDefaults.standard.bool(forKey: "artistCreate") == true
-            {
-                self.artistCreate = true
-            }
-            else
-            {
-                self.artistCreate = false
-            }
+//            if UserDefaults.standard.bool(forKey: "artistCreate") == true
+//            {
+//                self.artistCreate = true
+//            }
+//            else
+//            {
+//                self.artistCreate = false
+//            }
+        
+        
         
         
         
@@ -69,6 +71,20 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         tblMenuOptions.tableFooterView = UIView()
         // Do any additional setup after loading the view.
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).observe(.value, with: { (snapshot) in
+            if snapshot.exists() == true
+            {
+                UserDefaults.standard.set(true, forKey: "artistCreate")
+                self.artistCreate = true
+            }
+            else
+            {
+                UserDefaults.standard.set(false, forKey: "artistCreate")
+                self.artistCreate = false
+            }
+        })
     }
     
     override func didReceiveMemoryWarning() {
@@ -150,7 +166,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func switchStateDidChange(_ sender:UISwitch!)
     {
           let myVCHome = storyboard?.instantiateViewController(withIdentifier: "Home") as! HomeViewController
-          let myVCArtist = storyboard?.instantiateViewController(withIdentifier: "Artist") as! ArtistViewController
+          //let myVCArtist = storyboard?.instantiateViewController(withIdentifier: "Artist") as! ArtistViewController
         if (sender.isOn == true){
             
           
@@ -241,7 +257,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
                                                                                                      "Rating": Int(0) as AnyObject,
                                                                                                      "Skills": self.skills as AnyObject,
                                                                                                      "Email": self.email as AnyObject,
-                                                                                                     "Location": self.email as AnyObject]
+                                                                                                     "Location": self.loc as AnyObject]
 
                                self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).setValue(inquirePost)
                                 
@@ -257,6 +273,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
                                     }
                                 }
                                 UserDefaults.standard.set("true", forKey: "artistOn")
+                                UserDefaults.standard.set(true, forKey: "artistCreate")
                                 myVCHome.artistOn = true
                             
                                // myVCArtist.token = self.loggedUser!.uid

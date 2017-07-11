@@ -1,11 +1,5 @@
 
 
-
-
-
-
-
-
 import UIKit
 import JSQMessagesViewController
 import Firebase

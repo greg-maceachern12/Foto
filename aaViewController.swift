@@ -29,31 +29,26 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     @IBOutlet weak var homeTab: UITableView!
     
+    //MARK: Declaration of variables
     var posts = [postStruct2]()
     var filteredPosts = [postStruct2]()
     var searchPosts = [postStruct2]()
-    
-    
     var dataRef: FIRDatabaseReference!
     var cellNumber : Int!
     var cellID: String!
-    
     var run = false
-    
-    
-    
     let loggedUser = FIRAuth.auth()?.currentUser
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
-        //without this method, the code would run to fast and the data wouldnt have time to load, giving nil which casued it to crash
+        //MARK: Grabbing Data
+        
         let delayInSeconds = 0.2
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {}
         
         self.posts.removeAll()
-        //self.filteredPosts.
         
                 dataRef = FIRDatabase.database().reference()
         
@@ -73,13 +68,6 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
                         
                   
                     let loc = snapshotValuePrice2?["Location"] as? String
-                        
-//                    if let exactLoc = snapshotValuePrice2?["location(LL)"] as? String
-//                    {
-//                      loc = exactLoc
-//                    }
-                        
-                        
                 
                     let snapshotValueDate = snapshot.value as? NSDictionary
                     let Skills = snapshotValueDate?["Skills"] as? String
@@ -139,32 +127,11 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         }
        // print(filteredPosts)
     }
-    
-//    @IBAction func sortChanged(_ sender: UIButton){
-//        
-//        print("clicked")
-//        print(self.filteredPosts)
-//        switch(sender){
-//        case self.sortPrice:
-//            
-//            self.filteredPosts = self.posts.sorted{$0.0.price1 < $0.1.price1}
-//            break
-//            
-//        case self.sortDistance:
-//            
-//            self.filteredPosts = self.posts.sorted{$0.0.price1 < $0.1.price1}
-//            break
-//        default:
-//            print("def")
-//            
-//        }
-//        
-//        self.homeTab.reloadData()
-//    }
+
     
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-                                        //TABLE FUNCTIONS
+                                        //MARK: TABLE FUNCTIONS
     
              func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
                 //creates as many rows as there are posts
@@ -233,6 +200,7 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         self.viewDidLoad()
     }
     
+    //MARK: Search Bar
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         DispatchQueue.global(qos: .userInteractive).async {
             if searchText == ""

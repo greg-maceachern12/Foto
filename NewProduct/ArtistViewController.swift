@@ -34,13 +34,15 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     @IBOutlet var LongPrice2: UILongPressGestureRecognizer!
     @IBOutlet weak var imgVer: UIImageView!
     @IBOutlet weak var Stars: RatingView!
+    
 
     var dataRef = FIRDatabase.database().reference()
     var storageRef = FIRStorage.storage().reference()
     var loggedUser = FIRAuth.auth()?.currentUser
     
     var Loader: UIActivityIndicatorView!
-    
+    var price1: Float!
+    var price2: Float!
     var tracker: Int! = 0
     
     var status: String!
@@ -89,7 +91,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         //if the artist profile page is NOT the current user, disable the ability to edit
         if token != loggedUser?.uid
         {
-            tbDescription.isUserInteractionEnabled = false
+            tbDescription.isEditable = false
             Long1.isEnabled = false
             LongPrice.isEnabled = false
             LongPrice2.isEnabled = false
@@ -97,6 +99,8 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
          
             Scroller.contentSize = CGSize(width: self.view.frame.width, height: 1410)
             
+             posts = ["Nothing Here!","Nothing Here!","Nothing Here!"]
+             posts2 = ["Nothing Here!","Nothing Here","Nothing Here!"]
            
             
             dataRef.child("artistProfiles").child(self.token).child("Name").observe(.value){
@@ -1356,12 +1360,23 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     ///////////////////
     
     @IBAction func btnBook(_ sender: Any) {
+        
+        if price1 != nil || price2 != nil{
+        
         let myVC = storyboard?.instantiateViewController(withIdentifier: "booking") as! BookingViewController
         
         myVC.userID = self.token
         
         //            print(myVC.token)
         self.present(myVC, animated: true)
+        }
+        else{
+            let alertContoller = UIAlertController(title: "Oops", message:"This Artist hasn't created any pricing options! \n Look for a different artist or message this one to update his/her profile!", preferredStyle: .alert)
+            
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+            alertContoller.addAction(defaultAction)
+            self.present(alertContoller, animated: true, completion: nil)
+        }
     }
     
     @IBAction func message(_ sender: Any) {
