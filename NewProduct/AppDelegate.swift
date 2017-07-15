@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import CoreData
+//import Stripe
 
 
 @UIApplicationMain
@@ -24,6 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
        
+//        Stripe.setDefaultPublishableKey("pk_test_ZtsOL5lnm05iXbC3Fn4ueK85")
+        PayPalMobile.initializeWithClientIds(forEnvironments: [PayPalEnvironmentProduction:"ARjyeCMMitQUDqOyO3cJ0qUeE7VWh9DY-7QihoEHeua4DgGYvml_AnNBw5ziWMCCSrCK7ENy5kWY4V0h", PayPalEnvironmentSandbox:"ARjyeCMMitQUDqOyO3cJ0qUeE7VWh9DY-7QihoEHeua4DgGYvml_AnNBw5ziWMCCSrCK7ENy5kWY4V0h"])
         
         UINavigationBar.appearance().titleTextAttributes = [
             NSFontAttributeName: UIFont(name: "Avenir Next", size: 15)!

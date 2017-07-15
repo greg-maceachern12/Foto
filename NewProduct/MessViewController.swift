@@ -57,7 +57,11 @@ extension MessViewController{
                                                           "pic": temp1 as AnyObject,
                                                           "date": "\(day)/\(month)/\(year)" as AnyObject]
                     
+                    
+                    
+                    
                     self.dataRef.child("users").child(self.loggedUser!.uid).child("messages").child(self.token).setValue(messPost)
+                    
                 }
             })
             

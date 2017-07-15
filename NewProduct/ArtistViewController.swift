@@ -660,7 +660,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
             else
             {
                 
-                
+                self.price1 = Float(firstTextField.text!)
                 self.lblPrice1.text = "$\(firstTextField.text!)"
                 self.dataRef.child("artistProfiles").child(self.token).child("Price1").setValue(Float(firstTextField.text!))
                 
@@ -712,7 +712,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
             else
             {
                 
-                
+                self.price2 = Float(firstTextField.text!)
                 self.lblPrice2.text = "$\(firstTextField.text!)"
                 self.dataRef.child("artistProfiles").child(self.token).child("Price2").setValue(Float(firstTextField.text!))
                 
@@ -756,15 +756,20 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                 self.count = index.row
                 
                 
-                
-                
+                if self.posts[index.row] == "Add Something!"
+                {
+                    return
+                }
+                else{
                     if tableView == self.tableView1
                     {
-                         self.posts.remove(at: index.row)
+                         //self.posts.remove(at: index.row)
+                        self.posts[index.row] = "Add Something!"
                         
                         self.dataRef.child("artistProfiles").child(self.token).child("Pricing1").child("Price1_\(self.count)").removeValue()
                         
-                            self.tableView1.deleteRows(at: [index], with: UITableViewRowAnimation.automatic)
+                        self.tableView1.reloadData()
+                            //self.tableView1.deleteRows(at: [index], with: UITableViewRowAnimation.automatic)
                         
                         //print(self.posts)
                         
@@ -772,17 +777,17 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                         
                     else
                     {
-                         self.posts2.remove(at: index.row)
-                        
+                         //self.posts2.remove(at: index.row)
+                        self.posts2[index.row] = "Add Something!"
                         self.dataRef.child("artistProfiles").child(self.token).child("Pricing2").child("Price2_\(self.count)").removeValue()
-                        
-                            self.tableView2.deleteRows(at: [index], with: UITableViewRowAnimation.automatic)
+                        self.tableView2.reloadData()
+                            //self.tableView2.deleteRows(at: [index], with: UITableViewRowAnimation.automatic)
                         
                         
                         
                     }
-                    
-                    
+                }
+                
             }
             
             
@@ -809,17 +814,48 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                
                         if tableView == self.tableView1
                         {
-                             self.dataRef.child("artistProfiles").child(self.token).child("Pricing1").child("Price1_\(index.row)").setValue(firstTextField.text)
-                            //print(index.row)
-                           // self.posts[index.row] = firstTextField.text
-                            //print(self.posts)
+                            self.dataRef.child("artistProfiles").child(self.token).child("Pricing1").updateChildValues(["Price1_\(index.row)" : firstTextField.text!], withCompletionBlock: { (error,ref) in
+                                if error != nil
+                                {
+                                    let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
+                                    
+                                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                                    alertContoller.addAction(defaultAction)
+                                    self.present(alertContoller, animated: true, completion: nil)
+                                   
+                                    
+                                    return
+                                }
+                                
+                              
+                                self.posts[index.row] = firstTextField.text
+                                    
+                                })
+
+                        
+                            
+                            
                         }
                             
                         else
                         {
-                            self.dataRef.child("artistProfiles").child(self.token).child("Pricing2").child("Price2_\(self.count)").setValue(firstTextField.text)
-                            
-                            self.posts2[self.count] = firstTextField.text
+                            self.dataRef.child("artistProfiles").child(self.token).child("Pricing2").updateChildValues(["Price1_\(index.row)" : firstTextField.text!], withCompletionBlock: { (error,ref) in
+                                if error != nil
+                                {
+                                    let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
+                                    
+                                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                                    alertContoller.addAction(defaultAction)
+                                    self.present(alertContoller, animated: true, completion: nil)
+                                    
+                                    
+                                    return
+                                }
+                                
+                                
+                                self.posts2[index.row] = firstTextField.text
+                                
+                            })
                             
                         }
                     
@@ -935,7 +971,8 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
             (snap: FIRDataSnapshot) in
             if snap.exists() == true
             {
-            self.lblPrice1.text = "$\(snap.value! as! Float)"
+                self.price1 = snap.value! as! Float
+                self.lblPrice1.text = "$\(snap.value! as! Float)"
             }
         }
         
@@ -943,6 +980,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
             (snap: FIRDataSnapshot) in
             if snap.exists() == true
             {
+                self.price2 = snap.value! as! Float
                 self.lblPrice2.text = "$\(snap.value! as! Float)"
             }
         }
@@ -1366,7 +1404,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         let myVC = storyboard?.instantiateViewController(withIdentifier: "booking") as! BookingViewController
         
         myVC.userID = self.token
-        
+        myVC.artistName = self.artistname
         //            print(myVC.token)
         self.present(myVC, animated: true)
         }

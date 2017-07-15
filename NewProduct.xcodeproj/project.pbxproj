@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		021215021F16F375000CDE1E /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021215011F16F375000CDE1E /* PaymentViewController.swift */; };
 		02198D091EE201F8008176EE /* BookingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02198D081EE201F8008176EE /* BookingViewController.swift */; };
 		0225B4D71E84BA71006E7F34 /* RobotoSlab-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0225B4D31E84BA1E006E7F34 /* RobotoSlab-Bold.ttf */; };
 		0225B4D81E84BA71006E7F34 /* RobotoSlab-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0225B4D41E84BA1E006E7F34 /* RobotoSlab-Light.ttf */; };
@@ -31,6 +32,13 @@
 		0280D21C1E7378A40088BEA7 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0280D21B1E7378A40088BEA7 /* Login.swift */; };
 		02855E181EC53E6D0072D9E5 /* ArtistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02855E171EC53E6D0072D9E5 /* ArtistViewController.swift */; };
 		0291FEC11F01D4FA0015FAF6 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0291FEC01F01D4FA0015FAF6 /* Message.swift */; };
+		029DE7561F19631A0073AD7C /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 029DE74F1F19631A0073AD7C /* Accelerate.framework */; };
+		029DE7571F19631A0073AD7C /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 029DE7501F19631A0073AD7C /* AudioToolbox.framework */; };
+		029DE7581F19631A0073AD7C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 029DE7511F19631A0073AD7C /* AVFoundation.framework */; };
+		029DE7591F19631A0073AD7C /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 029DE7521F19631A0073AD7C /* MessageUI.framework */; };
+		029DE75A1F19631A0073AD7C /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 029DE7531F19631A0073AD7C /* MobileCoreServices.framework */; };
+		029DE75B1F19631A0073AD7C /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 029DE7541F19631A0073AD7C /* SafariServices.framework */; };
+		029DE75C1F19631A0073AD7C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 029DE7551F19631A0073AD7C /* SystemConfiguration.framework */; };
 		029FE7EC1EF0BC8C00998365 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029FE7EA1EF0BC8C00998365 /* MenuViewController.swift */; };
 		029FE7EE1EF0BD7A00998365 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029FE7ED1EF0BD7A00998365 /* HomeViewController.swift */; };
 		02A3413F1EFCACD900429FC0 /* sentInquireViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A3413E1EFCACD900429FC0 /* sentInquireViewController.swift */; };
@@ -66,6 +74,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		021215011F16F375000CDE1E /* PaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
 		02198D081EE201F8008176EE /* BookingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingViewController.swift; sourceTree = "<group>"; };
 		0225B4D21E84BA1E006E7F34 /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		0225B4D31E84BA1E006E7F34 /* RobotoSlab-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoSlab-Bold.ttf"; sourceTree = "<group>"; };
@@ -97,6 +106,15 @@
 		0280D21B1E7378A40088BEA7 /* Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		02855E171EC53E6D0072D9E5 /* ArtistViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistViewController.swift; sourceTree = "<group>"; };
 		0291FEC01F01D4FA0015FAF6 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		029DE74B1F1961370073AD7C /* NewProduct-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NewProduct-Bridging-Header.h"; sourceTree = "<group>"; };
+		029DE74E1F19619D0073AD7C /* ZZAppDelegat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZZAppDelegat.h; sourceTree = "<group>"; };
+		029DE74F1F19631A0073AD7C /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		029DE7501F19631A0073AD7C /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		029DE7511F19631A0073AD7C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		029DE7521F19631A0073AD7C /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		029DE7531F19631A0073AD7C /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		029DE7541F19631A0073AD7C /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		029DE7551F19631A0073AD7C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		029FE7EA1EF0BC8C00998365 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		029FE7ED1EF0BD7A00998365 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		02A3413E1EFCACD900429FC0 /* sentInquireViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = sentInquireViewController.swift; sourceTree = "<group>"; };
@@ -126,6 +144,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				029DE7561F19631A0073AD7C /* Accelerate.framework in Frameworks */,
+				029DE7571F19631A0073AD7C /* AudioToolbox.framework in Frameworks */,
+				029DE7581F19631A0073AD7C /* AVFoundation.framework in Frameworks */,
+				029DE7591F19631A0073AD7C /* MessageUI.framework in Frameworks */,
+				029DE75A1F19631A0073AD7C /* MobileCoreServices.framework in Frameworks */,
+				029DE75B1F19631A0073AD7C /* SafariServices.framework in Frameworks */,
+				029DE75C1F19631A0073AD7C /* SystemConfiguration.framework in Frameworks */,
 				02A9C6BD1EE76F15001287E9 /* CoreLocation.framework in Frameworks */,
 				E8A5188744D0F4AEB982A2EA /* Pods_NewProduct.framework in Frameworks */,
 			);
@@ -196,6 +221,7 @@
 				026351FA1E7332F1008245C7 /* AppDelegate.swift */,
 				026351FC1E7332F1008245C7 /* ViewController.swift */,
 				026351FE1E7332F1008245C7 /* Main.storyboard */,
+				021215011F16F375000CDE1E /* PaymentViewController.swift */,
 				02A3413E1EFCACD900429FC0 /* sentInquireViewController.swift */,
 				029FE7ED1EF0BD7A00998365 /* HomeViewController.swift */,
 				02F8348A1EEB4B2400F2FF55 /* TableInquireViewController.swift */,
@@ -210,6 +236,8 @@
 				027290DD1E733B46007A26E9 /* GoogleService-Info.plist */,
 				026352011E7332F1008245C7 /* NewProduct.xcdatamodeld */,
 				026F0C451E7F5F6900273DD2 /* lato */,
+				029DE74B1F1961370073AD7C /* NewProduct-Bridging-Header.h */,
+				029DE74E1F19619D0073AD7C /* ZZAppDelegat.h */,
 			);
 			path = NewProduct;
 			sourceTree = "<group>";
@@ -297,6 +325,13 @@
 		B954E3A314951230F0274C27 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				029DE74F1F19631A0073AD7C /* Accelerate.framework */,
+				029DE7501F19631A0073AD7C /* AudioToolbox.framework */,
+				029DE7511F19631A0073AD7C /* AVFoundation.framework */,
+				029DE7521F19631A0073AD7C /* MessageUI.framework */,
+				029DE7531F19631A0073AD7C /* MobileCoreServices.framework */,
+				029DE7541F19631A0073AD7C /* SafariServices.framework */,
+				029DE7551F19631A0073AD7C /* SystemConfiguration.framework */,
 				02A9C6BC1EE76F15001287E9 /* CoreLocation.framework */,
 				178CFB2F3823D9DD48263B4F /* Pods_NewProduct.framework */,
 				FBDE84B653AD105B44574FC2 /* Pods_NewProductTests.framework */,
@@ -609,6 +644,7 @@
 				02E4F3BB1F03351A002713C8 /* TableMessViewController.swift in Sources */,
 				0291FEC11F01D4FA0015FAF6 /* Message.swift in Sources */,
 				026351FD1E7332F1008245C7 /* ViewController.swift in Sources */,
+				021215021F16F375000CDE1E /* PaymentViewController.swift in Sources */,
 				02198D091EE201F8008176EE /* BookingViewController.swift in Sources */,
 				02F511961F05B16E002E36A6 /* Seguee.swift in Sources */,
 				02DD88D31EFDE39F0093DD50 /* BaseViewController.swift in Sources */,
@@ -781,6 +817,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Mac.NewProduct22;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "NewProduct/NewProduct-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
@@ -798,6 +835,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Mac.NewProduct22;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "NewProduct/NewProduct-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

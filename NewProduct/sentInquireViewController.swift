@@ -13,8 +13,11 @@ import FirebaseAuth
 
 struct sentInqStuct {
     let name: String!
+    let toName: String!
     let theme: String!
+    let price: Float!
     let status: String!
+    let token: String!
     let code: String!
 }
 
@@ -92,8 +95,35 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
             
             let alertContoller = UIAlertController(title: "Alert!", message: "The Artist has accepted your inquire! Start a message or pay now :)", preferredStyle: .alert)
             
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            let defaultAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            let payAction = UIAlertAction(title: "Pay Now", style: .default, handler: {
+                alert -> Void in
+                let myVC = self.storyboard?.instantiateViewController(withIdentifier: "Payment") as! PaymentViewController
+                
+               
+                myVC.clientName = self.sentInqposts[indexPath.row].toName
+                myVC.price = self.sentInqposts[indexPath.row].price
+                
+                self.present(myVC, animated: true)
+            })
+
+            
+            let messageAction = UIAlertAction(title: "Message", style: .default, handler: {
+                alert -> Void in
+                
+                let myVC = self.storyboard?.instantiateViewController(withIdentifier: "Mess") as! MessViewController
+                
+                myVC.token = self.sentInqposts[indexPath.row].token
+                myVC.name = self.sentInqposts[indexPath.row].toName
+                
+                self.present(myVC, animated: true)
+                
+
+            })
             alertContoller.addAction(defaultAction)
+            alertContoller.addAction(messageAction)
+            alertContoller.addAction(payAction)
             self.present(alertContoller, animated:true, completion: nil)
             
             
@@ -135,6 +165,10 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
                 let snapshotValueName = snapshot.value as? NSDictionary
                 let Name = snapshotValueName?["Client Name"] as? String
                 
+                let Token = snapshotValueName?["artistToken"] as? String
+                
+                let ToName = snapshotValueName?["toName"] as? String
+                
                 let snapshotValueTheme = snapshot.value as? NSDictionary
                 let Theme = snapshotValueTheme?["Theme"] as? String
                 
@@ -143,6 +177,8 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
                 
                 let snapshotValueCode = snapshot.value as? NSDictionary
                 let Code = snapshotValueCode?["code"] as? String
+                
+                let Price = snapshotValueCode?["Pricing Option"] as? Float
                 
                 let snapshotValueDeleted = snapshot.value as? NSDictionary
                if (snapshotValueDeleted?["deleted"] as? String) != nil
@@ -153,7 +189,7 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
                 
                 if self.deleted != true
                 {
-                self.sentInqposts.insert(sentInqStuct(name: Name, theme: Theme, status: Status, code: Code), at: 0)
+                self.sentInqposts.insert(sentInqStuct(name: Name, toName: ToName, theme: Theme, price: Price, status: Status, token: Token, code: Code), at: 0)
                 
                 //print(self.inqposts)
                 self.homeTab.reloadData()

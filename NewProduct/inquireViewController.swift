@@ -147,6 +147,11 @@ func SetUp()
             
             self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("Inquires").child(self.code).child("Status").setValue("Declined")
             
+            let myVC = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! HomeViewController
+            //myVC.token = self.token
+            
+            self.present(myVC, animated: true)
+            
             self.present(alertContoller2, animated:true, completion: nil)
             
         })
@@ -171,8 +176,8 @@ func SetUp()
 
             self.dataRef.child("users").child(self.token).child("Sent Inquires").child(self.code).child("Status").setValue("Accepted")
             
-            let myVC = self.storyboard?.instantiateViewController(withIdentifier: "Mess") as! MessViewController
-             myVC.token = self.token
+            let myVC = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! HomeViewController
+             //myVC.token = self.token
           
             self.present(myVC, animated: true)
             

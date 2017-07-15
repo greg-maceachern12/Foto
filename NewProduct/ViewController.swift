@@ -15,7 +15,7 @@ import CoreLocation
 import Photos
 
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate, UITextFieldDelegate, CLLocationManagerDelegate {
+class ViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate, UITextFieldDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var imgMain: UIImageView!
@@ -58,7 +58,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
     var artistCreate = false
     
     let user = FIRAuth.auth()?.currentUser
-    
+
     //I was being lazy and made variables for these references
    let NameLoad = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("Name")
     let aboutLoad = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("About")
@@ -403,6 +403,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         self.present(loginVC, animated: true, completion: nil)
         
         }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 116
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell69")
+        
+
+        return cell!
+    }
+    
+
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     

@@ -26,6 +26,8 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
     @IBOutlet weak var tvNotes: UITextView!
     @IBOutlet weak var tbTheme: UITextField!
     @IBOutlet weak var scroller: UIScrollView!
+    @IBOutlet weak var btnNext: UIButton!
+    @IBOutlet weak var Loader: UIActivityIndicatorView!
 
     var placeholderLabel: UILabel!
     
@@ -37,10 +39,14 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
     var count: Int!
     var name: String!
     
+    var artistName: String!
+    
     var userName: String!
     var email: String!
     
-    var pricingOption: String!
+    var price11: Float!
+    var price12: Float!
+    var pricingOption: Float!
     var price1 = false
     var price2 = false
     var price3 = false
@@ -159,6 +165,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         }
         
     }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 3
     }
@@ -179,7 +186,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
             price2 = false
             price3 = false
             
-            pricingOption = "Pricing1"
+            pricingOption = price11
          
             
         }
@@ -202,14 +209,14 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
             price2 = true
             price3 = false
             
-            pricingOption = "Pricing2"
+            pricingOption = price12
         }
         
         
        
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 52
+        return tableView1.frame.height/3
     }
 
     
@@ -243,6 +250,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
             if snap.exists() == true
             {
             self.lblPrice2.text = "$\(snap.value as! Float)"
+                self.price11 = snap.value as! Float
             }
             else {
                 self.lblPrice2.text = "Not Set"
@@ -255,6 +263,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
             if snap.exists() == true
             {
                 self.lblPrice1.text = "$\(snap.value as! Float)"
+                self.price12 = snap.value as! Float
             }
             else {
                 self.lblPrice1.text = "Not Set"
@@ -276,7 +285,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
                 self.tableView1.reloadData()
             }
             else{
-                self.posts.insert("Nothing here :(", at: 0)
+                self.posts.insert("Nothing Here!", at: 0)
             }
         }
         
@@ -291,7 +300,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
                 self.tableView1.reloadData()
             }
             else{
-                self.posts.insert("Nothing here :(", at: 1)
+                self.posts.insert("Nothing Here!", at: 1)
             }
         }
         
@@ -306,7 +315,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
                 self.tableView1.reloadData()
             }
             else{
-                self.posts.insert("Nothing here :(", at: 2)
+                self.posts.insert("Nothing Here!", at: 2)
             }
             
         }
@@ -354,7 +363,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
                 self.tableView2.reloadData()
             }
             else{
-                self.posts2.insert("Add Something!", at: 0)
+                self.posts2.insert("Nothing Here!", at: 0)
             }
         }
         
@@ -369,7 +378,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
                 self.tableView2.reloadData()
             }
             else{
-                self.posts2.insert("Add Something!", at: 1)
+                self.posts2.insert("Nothing Here!", at: 1)
             }
         }
         
@@ -384,7 +393,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
                 self.tableView2.reloadData()
             }
             else{
-                self.posts2.insert("Add Something!", at: 2)
+                self.posts2.insert("Nothing Here!", at: 2)
             }
             
         }
@@ -454,6 +463,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
     @IBAction func nextAction(_ sender: Any) {
         
         
+        
         if self.price2 == false && self.price1 == false
         {
             let alertContoller = UIAlertController(title: "Error", message:"No pricing option selected", preferredStyle: .alert)
@@ -498,10 +508,14 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         let defaultAction = UIAlertAction(title: "Confirm", style: .default, handler: {
             alert -> Void in
             
+            self.btnNext.isHidden = true
+            self.Loader.startAnimating()
+            
             let accessCode = self.generateRandomStringWithLength(length: 20)
             
             let inquirePost: [String : AnyObject] = ["Client Name": self.userName as AnyObject,
                                                      "Client Email": self.email as AnyObject,
+                                                     "toName": self.artistName as AnyObject,
                                                      "Start Date": strDate as AnyObject,
                                                      "End Date": strDate2 as AnyObject,
                                                      "Pricing Option": self.pricingOption as AnyObject,
@@ -510,31 +524,77 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
                                                      "Theme": self.tbTheme.text as AnyObject,
                                                      
                                                      "Status": "Pending" as AnyObject,
+                                                     "artistToken": self.userID as AnyObject,
                                                      "token": self.loggedUser!.uid as AnyObject]
    
-            self.dataRef.child("artistProfiles").child(self.userID).child("Inquires").child(accessCode).setValue(inquirePost)
-            
-            self.dataRef.child("users").child(self.loggedUser!.uid).child("Sent Inquires").child(accessCode).setValue(inquirePost)
-            
-            
-            let alertContoller2 = UIAlertController(title: "Success!", message:"You have successfully sent an invitation!", preferredStyle: .alert)
-            
-            let defaultAction2 = UIAlertAction(title: "Okay", style: .default, handler: {
-                alert -> Void in
-                let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            self.dataRef.child("artistProfiles").child(self.userID).child("Inquires").updateChildValues([accessCode : inquirePost], withCompletionBlock: { (error,ref) in
+                if error != nil
+                {
+                    let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
+                    
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                    alertContoller.addAction(defaultAction)
+                    self.present(alertContoller, animated: true, completion: nil)
+                    
+                    self.btnNext.isHidden = false
+                    self.Loader.stopAnimating()
+                    
+                    return
+                }
                 
-                let vc: UIViewController = storyboard.instantiateViewController(withIdentifier: "Home")
+                self.Loader.stopAnimating()
+                let alertContoller2 = UIAlertController(title: "Success!", message:"You have successfully sent an invitation!", preferredStyle: .alert)
                 
-                self.present(vc, animated: true, completion: nil)
+                let defaultAction2 = UIAlertAction(title: "Okay", style: .default, handler: {
+                    alert -> Void in
+                    let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    
+                    let vc: UIViewController = storyboard.instantiateViewController(withIdentifier: "Home")
+                    
+                    self.present(vc, animated: true, completion: nil)
+                    
+                })
+                
+                alertContoller2.addAction(defaultAction2)
+                
+                self.present(alertContoller2, animated: true, completion: nil)
                 
             })
-            let cancelAction2 = UIAlertAction(title: "Cancel", style: .default, handler: nil)
-           
 
-            alertContoller2.addAction(defaultAction2)
-            alertContoller2.addAction(cancelAction2)
             
-            self.present(alertContoller2, animated: true, completion: nil)
+            
+            
+            self.dataRef.child("users").child(self.loggedUser!.uid).child("Sent Inquires").updateChildValues([accessCode : inquirePost], withCompletionBlock: { (error,ref) in
+                if error != nil
+                {
+                    let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
+                    
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                    alertContoller.addAction(defaultAction)
+                    self.present(alertContoller, animated: true, completion: nil)
+                    
+                    return
+                }
+                let alertContoller2 = UIAlertController(title: "Success!", message:"You have successfully sent an invitation!", preferredStyle: .alert)
+                
+                let defaultAction2 = UIAlertAction(title: "Okay", style: .default, handler: {
+                    alert -> Void in
+                    let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    
+                    let vc: UIViewController = storyboard.instantiateViewController(withIdentifier: "Home")
+                    
+                    self.present(vc, animated: true, completion: nil)
+                    
+                })
+                
+                alertContoller2.addAction(defaultAction2)
+                
+                self.present(alertContoller2, animated: true, completion: nil)
+                
+            })
+
+            
+            
             
            
             
