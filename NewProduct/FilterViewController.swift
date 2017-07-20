@@ -24,6 +24,7 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
     var maxNumber: Float!
      var pickerData = ["All of Ontario", "Barrie", "Belleville Area", "Brantford", "Brockville", "Chatham-Kent", "Cornwall","Guelph", "Hamilton", "Kapuskasing", "Kenora", "Kingston Area", "Kitchener Area", "Leamington", "London", "Muskoka", "Norfolk Country", "North Bay", "Ottawa Area", "Owen Sound", "Peterborough", "Renfrew County", "Sarnia", "Saugeen Shores", "Sault Ste. Marie", "St.Catharines", "Sudbury", "Thunder Bay", "Timmins", "Toronto (GTA)", "Windsor", "Woodstock"]
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tbMaximum.delegate = self
@@ -90,17 +91,62 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
           
             maxNumber = Float(tbMaximum.text!)
             
-            if loc != "all of ontario"{
-    
-                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains(loc!)}
+            
+            
+            if loc == "kingston area"{
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("kingston") || $0.location.lowercased().contains("odesa") || $0.location.lowercased().contains("napanee")}
                 
                 filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(skill!)}
-            
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                print("hit")
+                
+            }
+            else if loc == "kitchener area"{
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("kitchener") || $0.location.lowercased().contains("waterloo") || $0.location.lowercased().contains("cambridge")}
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(skill!)}
+                
                 filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
                 
             }
-            else{
+                
+            else if loc == "otttawa area"{
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("ottawa") || $0.location.lowercased().contains("gatineau")}
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(skill!)}
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                
+            }
+                
+            else if loc == "toronto (gta)"{
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("toronto") || $0.location.lowercased().contains("markham") || $0.location.lowercased().contains("mississauga") || $0.location.lowercased().contains("oakville") || $0.location.lowercased().contains("oshawa")}
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(skill!)}
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                
+            }
+            
+           else if loc == "all of ontario"{
+    
                 filteredTakenPosts  = self.takenPosts.filter{$0.skills.lowercased().contains(skill!)}
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                
+            }
+            
+            else{
+                
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains(loc!)}
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(skill!)}
                 
                 filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
             }
@@ -116,16 +162,57 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
             
             maxNumber = Float(tbMaximum.text!)
             
-            if loc != "all of ontario"{
+            if loc == "kingston area"{
                 
-                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains(loc!)}
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("kingston") || $0.location.lowercased().contains("odesa") || $0.location.lowercased().contains("napanee")}
+
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                print("hit")
+                
+            }
+            else if loc == "kitchener area"{
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("kitchener") || $0.location.lowercased().contains("waterloo") || $0.location.lowercased().contains("cambridge")}
+
                 
                 filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
                 
             }
-            else{
+                
+            else if loc == "otttawa area"{
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("ottawa") || $0.location.lowercased().contains("gatineau")}
+
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                
+            }
+                
+            else if loc == "toronto (gta)"{
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("toronto") || $0.location.lowercased().contains("markham") || $0.location.lowercased().contains("mississauga") || $0.location.lowercased().contains("oakville") || $0.location.lowercased().contains("oshawa")}
+                
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                
+            }
+                
+            else if loc == "all of ontario"{
+                
                 
                 filteredTakenPosts  = self.takenPosts.filter{$0.price2 < maxNumber}
+                print("hin")
+                
+            }
+                
+            else{
+                
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains(loc!)}
+
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
             }
     
         }
@@ -135,24 +222,100 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
             skill = tbSkills.text?.lowercased()
             
           
-            if loc != "all of ontario"{
+            if loc == "kingston area"{
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("kingston") || $0.location.lowercased().contains("odesa") || $0.location.lowercased().contains("napanee")}
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(skill!)}
+                
+                
+            }
+            else if loc == "kitchener area"{
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("kitchener") || $0.location.lowercased().contains("waterloo") || $0.location.lowercased().contains("cambridge")}
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(skill!)}
+
+                
+            }
+                
+            else if loc == "otttawa area"{
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("ottawa") || $0.location.lowercased().contains("gatineau")}
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(skill!)}
+
+                
+            }
+                
+            else if loc == "toronto (gta)"{
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("toronto") || $0.location.lowercased().contains("markham") || $0.location.lowercased().contains("mississauga") || $0.location.lowercased().contains("oakville") || $0.location.lowercased().contains("oshawa")}
+                
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(skill!)}
+
+                
+            }
+                
+            else if loc == "all of ontario"{
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.skills.lowercased().contains(skill!)}
+                
+                
+            }
+                
+            else{
+                
                 
                 filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains(loc!)}
                 
                 filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(skill!)}
                 
             }
-            else{
-                filteredTakenPosts  = self.takenPosts.filter{$0.skills.lowercased().contains(skill!)}
-            }
+
             
             
         }
         else if tbMaximum.text == "" && tbSkills.text == ""{
-            if loc != "All of Ontario"{
+            if loc == "kingston area"{
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("kingston") || $0.location.lowercased().contains("odesa") || $0.location.lowercased().contains("napanee")}
+   
+                
+            }
+            else if loc == "kitchener area"{
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("kitchener") || $0.location.lowercased().contains("waterloo") || $0.location.lowercased().contains("cambridge")}
+
+                
+            }
+                
+            else if loc == "otttawa area"{
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("ottawa") || $0.location.lowercased().contains("gatineau")}
+                
+                
+            }
+                
+            else if loc == "toronto (gta)"{
+                
+                filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("toronto") || $0.location.lowercased().contains("markham") || $0.location.lowercased().contains("mississauga") || $0.location.lowercased().contains("oakville") || $0.location.lowercased().contains("oshawa")}
+                
+                
+            }
+                
+            else if loc == "all of ontario"{
+
+                
+            }
+                
+            else{
+                
                 
                 filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains(loc!)}
+
             }
+
         }
         
         myVC.searchPosts.removeAll()
@@ -172,30 +335,7 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == tbMaximum{
-//            if tbMaximum.text == ""
-//            {
-//                print("YE")
-//                filteredTakenPosts = takenPosts
-//                FingerClick.isHidden = true
-//            }
-//            else{
-//                maxNumber = Float(tbMaximum.text!)
-//               
-//                //
-//                filteredTakenPosts  = self.takenPosts.filter{$0.price2 < maxNumber}
-                FingerClick.isHidden = false
-                FingerClick.titleLabel?.text = String(filteredTakenPosts.count)
-//
-//    //            }
-//            }
-        }
-        else if textField == tbSkills
-        {
-            //skill = tbSkills.text?.lowercased()
-            FingerClick.isHidden = false
-            FingerClick.titleLabel?.text = String(filteredTakenPosts.count)
-        }
+        FingerClick.isHidden = false
         
     }
 }

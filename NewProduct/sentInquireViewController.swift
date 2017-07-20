@@ -19,6 +19,7 @@ struct sentInqStuct {
     let status: String!
     let token: String!
     let code: String!
+    let deleted: String!
 }
 
 class sentInquireViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
@@ -36,6 +37,7 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
         super.viewDidLoad()
 
         SetUp()
+        
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -48,10 +50,8 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
         //creates a cell in the table and sets information based on the tag (Check tag in main.storyboard)
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell2")
         
-        
-        
         let label1 = cell?.viewWithTag(1) as! UILabel
-        label1.text = sentInqposts[indexPath.row].name
+        label1.text = sentInqposts[indexPath.row].toName
         
         
         let label2 = cell?.viewWithTag(2) as! UILabel
@@ -59,6 +59,8 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
         
         
         return cell!
+        
+      
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -73,12 +75,29 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { action, index in
             //What happens when Edit button is tapped
             
-             self.dataRef.child("users").child(self.loggedUser!.uid).child("Sent Inquires").child(self.sentInqposts[indexPath.row].code).child("deleted").setValue("True")
-            
+            self.dataRef.child("users").child(self.loggedUser!.uid).child("Sent Inquires").child(self.sentInqposts[indexPath.row].code).updateChildValues(["deleted" : "true"], withCompletionBlock: { (error,ref) in
+                if error != nil
+                {
+                    let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
+                    
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                    alertContoller.addAction(defaultAction)
+                    self.present(alertContoller, animated: true, completion: nil)
+                    
+                    return
+                }
+                
                 self.sentInqposts.remove(at: indexPath.row)
-            
+                
                 
                 self.homeTab.deleteRows(at: [index], with: UITableViewRowAnimation.automatic)
+            })
+            
+            
+            
+
+            
+            
         }
         return [delete]
         
@@ -181,19 +200,21 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
                 let Price = snapshotValueCode?["Pricing Option"] as? Float
                 
                 let snapshotValueDeleted = snapshot.value as? NSDictionary
-               if (snapshotValueDeleted?["deleted"] as? String) != nil
-               {
-                self.deleted = true
-                }
+                
+                let Deleted = snapshotValueDeleted?["deleted"] as? String
+              
                 
                 
-                if self.deleted != true
+                if Deleted != "true"
                 {
-                self.sentInqposts.insert(sentInqStuct(name: Name, toName: ToName, theme: Theme, price: Price, status: Status, token: Token, code: Code), at: 0)
-                
-                //print(self.inqposts)
-                self.homeTab.reloadData()
+                    self.sentInqposts.insert(sentInqStuct(name: Name, toName: ToName, theme: Theme, price: Price, status: Status, token: Token, code: Code, deleted: Deleted), at: 0)
+                    
+                    //print(self.inqposts)
+                    self.homeTab.reloadData()
                 }
+                
+               
+              
             }
         })
         if sentInqposts.count == 0

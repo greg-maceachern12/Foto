@@ -456,7 +456,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
             if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.savedPhotosAlbum)
             {
                 
-                //Not sure why i have to set the imagepickers delegate to self. Thats the only way it worked tho
                 self.imagePicker.delegate = self
                 self.imagePicker.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
                 self.imagePicker.allowsEditing = true
