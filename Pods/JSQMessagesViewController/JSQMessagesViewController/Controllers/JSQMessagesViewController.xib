@@ -44,6 +44,7 @@
                     <items>
                         <navigationItem title="Message" id="u1u-6Y-AfF">
                             <barButtonItem key="leftBarButtonItem" title="Back" style="done" id="RSw-Fc-Hqp">
+                                <color key="tintColor" red="1" green="0.53045744289999996" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <action selector="back" destination="-1" id="dq5-MM-Blt"/>
                                 </connections>

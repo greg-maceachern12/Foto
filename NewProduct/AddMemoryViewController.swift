@@ -11,13 +11,15 @@ import MobileCoreServices
 import AVFoundation
 import Firebase
 
-class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDataDelegate {
     
+    @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var btnAddVideo: UIButton!
     @IBOutlet weak var tbTitle: UITextField!
     @IBOutlet weak var DatePick: UIDatePicker!
     @IBOutlet weak var btnComplete: UIButton!
     @IBOutlet weak var Loader: UIActivityIndicatorView!
+    @IBOutlet weak var lblPercent: UILabel!
     
     var vidURL: URL!
     let dataRef = FIRDatabase.database().reference()
@@ -27,12 +29,37 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        btnComplete.layer.shadowColor = UIColor.darkGray.cgColor
+        btnComplete.layer.shadowOffset = CGSize(width: 0, height: 2)
+        btnComplete.layer.shadowOpacity = 1.0
+        btnComplete.layer.shadowRadius = 0.0
+        btnComplete.layer.masksToBounds = false
+        btnComplete.layer.cornerRadius = 4.0
+        
         // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func generateRandomStringWithLength(length:Int) -> String {
+        
+        let randomString:NSMutableString = NSMutableString(capacity: length)
+        
+        let letters:NSMutableString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        
+        var i: Int = 0
+        
+        while i < length {
+            
+            let randomIndex:Int = Int(arc4random_uniform(UInt32(letters.length)))
+            randomString.append("\(Character( UnicodeScalar( letters.character(at: randomIndex))!))")
+            i += 1
+        }
+        
+        return String(randomString)
     }
     
     @IBAction func addVideo(_ sender: Any) {
@@ -71,8 +98,8 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
         self.Loader.startAnimating()
         
         
-        let filename = "default.mov"
-        let uploadTask = FIRStorage.storage().reference().child(filename).putFile(url as URL, metadata: nil, completion: { (metadata, error) in
+        let filename = NSUUID().uuidString
+        let uploadTask = FIRStorage.storage().reference().child("Memories").child(filename).putFile(url as URL, metadata: nil, completion: { (metadata, error) in
             
             if error != nil{
                 let alertContoller = UIAlertController(title: "Error", message: error as? String, preferredStyle: .alert)
@@ -80,13 +107,21 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
                 let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
                 alertContoller.addAction(defaultAction)
                 self.present(alertContoller, animated: true, completion: nil)
+                
+                
+                self.DatePick.isEnabled = true
+                self.tbTitle.isEnabled = true
                 self.btnComplete.isHidden = false
+                self.progressBar.progress = 0
+                self.progressBar.isHidden = true
                 self.Loader.stopAnimating()
                 return
             }
             
             if let storageUrl = metadata?.downloadURL()?.absoluteString{
                 //self.vidURL = url as URL!
+                
+                let code = self.generateRandomStringWithLength(length: 6)
                 
                 let dateFormatter = DateFormatter()
                 
@@ -97,9 +132,12 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
                 
                 let memory: [String : AnyObject] = ["video": storageUrl as AnyObject,
                                                          "Title": self.tbTitle.text as AnyObject,
-                                                         "Date": strDate as AnyObject]
+                                                         "Date": strDate as AnyObject,
+                                                         "code": code as AnyObject]
                 
-            self.dataRef.child("users").child(self.loggedUser!.uid).child("Memories").childByAutoId().setValue(memory)
+                
+                
+            self.dataRef.child("users").child(self.loggedUser!.uid).child("Memories").child(code).setValue(memory)
                 
                 self.Loader.stopAnimating()
                 
@@ -113,7 +151,16 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
         })
         
         uploadTask.observe(.progress) { (snapshot) in
-            print(snapshot.progress?.completedUnitCount as Any)
+            //self.progressBar.progress = snapshot.progress?.completedUnitCount as Any as! Float
+            print(snapshot.progress!.completedUnitCount as Any)
+            
+            let percentComplete = Double(snapshot.progress!.completedUnitCount)
+                / Double(snapshot.progress!.totalUnitCount)
+            
+            self.lblPercent.text = "\((percentComplete * 100).rounded())%"
+       
+            
+            self.progressBar.progress = Float(percentComplete)
         }
 
     }
@@ -158,10 +205,16 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
     }
     
 
+    
     @IBAction func Add(_ sender: Any) {
         
         if vidURL != nil && tbTitle.text != nil{
             
+            self.DatePick.isEnabled = false
+            self.tbTitle.isEnabled = false
+            self.lblPercent.text = "0%"
+            self.lblPercent.isHidden = false
+            self.progressBar.isHidden = false
             self.btnComplete.isHidden = true
         handleVideoSelectedForUrl(url: vidURL! as NSURL)
         

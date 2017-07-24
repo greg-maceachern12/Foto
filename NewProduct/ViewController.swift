@@ -11,12 +11,22 @@
 import UIKit
 import Firebase
 import FirebaseAuth
-import CoreLocation
 import Photos
+import SDWebImage
+import AVFoundation
+
+
+struct memoryStruct{
+    let videoLink: NSURL!
+    let title: String!
+    let date: String!
+    let acccessCode: String!
+}
 
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate, UITextFieldDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource {
     
+    @IBOutlet weak var HomeTitle: UINavigationItem!
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var imgMain: UIImageView!
     //@IBOutlet weak var Logout: UIButton!
@@ -28,6 +38,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
     @IBOutlet weak var tbAbout: UITextField!
     @IBOutlet weak var tabBar: UITabBarItem!
     @IBOutlet weak var lblEmail: UILabel!
+    @IBOutlet weak var homeTab: UITableView!
     
     //declarations for about section
     @IBOutlet weak var lblLoc: UILabel!
@@ -40,8 +51,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
     
     let NameRef = FIRDatabase.database().reference()
     let storageRef = FIRStorage.storage().reference()
+    let loggedUser = FIRAuth.auth()?.currentUser
     
     var upload = false
+    
+    var memories = [memoryStruct]()
     
     var ableToSwitch = false
     var loc = ""
@@ -63,16 +77,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
    let NameLoad = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("Name")
     let aboutLoad = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("About")
     
-    let manager = CLLocationManager()
     
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        manager.delegate = self
-        manager.desiredAccuracy = kCLLocationAccuracyBest
-        manager.requestWhenInUseAuthorization()
         
         
         lblName.isUserInteractionEnabled = true
@@ -89,23 +97,61 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         }
         
         //set profile qualities
+        self.HomeTitle.title = "Loading Data"
         setupProfile()
+        self.NameRef.child("users").child(self.loggedUser!.uid).child("Memories").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
+            //
+            if snapshot.exists() == true{
+                let snapshotValueName = snapshot.value as? NSDictionary
+                let Title = snapshotValueName?["Title"] as? String
+                
+                
+                let dateFIR = snapshotValueName?["Date"] as? String
+                
+                let code = snapshotValueName?["code"] as? String
+                
+                let snapshotValuePic = snapshot.value as? NSDictionary
+                var url = NSURL()
+                if let pic = snapshotValuePic?["video"] as? String
+                {
+                    url = NSURL(string:pic)!
+                    
+                }
+                else{
+                    url = NSURL(string:"")!
+                    
+                }
+                
+                self.memories.insert(memoryStruct(videoLink: url, title: Title, date: dateFIR, acccessCode: code), at: 0)
+                
+                
+                
+            }
+            else
+            {
+                let alertContoller = UIAlertController(title: "Oops!", message: "No Artists!", preferredStyle: .alert)
+                
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertContoller.addAction(defaultAction)
+                
+                self.present(alertContoller, animated:true, completion: nil)
+            }
+            
+            
+            self.homeTab.reloadData()
+            self.HomeTitle.title = "Home"
+            
+        })
+
         
         
         //allow the profile pic to be clicked
         self.imgMain.isUserInteractionEnabled = true
        
     }
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let location = locations[0]
-        NameRef.child("users").child(self.user!.uid).child("location(LL)").setValue("\(location.coordinate.latitude),\(location.coordinate.longitude)")
-       // print(manager.location!)
-        if manager.location != nil
-        {
-            manager.stopUpdatingLocation()
-        }
     
-    }
+   
+    
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -186,6 +232,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
                                 }
                             }
                     })
+            
             
         
         }
@@ -374,6 +421,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
                 })
             }
     }
+    
+    
 
 //what happens when logout is clicked
     func LogoutSeq(){
@@ -407,14 +456,89 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 116
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { action, index in
+            //What happens when Edit button is tapped
+
+            
+            self.NameRef.child("users").child(self.loggedUser!.uid).child("Memories").child(self.memories[indexPath.row].acccessCode).removeValue(completionBlock:  { (error,ref) in
+                if error != nil
+                {
+                    let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
+                    
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                    alertContoller.addAction(defaultAction)
+                    self.present(alertContoller, animated: true, completion: nil)
+                    
+                    
+                    return
+                }
+                
+                self.memories.remove(at: indexPath.row)
+                
+                
+                
+                self.homeTab.reloadData()
+                
+                })
+                
+ 
+            
+                    //self.posts.remove(at: index.row)
+        
+                    //self.tableView1.deleteRows(at: [index], with: UITableViewRowAnimation.automatic)
+        }
+        return [delete]
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return memories.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+      
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell69")
-        
 
+        
+        
+        let label1 = cell?.viewWithTag(1) as! UILabel
+        label1.text = memories[indexPath.row].title
+        
+        let label2 = cell?.viewWithTag(2) as! UILabel
+        label2.text = memories[indexPath.row].date
+        
+        let Loader = cell?.viewWithTag(3) as! UIActivityIndicatorView
+        
+        
+        let asset = AVAsset(url: memories[indexPath.row].videoLink! as URL)
+        let imageGen = AVAssetImageGenerator(asset: asset)
+        
+        
+        do{
+            Loader.startAnimating()
+            let thumbnailImage = try imageGen.copyCGImage(at: CMTimeMake(1, 60), actualTime: nil)
+            
+            let img4 = cell?.viewWithTag(4) as! UIImageView
+            img4.image = UIImage(cgImage: thumbnailImage)
+//            img4.layer.cornerRadius = 8
+//            img4.clipsToBounds = true
+            Loader.stopAnimating()
+            
+            
+        
+            
+        }catch let err{
+            print(err)
+        }
+
+        
+        
+        
+        
         return cell!
+        
     }
     
 

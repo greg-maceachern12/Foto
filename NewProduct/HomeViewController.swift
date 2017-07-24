@@ -28,17 +28,9 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        let allKeys = UserDefaults.standard.dictionaryRepresentation().keys
-//        
-//        // Now remove the object for the keys starting with "NavView"
-//        
-//        for key in allKeys{
-//            
-//            if key.hasPrefix("ProfilePic"){
-//                UserDefaults.standard.removeObject(forKey: key)
-//            }
-//            
-//        }
+        //btnInvit.applyDesign()
+        btnFindArtist.applyDesign()
+        btnMyFoto.applyDesign()
         
             if UserDefaults.standard.bool(forKey: "artistCreate") == true
             {
@@ -55,9 +47,9 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
     override func viewWillAppear(_ animated: Bool) {
         if UserDefaults.standard.object(forKey: "artistOn") != nil
         {
-            btnInvit.setImage(#imageLiteral(resourceName: "Friends"), for: .normal)
-            btnFindArtist.setImage(#imageLiteral(resourceName: "ArtistView"), for: .normal)
-            btnMyFoto.setImage(#imageLiteral(resourceName: "artistFoto"), for: .normal)
+            btnInvit.setImage(#imageLiteral(resourceName: "invitFoto"), for: .normal)
+            btnFindArtist.setImage(#imageLiteral(resourceName: "findFoto"), for: .normal)
+            btnMyFoto.setImage(#imageLiteral(resourceName: "artistFoto1"), for: .normal)
        // btnInvit.setTitle("   RECIEVED\nINVITATIONS", for: .normal)
             artistOn = true
             
@@ -211,4 +203,16 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
     }
     
     
+}
+
+extension UIButton{
+    
+    func applyDesign(){
+    self.layer.shadowColor = UIColor.lightGray.cgColor
+    self.layer.shadowOffset = CGSize(width: 0, height: 9)
+    self.layer.shadowOpacity = 1.0
+    self.layer.shadowRadius = 0.0
+    self.layer.masksToBounds = false
+    self.layer.cornerRadius = 4.0
+    }
 }

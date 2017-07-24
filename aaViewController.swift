@@ -38,7 +38,12 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
     var cellID: String!
     var run = false
     let loggedUser = FIRAuth.auth()?.currentUser
+    var tokens = [String?]()
+    var arrayPin = [String]()
 
+    @IBOutlet weak var pinnedSeg: UISegmentedControl!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,6 +58,11 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
                 dataRef = FIRDatabase.database().reference()
         
         //grabbing the title, price, date and picture to a structure and storing that in an array
+        dataRef.child("users").child(self.loggedUser!.uid).child("Pins").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
+            
+            self.arrayPin.append((snapshot.value as? String)!)
+        })
+
         
                 dataRef.child("artistProfiles").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
 //                    
@@ -87,19 +97,23 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
                     let snapshotValueToken = snapshot.value as? NSDictionary
                     let Token = snapshotValueToken?["token"] as? String
                         
+//                        if self.arrayPin.contains(Token!) == true{
+//                        
+//                        }
                         
                         self.posts.insert(postStruct2(name: name, price1: Price1,price2: Price2, skills: Skills, picture:url, location: loc, token: Token), at: 0)
                         
                         if self.run == false{
                         self.filteredPosts.insert(postStruct2(name: name, price1: Price1,price2: Price2, skills: Skills, picture:url, location: loc, token: Token), at: 0)
                         self.searchPosts.insert(postStruct2(name: name, price1: Price1,price2: Price2, skills: Skills, picture:url, location: loc, token: Token), at: 0)
+                        
                             
                         }
                         
                     }
                     else
                     {
-                        let alertContoller = UIAlertController(title: "Oops!", message: "Please Enter a Username/Password", preferredStyle: .alert)
+                        let alertContoller = UIAlertController(title: "Oops!", message: "No Artists!", preferredStyle: .alert)
                         
                         let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                         alertContoller.addAction(defaultAction)
@@ -118,7 +132,6 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
                     
                 })
         
-        
         //if the title is non existant (post doesn't exist), the activity moniter stops
         if (title == nil)
         {
@@ -133,48 +146,48 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
     
                                         //MARK: TABLE FUNCTIONS
     
-             func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
                 //creates as many rows as there are posts
-                return searchPosts.count
+    return searchPosts.count
+}
+func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return 75
+}
+        
+func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            
+        //creates a cell in the table and sets information based on the tag (Check tag in main.storyboard)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell2")
+        
+        print(searchPosts)
+       
+        
+        let label1 = cell?.viewWithTag(1) as! UILabel
+        label1.text = searchPosts[indexPath.row].name
+        
+        let label5 = cell?.viewWithTag(5) as! UILabel
+        label5.text = "(\(searchPosts[indexPath.row].location!))"
+        
+    
+        let label2 = cell?.viewWithTag(2) as! UILabel
+        if let temp1 = searchPosts[indexPath.row].price1{
+            if let temp2 = searchPosts[indexPath.row].price2
+            {
+               label2.text = "$\(temp1) - $\(temp2)"
             }
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75
-    }
-            
-             func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-                
-                //creates a cell in the table and sets information based on the tag (Check tag in main.storyboard)
-                let cell = tableView.dequeueReusableCell(withIdentifier: "Cell2")
-                
-                print(searchPosts)
-               
-                
-                let label1 = cell?.viewWithTag(1) as! UILabel
-                label1.text = searchPosts[indexPath.row].name
-                
-                let label5 = cell?.viewWithTag(5) as! UILabel
-                label5.text = "(\(searchPosts[indexPath.row].location!))"
-                
-            
-                let label2 = cell?.viewWithTag(2) as! UILabel
-                if let temp1 = searchPosts[indexPath.row].price1{
-                    if let temp2 = searchPosts[indexPath.row].price2
-                    {
-                       label2.text = "$\(temp1) - $\(temp2)"
-                    }
-                }
-            
-                
-                let label3 = cell?.viewWithTag(3) as! UILabel
-                label3.text = searchPosts[indexPath.row].skills
-                
-                
-                let img4 = cell?.viewWithTag(4) as! UIImageView
-                img4.sd_setImage(with: searchPosts[indexPath.row].picture as URL!, placeholderImage: UIImage(named: "ProfileDefault")!)
-                img4.layer.cornerRadius = 4
-                img4.clipsToBounds = true
- 
-                return cell!
+        }
+    
+        
+        let label3 = cell?.viewWithTag(3) as! UILabel
+        label3.text = searchPosts[indexPath.row].skills
+        
+        
+        let img4 = cell?.viewWithTag(4) as! UIImageView
+        img4.sd_setImage(with: searchPosts[indexPath.row].picture as URL!, placeholderImage: UIImage(named: "ProfileDefault")!)
+        img4.layer.cornerRadius = 4
+        img4.clipsToBounds = true
+
+        return cell!
 }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -186,7 +199,7 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
 
             myVC.token = self.cellID!
         
-//            print(myVC.token)
+            homeTab.deselectRow(at: indexPath, animated: true)
             self.present(myVC, animated: true)
     
         
@@ -224,6 +237,21 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         self.view.endEditing(true)
         
     
+    }
+   
+    @IBAction func segChange(_ sender: Any) {
+        
+        if pinnedSeg.selectedSegmentIndex == 1{
+           
+         self.searchPosts = self.posts.filter{arrayPin.contains($0.token)}
+            self.homeTab.reloadData()
+//
+    
+        }
+        else{
+            self.searchPosts = self.posts
+            self.homeTab.reloadData()
+        }
     }
     
     @IBAction func showFilter(_ sender: Any) {

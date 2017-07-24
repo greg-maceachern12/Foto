@@ -32,7 +32,6 @@
 		027CAC941F0C728500922D77 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027CAC931F0C728500922D77 /* FilterViewController.swift */; };
 		0280D21C1E7378A40088BEA7 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0280D21B1E7378A40088BEA7 /* Login.swift */; };
 		02855E181EC53E6D0072D9E5 /* ArtistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02855E171EC53E6D0072D9E5 /* ArtistViewController.swift */; };
-		0291FEC11F01D4FA0015FAF6 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0291FEC01F01D4FA0015FAF6 /* Message.swift */; };
 		029DE7561F19631A0073AD7C /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 029DE74F1F19631A0073AD7C /* Accelerate.framework */; };
 		029DE7571F19631A0073AD7C /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 029DE7501F19631A0073AD7C /* AudioToolbox.framework */; };
 		029DE7581F19631A0073AD7C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 029DE7511F19631A0073AD7C /* AVFoundation.framework */; };
@@ -107,7 +106,6 @@
 		027CAC931F0C728500922D77 /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		0280D21B1E7378A40088BEA7 /* Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		02855E171EC53E6D0072D9E5 /* ArtistViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistViewController.swift; sourceTree = "<group>"; };
-		0291FEC01F01D4FA0015FAF6 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		029DE74B1F1961370073AD7C /* NewProduct-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NewProduct-Bridging-Header.h"; sourceTree = "<group>"; };
 		029DE74E1F19619D0073AD7C /* ZZAppDelegat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZZAppDelegat.h; sourceTree = "<group>"; };
 		029DE74F1F19631A0073AD7C /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -285,7 +283,6 @@
 			children = (
 				02E4F3BA1F03351A002713C8 /* TableMessViewController.swift */,
 				02AB60CA1F003C7F00DD38FC /* MessViewController.swift */,
-				0291FEC01F01D4FA0015FAF6 /* Message.swift */,
 			);
 			name = Messages;
 			sourceTree = "<group>";
@@ -653,7 +650,6 @@
 				02A3413F1EFCACD900429FC0 /* sentInquireViewController.swift in Sources */,
 				02C0854E1F06F4F7006DEBCD /* RatingView.swift in Sources */,
 				02E4F3BB1F03351A002713C8 /* TableMessViewController.swift in Sources */,
-				0291FEC11F01D4FA0015FAF6 /* Message.swift in Sources */,
 				026351FD1E7332F1008245C7 /* ViewController.swift in Sources */,
 				025206281F202A7E001937A1 /* AddMemoryViewController.swift in Sources */,
 				021215021F16F375000CDE1E /* PaymentViewController.swift in Sources */,

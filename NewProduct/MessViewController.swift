@@ -26,7 +26,7 @@ class MessViewController: JSQMessagesViewController {
 }
 
 extension MessViewController{
-    
+
     
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
         
@@ -200,6 +200,8 @@ extension MessViewController{
         
         
     }
+    
+    
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -273,6 +275,7 @@ extension MessViewController {
         {
             
         }
+        self.inputToolbar.contentView.leftBarButtonItem = nil
         //tell JSQMessagesView who is current user
         self.senderId = loggedUser?.uid
         self.senderDisplayName = "Loading"

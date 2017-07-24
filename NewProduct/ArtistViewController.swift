@@ -125,6 +125,9 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                 self.btnMessage.isHidden = true
                 self.view.frame = CGRect(x: 0, y: 0, width: 375, height: 1390)
                 self.Scroller.contentSize = CGSize(width: self.view.frame.width, height: 1390)
+                self.btnPin.applyDesign()
+                self.btnBook.applyDesign()
+                self.btnMessage.applyDesign()
             }
         }
         
@@ -1434,5 +1437,43 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         self.dismiss(animated: true, completion: nil)
     }
 
+    @IBAction func Pin(_ sender: Any) {
+        
+        self.dataRef.child("users").child(self.loggedUser!.uid).child("Pins").updateChildValues([self.token : self.token], withCompletionBlock: { (error,ref) in
+            if error != nil
+            {
+                let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
+                
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                alertContoller.addAction(defaultAction)
+                self.present(alertContoller, animated: true, completion: nil)
+                
+                
+                return
+            }
+            
+            let alertContoller2 = UIAlertController(title: "Success!", message:"You have successfully pinned this artist to your profile!", preferredStyle: .alert)
+            
+            let defaultAction2 = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+            alertContoller2.addAction(defaultAction2)
+            
+            self.present(alertContoller2, animated: true, completion: nil)
+            
+        })
+
+        
+    }
 
 }
+
+//extension UIButton{
+//
+//    func applyDesign(){
+//        self.layer.shadowColor = UIColor.lightGray.cgColor
+//        self.layer.shadowOffset = CGSize(width: 0, height: 2)
+//        self.layer.shadowOpacity = 1.0
+//        self.layer.shadowRadius = 0.0
+//        self.layer.masksToBounds = false
+//        self.layer.cornerRadius = 4.0
+//    }
+//}
