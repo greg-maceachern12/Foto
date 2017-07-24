@@ -243,12 +243,14 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
         
         if pinnedSeg.selectedSegmentIndex == 1{
            
+            //filters the array
          self.searchPosts = self.posts.filter{arrayPin.contains($0.token)}
             self.homeTab.reloadData()
 //
     
         }
         else{
+            //resets the array
             self.searchPosts = self.posts
             self.homeTab.reloadData()
         }

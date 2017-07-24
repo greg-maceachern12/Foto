@@ -1438,7 +1438,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     }
 
     @IBAction func Pin(_ sender: Any) {
-        
+        //sets the pin in the database
         self.dataRef.child("users").child(self.loggedUser!.uid).child("Pins").updateChildValues([self.token : self.token], withCompletionBlock: { (error,ref) in
             if error != nil
             {
