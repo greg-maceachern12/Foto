@@ -36,6 +36,11 @@ class inquireViewController: UIViewController {
         super.viewDidLoad()
         SetUp()
         uploadPic()
+        
+        btnAccept.applyGradient(colours: [UIColor(red: 0, green: 145/255, blue: 1, alpha: 1.0), UIColor(red: 0, green: 97/255, blue: 1, alpha: 1.0)])
+        
+        btnDecline.applyGradient(colours: [UIColor(red: 255/255, green: 21/255, blue: 0, alpha: 1.0), UIColor(red: 226/255, green: 0, blue: 10/255, alpha: 1.0)])
+        
         // Do any additional setup after loading the view.
     }
 
@@ -46,13 +51,13 @@ class inquireViewController: UIViewController {
     
 func SetUp()
     {
-        imgprof.layer.cornerRadius = imgprof.frame.width/2
+        imgprof.layer.cornerRadius = imgprof.frame.width/8
         imgprof.clipsToBounds = true
         
-        btnAccept.layer.cornerRadius = btnAccept.frame.height/2
+        btnAccept.layer.cornerRadius = btnAccept.frame.height/6
         btnAccept.clipsToBounds = true
         
-        btnDecline.layer.cornerRadius = btnDecline.frame.height/2
+        btnDecline.layer.cornerRadius = btnDecline.frame.height/6
         btnDecline.clipsToBounds = true
         dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("Client Name").observe(.value){
             (snap: FIRDataSnapshot) in

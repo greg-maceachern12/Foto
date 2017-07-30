@@ -41,83 +41,7 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
  
         switch(index){
         case 0:
-            //print("Artist", terminator: "")
-//            
-//            let myVCHome = storyboard?.instantiateViewController(withIdentifier: "Home") as! HomeViewController
-//            
-//            if artistCreate == true{
-//                myVCHome.btnInvit.titleLabel?.text = "Recieved \n Invitations"
-//                present(myVCHome, animated: true)
-//            }
-//            else
-//            {
-//                let alertContoller = UIAlertController(title: "Oops!", message: "You haven't created an Artist Profile yet! Would you like to make one?", preferredStyle: .alert)
-//                
-//                let yesAction = UIAlertAction(title: "Yes", style: .default, handler: {
-//                    alert -> Void in
-//                    
-//                    let profVC = self.storyboard?.instantiateViewController(withIdentifier: "Profile") as! ViewController
-//                    
-//                    if profVC.skills == "" || profVC.email == ""{
-//                        
-//                        let alertContoller2 = UIAlertController(title: "Oops!", message: "You haven't filled out necessary information. \n Go to My Foto and fill out the information", preferredStyle: .alert)
-//                        
-//                        UserDefaults.standard.removeObject(forKey: "artistOn")
-//                    
-//                        
-//                        let defaultAction = UIAlertAction(title: "Okay", style: .default, handler: nil)
-//                        alertContoller2.addAction(defaultAction)
-//                        self.present(alertContoller2, animated:true, completion: nil)
-//                        
-//                        
-//                    }
-//                    else{
-//                        
-//                        
-//                        let inquirePost: [String : AnyObject] = ["Name": profVC.lblName.text as AnyObject,
-//                                                                 "token": self.loggedUser!.uid as AnyObject,
-//                                                                 "Rating": Int(0) as AnyObject,
-//                                                                 "Skills": profVC.skills as AnyObject,
-//                                                                 "Email": profVC.email as AnyObject]
-//                        
-//                        
-////                        self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("Name").setValue(profVC.lblName.text)
-////                        
-////                        self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("token").setValue(profVC.user!.uid)
-////                        
-////                        self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("Rating").setValue("0")
-////                        
-////                        self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("skills").setValue(profVC.skills)
-////                        
-////                        self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("Email").setValue(profVC.email)
-//                        self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).setValue(inquirePost)
-//                        
-//                        self.dataRef.child("users").child(self.loggedUser!.uid).child("pic").observe(.value){
-//                            (snap: FIRDataSnapshot) in
-//                            
-//                            if snap.exists() == true
-//                            {
-//                                self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("pic").setValue(snap.value as! String)
-//                            }
-//                            else{
-//                                self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("pic").setValue("default.ca")
-//                            }
-//                        }
-//                        UserDefaults.standard.set(true, forKey: "artistCreate")
-//                        self.present(profVC, animated: true)
-//                        
-//                    }
-//                    
-//                })
-//                
-//                let noAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
-//                
-//                
-//                alertContoller.addAction(yesAction)
-//                alertContoller.addAction(noAction)
-//                self.present(alertContoller, animated:true, completion: nil)
-//            }
-//            
+
             
             break
         case 1:
@@ -139,30 +63,18 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
             
             break
         case 2:
-            //            let myVC = storyboard?.instantiateViewController(withIdentifier: "TableInquire") as! TableInquireViewController
-            //
-            //                present(myVC, animated: true)
             
-            //print("yes")
             
             break
         case 3:
-            //print("Play\n", terminator: "")
-            
-            // self.openViewControllerBasedOnIdentifier("PlayVC")
+           
             
             break
         case 4:
-           // print("Play\n", terminator: "")
-            
-            // self.openViewControllerBasedOnIdentifier("PlayVC")
-            
+          
             break
         case 5:
-           // print("Play\n", terminator: "")
-            
-            // self.openViewControllerBasedOnIdentifier("PlayVC")
-            
+          
             break
         default:
            print("default\n", terminator: "")

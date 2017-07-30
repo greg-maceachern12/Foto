@@ -35,6 +35,7 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
 
         SetUp()
         
@@ -112,7 +113,7 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
         {
          
             
-            let alertContoller = UIAlertController(title: "Alert!", message: "The Artist has accepted your inquire! Start a message or pay now :)", preferredStyle: .alert)
+            let alertContoller = UIAlertController(title: "Accepted!", message: "The Artist has accepted your inquire! Start a message or pay now :)", preferredStyle: .alert)
             
             let defaultAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             
@@ -150,7 +151,7 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
         else if sentInqposts[indexPath.row].status == "Pending"
         {
             
-            let alertContoller = UIAlertController(title: "Alert!", message: "The Artist hasn't gotten to your inquire yet. They'll answer soon", preferredStyle: .alert)
+            let alertContoller = UIAlertController(title: "Pending!", message: "The Artist hasn't gotten to your inquire yet. They'll answer soon", preferredStyle: .alert)
             
             let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alertContoller.addAction(defaultAction)
@@ -161,7 +162,7 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
         else if sentInqposts[indexPath.row].status == "Declined"
         {
             
-            let alertContoller = UIAlertController(title: "Alert!", message: "The Artist has declined your inquire. Don't be discouraged! Keep looking \n This inquire will now be deleted", preferredStyle: .alert)
+            let alertContoller = UIAlertController(title: "Declined!", message: "The Artist has declined your inquire. Don't be discouraged! Keep looking", preferredStyle: .alert)
             
             let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
          

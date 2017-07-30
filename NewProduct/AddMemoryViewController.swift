@@ -11,7 +11,7 @@ import MobileCoreServices
 import AVFoundation
 import Firebase
 
-class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDataDelegate {
+class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var btnAddVideo: UIButton!
@@ -20,6 +20,7 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
     @IBOutlet weak var btnComplete: UIButton!
     @IBOutlet weak var Loader: UIActivityIndicatorView!
     @IBOutlet weak var lblPercent: UILabel!
+    @IBOutlet weak var tbArtist: UITextField!
     
     var vidURL: URL!
     let dataRef = FIRDatabase.database().reference()
@@ -29,12 +30,14 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        btnComplete.layer.shadowColor = UIColor.darkGray.cgColor
-        btnComplete.layer.shadowOffset = CGSize(width: 0, height: 2)
-        btnComplete.layer.shadowOpacity = 1.0
-        btnComplete.layer.shadowRadius = 0.0
-        btnComplete.layer.masksToBounds = false
-        btnComplete.layer.cornerRadius = 4.0
+//        btnComplete.layer.shadowColor = UIColor.darkGray.cgColor
+//        btnComplete.layer.shadowOffset = CGSize(width: 0, height: 2)
+//        btnComplete.layer.shadowOpacity = 1.0
+//        btnComplete.layer.shadowRadius = 0.0
+//        btnComplete.layer.masksToBounds = false
+//        btnComplete.layer.cornerRadius = 4.0
+        btnComplete.applyGradient(colours: [UIColor(red: 255/255, green: 140/255, blue: 0, alpha: 1.9), UIColor(red: 1.0, green: 103/255, blue: 0, alpha: 1.0)])        
+        
         
         // Do any additional setup after loading the view.
     }
@@ -126,12 +129,15 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
                 let dateFormatter = DateFormatter()
                 
                 dateFormatter.dateStyle = DateFormatter.Style.short
-                dateFormatter.timeStyle = DateFormatter.Style.short
+                
+                dateFormatter.timeStyle = DateFormatter.Style.none
                 
                 let strDate = dateFormatter.string(from: self.DatePick.date)
                 
                 let memory: [String : AnyObject] = ["video": storageUrl as AnyObject,
                                                          "Title": self.tbTitle.text as AnyObject,
+                                                         
+                                                         "Artist": self.tbArtist.text as AnyObject,
                                                          "Date": strDate as AnyObject,
                                                          "code": code as AnyObject]
                 
@@ -197,6 +203,7 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.tbTitle.resignFirstResponder()
+        self.tbArtist.resignFirstResponder()
         
         return true
     }
@@ -208,8 +215,9 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
     
     @IBAction func Add(_ sender: Any) {
         
-        if vidURL != nil && tbTitle.text != nil{
+        if vidURL != nil && tbTitle.text != nil && tbArtist.text != nil{
             
+            self.btnAddVideo.isEnabled = false
             self.DatePick.isEnabled = false
             self.tbTitle.isEnabled = false
             self.lblPercent.text = "0%"

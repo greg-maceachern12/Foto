@@ -251,7 +251,7 @@ extension MessViewController{
         
         if loggedUser!.uid == message.senderId{
             
-            return bubbleFactory?.outgoingMessagesBubbleImage(with: .orange)
+            return bubbleFactory?.outgoingMessagesBubbleImage(with: .purple)
             
         }
         else{

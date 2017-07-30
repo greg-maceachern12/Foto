@@ -71,8 +71,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             
         }
-        
+//        UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
         self.saveContext()
+        
     }
 
     // MARK: - Core Data stack

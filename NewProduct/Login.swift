@@ -243,22 +243,33 @@ override func viewDidLoad() {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         if FIRAuth.auth()?.currentUser != nil {
+            self.Load.startAnimating()
+            lblUser.text = "Logging You In"
+            UIView.animate(withDuration: 0.5, animations: {
+                
+                self.loginView.layer.opacity = 1
+                
+                
+            })
+            tbUser.isEnabled = false
+            tbPassword.isEnabled = false
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc: UIViewController = storyboard.instantiateViewController(withIdentifier: "Home")
+            
+            self.present(vc, animated: true, completion: nil)
             
             self.NameRef.child("artistProfiles").child((FIRAuth.auth()?.currentUser!.uid)!).observe(.value, with: { (snapshot) in
+                
+                print(snapshot.value!)
                 if snapshot.exists() == true
                 {
                     UserDefaults.standard.set(true, forKey: "artistCreate")
-                    let vc: UIViewController = storyboard.instantiateViewController(withIdentifier: "Home")
                     
-                    self.present(vc, animated: true, completion: nil)
                 }
                 else
                 {
                      UserDefaults.standard.set(false, forKey: "artistCreate")
-                    let vc: UIViewController = storyboard.instantiateViewController(withIdentifier: "Home")
                     
-                    self.present(vc, animated: true, completion: nil)
                 }
             })
             
@@ -269,6 +280,21 @@ override func viewDidLoad() {
     //function to show the new page
     func Show()
     {
+        self.NameRef.child("artistProfiles").child((FIRAuth.auth()?.currentUser!.uid)!).observe(.value, with: { (snapshot) in
+            
+            print(snapshot.value!)
+            if snapshot.exists() == true
+            {
+                UserDefaults.standard.set(true, forKey: "artistCreate")
+                
+            }
+            else
+            {
+                UserDefaults.standard.set(false, forKey: "artistCreate")
+                
+            }
+        })
+        
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         
         let vc: UIViewController = storyboard.instantiateViewController(withIdentifier: "Home")

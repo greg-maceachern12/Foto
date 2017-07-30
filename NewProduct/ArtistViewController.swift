@@ -12,11 +12,19 @@ import FirebaseAuth
 import FirebaseStorage
 import FirebaseDatabase
 import SDWebImage
+import MobileCoreServices
+import AVFoundation
+import AVKit
+
 
 
 
 class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
 
+    @IBOutlet weak var viewPrice2: UIView!
+    @IBOutlet weak var viewPrice1: UIView!
+    @IBOutlet weak var viewTab1: UIView!
+    @IBOutlet weak var viewTab2: UIView!
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var tbDescription: UITextView!
     @IBOutlet weak var picturePicker: UIPickerView!
@@ -34,6 +42,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     @IBOutlet var LongPrice2: UILongPressGestureRecognizer!
     @IBOutlet weak var imgVer: UIImageView!
     @IBOutlet weak var Stars: RatingView!
+    @IBOutlet weak var progressBar: UIProgressView!
     
 
     var dataRef = FIRDatabase.database().reference()
@@ -43,14 +52,19 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     var Loader: UIActivityIndicatorView!
     var price1: Float!
     var price2: Float!
+    
+    var arrayRating = [Float?]()
+    
+    var upTrack: Int! = 0
     var tracker: Int! = 0
     
     var status: String!
     
     var table1 = false
     var count = 0
-//    var posts = [String?]()
-//    var posts2 = [String?]()
+    
+    
+    var artistRat = Float(0)
     
     var posts:[String?] = ["Add Something!","Add Something!","Add Something!"]
     var posts2:[String?] = ["Add Something!","Add Something!","Add Something!"]
@@ -69,6 +83,9 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     var temp2: String!
     var temp3: String!
     
+    var urlArray = [String!]()
+
+    
     var tableNumber: Int!
     var uploadVar = true
     var uploadCount = 0
@@ -76,6 +93,10 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     var token: String!
     var artistname: String!
     var userIsVerfied = false
+    
+    var vidURL: URL!
+    
+    var countRat = Float(0.0)
     
     
     
@@ -86,13 +107,25 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         
         //setting the scroll view size
         
+         viewPrice2.applyGradient(colours: [UIColor(red: 255/255, green: 140/255, blue: 0, alpha: 1.0), UIColor(red: 1.0, green: 103/255, blue: 0, alpha: 1.0)])
+        
+         viewPrice1.applyGradient(colours: [UIColor(red: 255/255, green: 189/255, blue: 89/255, alpha: 1.0), UIColor(red: 1.0, green: 139/255, blue: 26/255, alpha: 1.0)])
+        
+        viewTab1.applyGradient(colours: [UIColor(red: 255/255, green: 189/255, blue: 89/255, alpha: 1.0), UIColor(red: 1.0, green: 139/255, blue: 26/255, alpha: 1.0)])
+        viewTab2.applyGradient(colours: [UIColor(red: 255/255, green: 140/255, blue: 0, alpha: 1.0), UIColor(red: 1.0, green: 103/255, blue: 0, alpha: 1.0)])
+        
+//        viewTab1.applyGradient(colours: [UIColor(red: 179/255, green: 0, blue: 255/255, alpha: 1.0), UIColor(red: 149/255, green: 0, blue: 245/255, alpha: 1.0)])
+//        viewTab2.applyGradient(colours: [UIColor(red: 151/255, green: 0, blue: 255/255, alpha: 1.0), UIColor(red: 121/255, green: 0, blue: 255/255, alpha: 1.0)])
+//        
+//        viewPrice1.applyGradient(colours: [UIColor(red: 179/255, green: 0, blue: 255/255, alpha: 1.0), UIColor(red: 149/255, green: 0, blue: 245/255, alpha: 1.0)])
+//        viewPrice2.applyGradient(colours: [UIColor(red: 151/255, green: 0, blue: 255/255, alpha: 1.0), UIColor(red: 121/255, green: 0, blue: 255/255, alpha: 1.0)])
         
         
         //if the artist profile page is NOT the current user, disable the ability to edit
         if token != loggedUser?.uid
         {
             tbDescription.isEditable = false
-            Long1.isEnabled = false
+            //Long1.isEnabled = false
             LongPrice.isEnabled = false
             LongPrice2.isEnabled = false
             self.view.frame = CGRect(x: 0, y: 0, width: 1410, height: 1410)
@@ -102,6 +135,12 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
              posts = ["Nothing Here!","Nothing Here!","Nothing Here!"]
              posts2 = ["Nothing Here!","Nothing Here","Nothing Here!"]
            
+            btnPin.applyDesign()
+            btnBook.applyGradient(colours: [UIColor(red: 255/255, green: 140/255, blue: 0, alpha: 1.9), UIColor(red: 1.0, green: 103/255, blue: 0, alpha: 1.0)])
+           // btnBook.applyGradient(colours: [UIColor(red: 151/255, green: 0, blue: 255/255, alpha: 1.0), UIColor(red: 121/255, green: 0, blue: 255/255, alpha: 1.0)])
+            
+           
+            btnMessage.applyDesign()
             
             dataRef.child("artistProfiles").child(self.token).child("Name").observe(.value){
                 (snap: FIRDataSnapshot) in
@@ -151,6 +190,19 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         SetUp()
         SetPic()
         
+        imgVer.sizeToFit()
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
        
         
         let toolbar = UIToolbar()
@@ -172,6 +224,8 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     func doneClicked(){
         self.view.endEditing(true)
     }
+    
+  
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
@@ -200,25 +254,41 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                             //PICKER VIEW FUNCTIONS
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        
         return 1
+        
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if pickerView == picturePicker{
         return 3
+        }
+        else{
+           return 6
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-        return 172
+        if pickerView == picturePicker{
+            return 172
+        }
+        else{
+            return 25
+        }
     }
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        tracker = row
+        
+        if pickerView == picturePicker{
+            tracker = row
+        }
+        
+        
         //print(tracker)
         
     }
     
 
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        
         //declaring the things which will be in the pickerview
         let myView = UIView(frame: CGRect(x: 0, y: 0, width: pickerView.bounds.width, height: 172))
         let myImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: pickerView.bounds.width, height: 172))
@@ -232,7 +302,8 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
   
         
         Loader.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
-        Loader.color = UIColor(red: 253/255, green: 133/255, blue: 8/255, alpha: 1)
+//        Loader.color = UIColor(red: 253/255, green: 133/255, blue: 8/255, alpha: 1)
+        Loader.color = UIColor.purple
         Loader.startAnimating()
     
         myImageView.image = #imageLiteral(resourceName: "Default")
@@ -245,15 +316,20 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
             {
                 
                 myImageView.image = tempImg1.image
+                
+               // picturePicker.reloadComponent(0)
                 Loader.stopAnimating()
+               
                
             }
             else if tempImg1.image == #imageLiteral(resourceName: "Verfied")
             {
                 Loader.stopAnimating()
+               
             }
             else{
                     Loader.startAnimating()
+               
             }
             //
             
@@ -262,15 +338,19 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
             {
                 
                 myImageView.image = tempImg2.image
+                //picturePicker.reloadComponent(1)
                 Loader.stopAnimating()
+               
                 
             }
             else if tempImg2.image == #imageLiteral(resourceName: "Verfied")
             {
                 Loader.stopAnimating()
+                
             }
             else{
                 Loader.startAnimating()
+                
             }
 
         case 2:
@@ -278,15 +358,20 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
             {
                 
                 myImageView.image = tempImg3.image
+                
+                //picturePicker.reloadComponent(2)
                 Loader.stopAnimating()
+                
                 
             }
             else if tempImg3.image == #imageLiteral(resourceName: "Verfied")
             {
                 Loader.stopAnimating()
+               
             }
             else{
                 Loader.startAnimating()
+               
             }
         
         case 3: break
@@ -301,33 +386,158 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         myView.addSubview(myImageView)
         myView.addSubview(Loader)
         return myView
+        
+        
     }
     
+    func handleVideoSelectedForUrl(url: NSURL){
+        
+        self.Loader.startAnimating()
+        
+        
+        let filename = NSUUID().uuidString
+        let uploadTask = FIRStorage.storage().reference().child("Memories").child(filename).putFile(url as URL, metadata: nil, completion: { (metadata, error) in
+            self.Loader.startAnimating()
+            if error != nil{
+                let alertContoller = UIAlertController(title: "Error", message: error as? String, preferredStyle: .alert)
+                
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                alertContoller.addAction(defaultAction)
+                self.Loader.stopAnimating()
+                self.present(alertContoller, animated: true, completion: nil)
+              
+                return
+            }
+            
+            if let storageUrl = metadata?.downloadURL()?.absoluteString{
+                //self.vidURL = url as URL!
+                
+            self.dataRef.child("artistProfiles").child(self.token).child(self.status!).setValue(storageUrl)
+                
+                self.Loader.stopAnimating()
+                
+                
+                
+                let imgData = UIImagePNGRepresentation(self.tempImg.image!)! as NSData
+                UserDefaults.standard.set(imgData, forKey: "\(self.status!) \(self.token!)")
+                
+                
+                
+                self.urlArray.insert(String(describing: url), at: self.upTrack!)
+                print(self.urlArray[self.tracker!])
+                //self.picturePicker.reloadComponent(self.tracker)
+                //self.picturePicker.reloadInputViews()
+                
+                
+                self.Loader.stopAnimating()
+                
+                
+                //about to pass data and add text stuff
+            }
+            
+            
+        })
+        
+        uploadTask.observe(.progress) { (snapshot) in
+            self.progressBar.isHidden = false
+            print(snapshot.progress!.completedUnitCount as Any)
+            
+            let percentComplete = Double(snapshot.progress!.completedUnitCount)
+                / Double(snapshot.progress!.totalUnitCount)
+      
+
+            self.progressBar.progress = Float(percentComplete)
+            
+            
+            
+            if self.progressBar.progress == 1{
+                self.progressBar.isHidden = true
+            }
+        }
+
+    }
+    @IBAction func tapped(_ sender: UITapGestureRecognizer) {
+        
+        
+//        if (tracker == 0)
+//        {
+//            let player = AVPlayer(url: urltemp1! as URL)
+//            let playerViewController = AVPlayerViewController()
+//            playerViewController.player = player
+//            self.present(playerViewController, animated: true) {
+//                playerViewController.player!.play()
+//            }
+//        }
+//            
+//        else if (tracker == 1)
+//        {
+//
+//            let player = AVPlayer(url: urltemp2! as URL)
+//            let playerViewController = AVPlayerViewController()
+//            playerViewController.player = player
+//            self.present(playerViewController, animated: true) {
+//                playerViewController.player!.play()
+//            }
+//        }
+//        else if tracker == 2
+//        {
+//            let player = AVPlayer(url: urltemp3! as URL)
+//            let playerViewController = AVPlayerViewController()
+//            playerViewController.player = player
+//            self.present(playerViewController, animated: true) {
+//                playerViewController.player!.play()
+//            }
+//        }
+        
+        
+        
+        
+   
+    }
     
+    func thumbNail(fileURL: NSURL) -> UIImage?{
+        
+        let asset = AVAsset(url: fileURL as URL)
+        let imageGen = AVAssetImageGenerator(asset: asset)
+        
+        
+        do{
+            
+            let thumbnailImage = try imageGen.copyCGImage(at: CMTimeMake(1, 60), actualTime: nil)
+            
+            return UIImage(cgImage: thumbnailImage)
+            
+        }catch let err{
+            print(err)
+        }
+        
+        
+        return nil
+        
+        
+    }
+
     
     //method for setting an image and saving it
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
       
-        var selectedImage:UIImage?
-        
-        
-        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage
-        {
-            selectedImage = editedImage
-        }
-        else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage
-        {
-            selectedImage = originalImage
-        }
-        
-        if let selectedImage2 = selectedImage
-        {
-            //ugh.image = selectedImage2 as UIImage
-            tempImg.image = selectedImage2 as UIImage
+        if let videoURL = info[UIImagePickerControllerMediaURL] as? NSURL{
+            
+            
+            vidURL = videoURL as URL!
+            
+            if let thumbnailImage = self.thumbNail(fileURL: videoURL)
+            {
+                self.tempImg.image = thumbnailImage
+                
+                
+            }
+            
             
         }
         
+        dismiss(animated: true, completion: nil)
         //very important. This keeps track of which row was clicked to have the image uploaded. Overall, using the pickercontroller was inefficient and was very slow. Might change
        
             if (tracker == 0)
@@ -335,7 +545,9 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                 status = "ProfilePic1"
                 tempImg1.image = tempImg.image
                 
-                UploadImage()
+                
+                upTrack = tracker
+                handleVideoSelectedForUrl(url: vidURL! as NSURL)
             }
                 
             else if (tracker == 1)
@@ -343,18 +555,22 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                 status = "ProfilePic2"
                 tempImg2.image = tempImg.image
                 
-                UploadImage()
+                upTrack = tracker
+                
+                handleVideoSelectedForUrl(url: vidURL! as NSURL)
             }
             else if tracker == 2
             {
                 status = "ProfilePic3"
                 tempImg3.image = tempImg.image
                 
-                UploadImage()
+                upTrack = tracker
+                
+                handleVideoSelectedForUrl(url: vidURL! as NSURL)
             }
             
         
-        dismiss(animated: true, completion: nil)
+        //dismiss(animated: true, completion: nil)
     
     }
     
@@ -370,35 +586,46 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         picker.allowsEditing = true
         picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
         
-        let myActionSheet = UIAlertController(title: "Memory Picture", message: "Select", preferredStyle: UIAlertControllerStyle.actionSheet)
+        let myActionSheet = UIAlertController(title: "Portfolio", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
         
+        if token == loggedUser?.uid
+        {
+            let photoGallery = UIAlertAction(title: "Upload Video", style: UIAlertActionStyle.default) { (action) in
+                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.savedPhotosAlbum)
+                {
+                    self.imagePicker.delegate = self
+                    self.imagePicker.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
+                    self.imagePicker.allowsEditing = true
+                    self.imagePicker.mediaTypes = [kUTTypeMovie as String]
+                    self.present(self.imagePicker, animated: true, completion: nil)
+                    
+                }
+            }
+            myActionSheet.addAction(photoGallery)
+        }
         
-        let photoGallery = UIAlertAction(title: "Photos", style: UIAlertActionStyle.default) { (action) in
-            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.savedPhotosAlbum)
-            {
-                self.imagePicker.delegate = self
-                self.imagePicker.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
-                self.imagePicker.allowsEditing = true
-                self.present(self.imagePicker, animated: true, completion: nil)
-                
+        let play = UIAlertAction(title: "Play Video", style: UIAlertActionStyle.default) { (action) in
+            print(self.urlArray[self.tracker!])
+            if self.urlArray[self.tracker] != nil{
+                print("play")
+                let player = AVPlayer(url: URL(string:self.urlArray[self.tracker])!)
+                let playerViewController = AVPlayerViewController()
+                playerViewController.player = player
+                self.present(playerViewController, animated: true) {
+                    playerViewController.player!.play()
+                }
+            }
+            else{
+                print("no play")
             }
         }
         
-        let camera = UIAlertAction(title: "Camera", style: UIAlertActionStyle.default) { (action) in
-            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
-            {
-                self.imagePicker.delegate = self
-                self.imagePicker.sourceType = UIImagePickerControllerSourceType.camera
-                self.imagePicker.allowsEditing = true
-                self.present(self.imagePicker, animated: true, completion: nil)
-                
-            }
-        }
+
         
         
         
-        myActionSheet.addAction(photoGallery)
-        myActionSheet.addAction(camera)
+        
+        myActionSheet.addAction(play)
         myActionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
         
         self.present(myActionSheet, animated: true, completion: nil)
@@ -414,49 +641,49 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     
     
                                 //Uploading Images
-    func UploadImage(){
-        
-        let imageName =  NSUUID().uuidString
-        //let imageNameCover = NSUUID().uuidString
-        
-        let storedImage = storageRef.child("imgProfile").child(self.token).child(imageName)
-
-        
-        
-        if let uploadData = UIImagePNGRepresentation(self.tempImg.image!)
-        {
-                storedImage.put(uploadData, metadata: nil, completion: { ( metadata, error) in
-                    if error != nil
-                    {
-                        //print(error!)
-                        return
-                    }
-                    storedImage.downloadURL(completion: { (url,error) in
-                        if error != nil
-                        {
-                           // print(error!)
-                            return
-                        }
-                        if let urlText = url?.absoluteString{
-                            self.dataRef.child("artistProfiles").child(self.token).updateChildValues(["\(self.status!)" : urlText], withCompletionBlock: { (error,ref) in
-                                if error != nil
-                                {
-                                    
-                                    //print(error!)
-                                    return
-                                }
-                                let imgData = UIImagePNGRepresentation(self.tempImg.image!)! as NSData
-                                UserDefaults.standard.set(imgData, forKey: "\(self.status!) \(self.token!)")
-                                
-                            })
-                        }
-                    })
-                })
-            }
-        
-        
-    }
-    
+//    func UploadImage(){
+//        
+//        let imageName =  NSUUID().uuidString
+//        //let imageNameCover = NSUUID().uuidString
+//        
+//        let storedImage = storageRef.child("imgProfile").child(self.token).child(imageName)
+//
+//        
+//        
+//        if let uploadData = UIImagePNGRepresentation(self.tempImg.image!)
+//        {
+//                storedImage.put(uploadData, metadata: nil, completion: { ( metadata, error) in
+//                    if error != nil
+//                    {
+//                        //print(error!)
+//                        return
+//                    }
+//                    storedImage.downloadURL(completion: { (url,error) in
+//                        if error != nil
+//                        {
+//                           // print(error!)
+//                            return
+//                        }
+//                        if let urlText = url?.absoluteString{
+//                            self.dataRef.child("artistProfiles").child(self.token).updateChildValues(["\(self.status!)" : urlText], withCompletionBlock: { (error,ref) in
+//                                if error != nil
+//                                {
+//                                    
+//                                    //print(error!)
+//                                    return
+//                                }
+//                                let imgData = UIImagePNGRepresentation(self.tempImg.image!)! as NSData
+//                                UserDefaults.standard.set(imgData, forKey: "\(self.status!) \(self.token!)")
+//                                
+//                            })
+//                        }
+//                    })
+//                })
+//            }
+//        
+//        
+//    }
+//    
     
     ///////////////////////////////////////////////////////////////////////////////////////
     
@@ -909,12 +1136,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     
     
     @IBAction func btnMoreAction(_ sender: Any) {
- 
-        
-    }
-    
-    
-
+            }
     
     
     func SetUp(){
@@ -966,7 +1188,12 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         
         dataRef.child("artistProfiles").child(self.token).child("Rating").observe(.value){
             (snap: FIRDataSnapshot) in
+            if snap.exists() == true{
             self.Stars.rating = (snap.value as? Float)!
+            }
+            else{
+                self.Stars.rating = 0
+            }
             
         }
         
@@ -1032,6 +1259,20 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
 //               self.posts.insert("Add Something!", at: 1)
             }
         }
+        
+        dataRef.child("artistProfiles").child(self.token).child("Ratings").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
+           
+                self.arrayRating.append((snapshot.value as! Float))
+            
+           
+                
+            
+                self.countRat = snapshot.value as! Float + self.countRat
+            
+            
+            
+
+        })
         
         
         dataRef.child("artistProfiles").child(self.token).child("Pricing1").child("Price1_2").observe(.value){
@@ -1151,97 +1392,159 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         
 
     }
+    
+    @IBAction func More(_ sender: Any) {
+        
+        if self.token != self.loggedUser!.uid{
+        let vc = UIViewController()
+        vc.preferredContentSize = CGSize(width: 250,height: 100)
+        let pickerView2 = RatingView(frame: CGRect(x: 0, y: 0, width: 250, height: 100))
+//        pickerView2.halfImage = #imageLiteral(resourceName: "RatingHalf")
+//        pickerView2.onImage = #imageLiteral(resourceName: "RatingFull")
+//        pickerView2.offImage = #imageLiteral(resourceName: "RatingEmpty")
+        //pickerView2.delegate = self
+        //pickerView2.dataSource = self
+        vc.view.addSubview(pickerView2)
+        let editRadiusAlert = UIAlertController(title: "Rate This Artist", message: "", preferredStyle: UIAlertControllerStyle.alert)
+        editRadiusAlert.setValue(vc, forKey: "contentViewController")
+        editRadiusAlert.addAction(UIAlertAction(title: "Done", style: .default, handler: {
+            alert -> Void in
+            
+            
+            self.dataRef.child("artistProfiles").child(self.token).child("Ratings").child(self.loggedUser!.uid).setValue(pickerView2.rating, withCompletionBlock: { (error,ref) in
+                if error != nil
+                {
+                    let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
+                    
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                    alertContoller.addAction(defaultAction)
+                    self.present(alertContoller, animated: true, completion: nil)
+                    
+                    return
+                }
+                self.dataRef.child("artistProfiles").child(self.token).child("Ratings").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
+                    
+                    self.arrayRating.append((snapshot.value as! Float))
+                    
+                    self.countRat = snapshot.value as! Float + self.countRat
+                })
+                
+                //            self.arrayRating.append(pickerView2.rating)
+                print(self.arrayRating)
+                print(self.countRat)
+                self.artistRat = self.countRat / Float(self.arrayRating.count)
+                self.Stars.rating = (self.artistRat)
+                self.dataRef.child("artistProfiles").child(self.token).child("Rating").setValue(self.artistRat)
+                self.arrayRating.removeAll()
+                self.countRat = 0
+                
+            })
+
+            
+            
+//            self.arrayRating.remove(at: self.arrayRating.count - 1)
+//            print(self.arrayRating)
+            
+        }))
+        
+        editRadiusAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(editRadiusAlert, animated: true)
+        }
+        
+    }
+    
+    
+    
+
+    
+//        let myActionSheet = UIAlertController(title: "Options", message: "Select", preferredStyle: UIAlertControllerStyle.actionSheet)
+//        
+//        
+//        let Rate = UIAlertAction(title: "Rate This Artist", style: UIAlertActionStyle.default) { (action) in
+//            
+//       
+//            let alertController = UIAlertController(title: "Rate", message: "", preferredStyle: .alert)
+//
+//            let rateView = UIView(frame: CGRect(x: 10.0, y: 10.0, width: alertController.view.bounds.size.width - 10.0 * 4.0, height: 120))
+//          
+//            rateView.editable = true
+//            
+//            let saveAction = UIAlertAction(title: "Enter", style: .default, handler: {
+//                alert -> Void in
+//                
+//                
+//                
+//                
+//                
+//                
+//                
+//                self.dataRef.child("artistProfiles").child(self.token).child("Rating").setValue(rateView.rating)
+//               
+//                
+//            })
+//            
+//            let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: {
+//                (action : UIAlertAction!) -> Void in
+//                self.Loader.stopAnimating()
+//                
+//            })
+//            
+//            alertController.view.addSubview(rateView)
+//          
+//            
+//            alertController.addAction(saveAction)
+//            alertController.addAction(cancelAction)
+//            
+//            self.present(alertController, animated: true, completion: nil)
+//            
+//            
+//            
+//            
+//        }
+//        myActionSheet.addAction(Rate)
+//        myActionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
+//        
+//        self.present(myActionSheet, animated: true, completion: nil)
+    
+    
+
+
     func SetPic()
     {
       
-        
-//        dataRef.child("artistProfiles").child(self.token).observeSingleEvent(of: .value, with: { (snapshot) in
-//            
-//            if let profileURL = (snapshot.value as AnyObject!)!["ProfilePic1"] as! String! {
-//                
-//                let profileNSURL: NSURL = NSURL(string: profileURL)!
-//                
-//                // download avatar image here somehow!?
-//                let manager: SDWebImageManager = SDWebImageManager.shared()
-//                manager.downloadImage(with: profileNSURL as URL!, options: [], progress: { (receivedSize: Int, actualSize: Int) in
-//                    print(receivedSize, actualSize)
-//                }, completed: { (image, error, cached, finished, url) in
-//                    if image != nil {
-//                        manager.imageCache.store(image, forKey: "\(self.token) pic1")
-//                        
-//                        DispatchQueue.main.async
-//                            {
-//                                
-//                                self.tempImg1.image = image
-//                                //avatarImage!.avatarHighlightedImage = image
-//                        }
-//                    }
-//                    else{
-//                        self.tempImg1.image = #imageLiteral(resourceName: "Verfied")
-//                    }
-//                })
-//            }
-//        })
-//        
-//
-//        dataRef.child("artistProfiles").child(self.token).observeSingleEvent(of: .value, with: { (snapshot) in
-//            
-//            if let profileURL = (snapshot.value as AnyObject!)!["ProfilePic2"] as! String! {
-//                
-//                let profileNSURL: NSURL = NSURL(string: profileURL)!
-//                
-//                // download avatar image here somehow!?
-//                let manager: SDWebImageManager = SDWebImageManager.shared()
-//                manager.downloadImage(with: profileNSURL as URL!, options: [], progress: { (receivedSize: Int, actualSize: Int) in
-//                    print(receivedSize, actualSize)
-//                }, completed: { (image, error, cached, finished, url) in
-//                    if image != nil {
-//                        manager.imageCache.store(image, forKey: "\(self.token) pic2")
-//                        
-//                        DispatchQueue.main.async
-//                            {
-//                                
-//                                self.tempImg2.image = image
-//                                //avatarImage!.avatarHighlightedImage = image
-//                        }
-//                    }
-//                    else{
-//                        self.tempImg2.image = #imageLiteral(resourceName: "Verfied")
-//                    }
-//                })
-//            }
-//        })
-//        
-//        
-//        dataRef.child("artistProfiles").child(self.token).observeSingleEvent(of: .value, with: { (snapshot) in
-//            
-//            if let profileURL = (snapshot.value as AnyObject!)!["ProfilePic3"] as! String! {
-//                
-//                let profileNSURL: NSURL = NSURL(string: profileURL)!
-//                
-//                // download avatar image here somehow!?
-//                let manager: SDWebImageManager = SDWebImageManager.shared()
-//                manager.downloadImage(with: profileNSURL as URL!, options: [], progress: { (receivedSize: Int, actualSize: Int) in
-//                    print(receivedSize, actualSize)
-//                }, completed: { (image, error, cached, finished, url) in
-//                    if image != nil {
-//                        manager.imageCache.store(image, forKey: "\(self.token) pic3")
-//                        
-//                        DispatchQueue.main.async
-//                            {
-//                                
-//                                self.tempImg3.image = image
-//                                //avatarImage!.avatarHighlightedImage = image
-//                        }
-//                    }
-//                    else{
-//                        self.tempImg3.image = #imageLiteral(resourceName: "Verfied")
-//                    }
-//                })
-//            }
-//        })
+ 
         
         //saving userdefaults
+        
+        
+        dataRef.child("artistProfiles").child(self.token).observeSingleEvent(of: .value, with: {  (snapshot) in
+            
+            if let snapshotValueName = snapshot.value as? NSDictionary
+            {
+              //let pic1 = snapshotValueName["ProfilePic1"] as? String
+            
+//
+//            let pic2 = snapshotValueName?["ProfilePic2"] as? String
+//            
+//            let pic3 = snapshotValueName?["ProfilePic3"] as? String
+//            
+            self.urlArray.removeAll()
+           //self.urlArray.insert(pic1, at: 0)
+//            self.urlArray.insert(pic2, at: 1)
+//            self.urlArray.insert(pic3, at: 2)
+            
+            for i in 1...3{
+                
+                
+                self.urlArray.insert(snapshotValueName["ProfilePic\(i)"] as? String, at: i - 1)
+                print(self.urlArray)
+
+            }
+            }
+           
+            
+        })
+        
     
         if UserDefaults.standard.object(forKey: "ProfilePic1 \(self.token!)") == nil {
             dataRef.child("artistProfiles").child(self.token).observeSingleEvent(of: .value, with: {  (snapshot) in
@@ -1250,18 +1553,19 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                 {
                     
                     
-                    
+                    print("herhe")
                     if let profileImageURL = dict["ProfilePic1"] as? String
                     {
+                        print("herhe1")
                         
                         let url = URL(string: profileImageURL)
                         URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
                             if error != nil{
-                                //print(error!)
+                                print(error!)
                                 return
                             }
                             DispatchQueue.main.async {
-                               // print(data!)
+                               print("herhe2")
                                 if data == nil
                                 {
                                 
@@ -1270,12 +1574,25 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                                 else
                                 {
                                     
-
+                                    self.urlArray[0] = profileImageURL
+//                                    self.urltemp1 = url
                                     
-                                    self.tempImg1.image = UIImage(data: data!)
+                                    if let thumbnailImage = self.thumbNail(fileURL: url! as NSURL)
+                                    {
+                                        print("wulst")
+                                        self.tempImg1.image = thumbnailImage
+                                        
+                                        if let imgData = UIImagePNGRepresentation(self.tempImg1.image!) as NSData?{
+                                        UserDefaults.standard.set(imgData, forKey: "ProfilePic1 \(self.token!)")
+                                        }
+                                    }
                                     
-                                    let imgData = UIImagePNGRepresentation(self.tempImg1.image!)! as NSData
-                                    UserDefaults.standard.set(imgData, forKey: "ProfilePic1 \(self.token!)")
+                                    //let imgData = UIImagePNGRepresentation(self.tempImg1.image!)! as NSData
+                                    
+                                    
+                                    //self.tempImg1.image = UIImage(data: data!)
+                                    
+                                    
                                     
                                    
                                     
@@ -1296,13 +1613,14 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         }
         else{
             let imgdata2 = UserDefaults.standard.object(forKey: "ProfilePic1 \(self.token!)") as! NSData
-            self.tempImg1.image = UIImage(data: imgdata2 as Data)
-           // print(imgdata2)
+            print("herhe33")
+           self.tempImg1.image = UIImage(data: imgdata2 as Data)
+            
         }
     
       if UserDefaults.standard.object(forKey: "ProfilePic2 \(self.token!)") == nil {
             dataRef.child("artistProfiles").child(self.token).observeSingleEvent(of: .value, with: {  (snapshot) in
-                
+                print("here")
                 if let dict = snapshot.value as? [String: AnyObject]
                 {
                     
@@ -1313,11 +1631,11 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                         let url = URL(string: profileImageURL)
                         URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
                             if error != nil{
-                                //print(error!)
+//                                print(error!)
                                 return
                             }
                             DispatchQueue.main.async {
-                               // print(data!)
+                               print("there")
                                 if data == nil
                                 {
                                    // print("nil")
@@ -1325,9 +1643,19 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                                 }
                                 else
                                 {
-                                    self.tempImg2.image = UIImage(data: data!)
-                                    let imgData = UIImagePNGRepresentation(self.tempImg2.image!)! as NSData
-                                    UserDefaults.standard.set(imgData, forKey: "ProfilePic2 \(self.token!)")
+                                    self.urlArray[1] = profileImageURL
+//                                    self.urltemp2 = url
+                                    
+                                    if let thumbnailImage = self.thumbNail(fileURL: url! as NSURL)
+                                    {
+                                        self.tempImg2.image = thumbnailImage
+                                        if let imgData = UIImagePNGRepresentation(self.tempImg2.image!) as NSData?{
+                                        UserDefaults.standard.set(imgData, forKey: "ProfilePic2 \(self.token!)")
+                                        }
+                                    }
+                                    
+                                  
+                                   
                                   
                                 }
                                 
@@ -1344,9 +1672,10 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         
         }
       else{
+        print("where")
         let imgdata2 = UserDefaults.standard.object(forKey: "ProfilePic2 \(self.token!)") as! NSData
         self.tempImg2.image = UIImage(data: imgdata2 as Data)
-      
+       
         
         }
         if UserDefaults.standard.object(forKey: "ProfilePic3 \(self.token!)") == nil {
@@ -1374,9 +1703,21 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                                 }
                                 else
                                 {
-                                    self.tempImg3.image = UIImage(data: data!)
-                                    let imgData = UIImagePNGRepresentation(self.tempImg3.image!)! as NSData
-                                    UserDefaults.standard.set(imgData, forKey: "ProfilePic3 \(self.token!)")
+                                    self.urlArray[2] = profileImageURL
+                                    //self.urltemp3 = url
+                                    
+                                    
+                                    if let thumbnailImage = self.thumbNail(fileURL: url! as NSURL)
+                                    {
+                                        self.tempImg3.image = thumbnailImage
+                                        if let imgData = UIImagePNGRepresentation(self.tempImg3.image!) as NSData?{
+                                        UserDefaults.standard.set(imgData, forKey: "ProfilePic3 \(self.token!)")
+                                        }
+                                    }
+        
+                                    
+                                    //self.tempImg3.image = UIImage(data: data!)
+                                    
                                     
                                 }
                                 
@@ -1394,6 +1735,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         else{
             let imgdata2 = UserDefaults.standard.object(forKey: "ProfilePic3 \(self.token!)") as! NSData
             self.tempImg3.image = UIImage(data: imgdata2 as Data)
+            
             
         }
     }
@@ -1465,15 +1807,16 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     }
 
 }
-
-//extension UIButton{
-//
-//    func applyDesign(){
-//        self.layer.shadowColor = UIColor.lightGray.cgColor
-//        self.layer.shadowOffset = CGSize(width: 0, height: 2)
-//        self.layer.shadowOpacity = 1.0
-//        self.layer.shadowRadius = 0.0
-//        self.layer.masksToBounds = false
-//        self.layer.cornerRadius = 4.0
-//    }
-//}
+extension UIView {
+    func applyGradient(colours: [UIColor]) -> Void {
+        self.applyGradient(colours: colours, locations: nil)
+    }
+    
+    func applyGradient(colours: [UIColor], locations: [NSNumber]?) -> Void {
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.frame = self.bounds
+        gradient.colors = colours.map { $0.cgColor }
+        gradient.locations = locations
+        self.layer.insertSublayer(gradient, at: 0)
+    }
+}

@@ -50,23 +50,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     
-            
-//            if UserDefaults.standard.bool(forKey: "artistCreate") == true
-//            {
-//                self.artistCreate = true
-//            }
-//            else
-//            {
-//                self.artistCreate = false
-//            }
-        
-        
-        
-        
-        
-       
         
         
         tblMenuOptions.tableFooterView = UIView()
@@ -254,12 +238,12 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
                                 
                                 let inquirePost: [String : AnyObject] = ["Name": self.name as                                                      AnyObject,
                                                                                                                                           "token": self.loggedUser!.uid as AnyObject,
-                                                                                                     "Rating": Int(0) as AnyObject,
                                                                                                      "Skills": self.skills as AnyObject,
                                                                                                      "Email": self.email as AnyObject,
                                                                                                      "Location": self.loc as AnyObject]
 
                                self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).setValue(inquirePost)
+                                self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("Ratings").child(self.loggedUser!.uid).setValue(Float(0))
                                 
                                 self.dataRef.child("users").child(self.loggedUser!.uid).child("pic").observe(.value){
                                     (snap: FIRDataSnapshot) in

@@ -13,6 +13,7 @@ import Firebase
 import FirebaseAuth
 import Photos
 import SDWebImage
+import AVKit
 import AVFoundation
 
 
@@ -21,6 +22,7 @@ struct memoryStruct{
     let title: String!
     let date: String!
     let acccessCode: String!
+    let artist: String!
 }
 
 
@@ -105,6 +107,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
                 let snapshotValueName = snapshot.value as? NSDictionary
                 let Title = snapshotValueName?["Title"] as? String
                 
+                let Artist = snapshotValueName?["Artist"] as? String
+                
                 
                 let dateFIR = snapshotValueName?["Date"] as? String
                 
@@ -122,7 +126,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
                     
                 }
                 
-                self.memories.insert(memoryStruct(videoLink: url, title: Title, date: dateFIR, acccessCode: code), at: 0)
+                self.memories.insert(memoryStruct(videoLink: url, title: Title, date: dateFIR, acccessCode: code, artist: Artist), at: 0)
+                
                 
                 
                 
@@ -139,7 +144,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
             
             
             self.homeTab.reloadData()
-            self.HomeTitle.title = "Home"
+            
             
         })
 
@@ -147,6 +152,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         
         //allow the profile pic to be clicked
         self.imgMain.isUserInteractionEnabled = true
+        self.HomeTitle.title = "Home"
        
     }
     
@@ -164,10 +170,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
             if UserDefaults.standard.bool(forKey: "artistCreate") == true
             {
                 self.artistCreate = true
+                print(artistCreate)
             }
             else
             {
                 self.artistCreate = false
+                print(artistCreate)
             }
             
         
@@ -438,20 +446,32 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         
         let allKeys = UserDefaults.standard.dictionaryRepresentation().keys
         
-        // Now remove the object for the keys starting with "ProfilePic"
+         //Now remove the object for the keys starting with "ProfilePic"
         
         for key in allKeys{
-            
+
             if key.hasPrefix("ProfilePic"){
                 UserDefaults.standard.removeObject(forKey: key)
             }
             
         }
+        //UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
 
         
         self.present(loginVC, animated: true, completion: nil)
         
         }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let videoURL = memories[indexPath.row].videoLink
+        let player = AVPlayer(url: videoURL! as URL)
+        let playerViewController = AVPlayerViewController()
+        playerViewController.player = player
+        self.present(playerViewController, animated: true) {
+            playerViewController.player!.play()
+        self.homeTab.deselectRow(at: indexPath, animated: true)
+        }
+    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 116
@@ -508,6 +528,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         
         let label2 = cell?.viewWithTag(2) as! UILabel
         label2.text = memories[indexPath.row].date
+        
+        let label3 = cell?.viewWithTag(5) as! UILabel
+        label3.text = memories[indexPath.row].artist
         
         let Loader = cell?.viewWithTag(3) as! UIActivityIndicatorView
         
@@ -799,7 +822,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
             
             if (self.lblLoc.text == "Location: Not Declared" || self.lblLoc.text == "Location:")
             {
-            firstTextField.placeholder = "Please enter a location (City/State/Country)"
+            //firstTextField.placeholder = "Please enter a location (City/State/Country)"
             }
             else
             {
@@ -810,7 +833,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         alertController.addTextField { (secondTextField : UITextField!) -> Void in
             if (self.lblBirth.text == "Birthday: Not Declared" || self.lblBirth.text == "Birthday:")
             {
-                secondTextField.placeholder = "Please enter a birthday (dd/mm/yyyy)"
+               // secondTextField.placeholder = "Please enter a birthday (dd/mm/yyyy)"
             }
             else
             {
@@ -821,7 +844,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         alertController.addTextField { (thirdTextField : UITextField!) -> Void in
             if (self.lblGend.text == "Gender: Not Declared" || self.lblGend.text == "Gender:")
             {
-                thirdTextField.placeholder = "Please enter a gender"
+                //thirdTextField.placeholder = "Please enter a gender"
             }
             else
             {
@@ -832,7 +855,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         alertController.addTextField { (fourthTextField : UITextField!) -> Void in
             if (self.lblID.text == "Skills: Not Declared" || self.lblID.text == "Skills:")
             {
-                fourthTextField.placeholder = "Please enter your skills (necessary for artist account)"
+               // fourthTextField.placeholder = "Please enter your skills (necessary for artist account)"
             }
             else
             {
@@ -864,14 +887,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
             
         }
         
-        let sentInquires = UIAlertAction(title: "Sent Inquires", style: UIAlertActionStyle.default) { (action) in
-            
-            let myVC = self.storyboard?.instantiateViewController(withIdentifier: "sentInquire") as! sentInquireViewController
-            
-            self.present(myVC, animated: true)
-            
-            
-        }
+        
         
 //        let createArtist = UIAlertAction(title: alertTitle, style: UIAlertActionStyle.default) { (action) in
 //            
@@ -937,13 +953,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         
         
         //myActionSheet.addAction(createArtist)
-        myActionSheet.addAction(sentInquires)
         myActionSheet.addAction(Logout)
         myActionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
         
         self.present(myActionSheet, animated: true, completion: nil)
     }
-    
+
     
     @IBAction func backClick(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)

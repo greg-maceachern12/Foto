@@ -63,6 +63,7 @@ class TableMessViewController: UIViewController,UITableViewDelegate,UITableViewD
             self.homeTab.reloadData()
             
         })
+    
         
 
     }
@@ -112,7 +113,7 @@ class TableMessViewController: UIViewController,UITableViewDelegate,UITableViewD
     
     let img4 = cell?.viewWithTag(1) as! UIImageView
     img4.sd_setImage(with: info[indexPath.row].picture as URL!, placeholderImage: UIImage(named: "ProfileDefault")!)
-    img4.layer.cornerRadius = 35
+    img4.layer.cornerRadius = 15
     img4.clipsToBounds = true
     
     return cell!

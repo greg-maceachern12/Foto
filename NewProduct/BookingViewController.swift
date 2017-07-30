@@ -28,6 +28,8 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
     @IBOutlet weak var scroller: UIScrollView!
     @IBOutlet weak var btnNext: UIButton!
     @IBOutlet weak var Loader: UIActivityIndicatorView!
+    @IBOutlet weak var viewTab1: UIView!
+    @IBOutlet weak var viewTab2: UIView!
 
     var placeholderLabel: UILabel!
     
@@ -55,6 +57,15 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        btnNext.applyGradient(colours: [UIColor(red: 255/255, green: 140/255, blue: 0, alpha: 1.9), UIColor(red: 1.0, green: 103/255, blue: 0, alpha: 1.0)])
+        
+        viewTab1.applyGradient(colours: [UIColor(red: 255/255, green: 189/255, blue: 89/255, alpha: 1.0), UIColor(red: 1.0, green: 139/255, blue: 26/255, alpha: 1.0)])
+        viewTab2.applyGradient(colours: [UIColor(red: 255/255, green: 140/255, blue: 0, alpha: 1.0), UIColor(red: 1.0, green: 103/255, blue: 0, alpha: 1.0)])
+//        viewTab1.applyGradient(colours: [UIColor(red: 179/255, green: 0, blue: 255/255, alpha: 1.0), UIColor(red: 149/255, green: 0, blue: 245/255, alpha: 1.0)])
+//        viewTab2.applyGradient(colours: [UIColor(red: 151/255, green: 0, blue: 255/255, alpha: 1.0), UIColor(red: 121/255, green: 0, blue: 255/255, alpha: 1.0)])
+        
+        
+        
         placeholderLabel = UILabel()
         placeholderLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         placeholderLabel.numberOfLines = 4
@@ -69,6 +80,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         tbTheme.delegate = self
         tvNotes.delegate = self
         scroller.delegate = self
+    
         
         SetUp()
 
@@ -173,14 +185,18 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         if tableView == tableView1
         {
             //green colour
-            lblPrice1.backgroundColor = UIColor(red: 36/255, green: 212/255, blue: 77/255, alpha: 1)
-            tableView1.backgroundColor = UIColor(red: 36/255, green: 212/255, blue: 77/255, alpha: 1)
+            //lblPrice1.backgroundColor = UIColor(red: 36/255, green: 212/255, blue: 77/255, alpha: 1)
+            tableView1.backgroundColor = UIColor(red: 0/255, green: 225/255, blue: 77/255, alpha: 1)
             
             
             //orange colour
-            tableView2.backgroundColor = UIColor(red: 253/255, green: 133/255, blue: 8/255, alpha: 1)
+            //lblPrice2.applyGradient(colours: [UIColor(red: 255/255, green: 189/255, blue: 89/255, alpha: 1.0), UIColor(red: 1.0, green: 139/255, blue: 26/255, alpha: 1.0)])
+            //viewTab2.applyGradient(colours: [UIColor(red: 255/255, green: 140/255, blue: 0, alpha: 1.0), UIColor(red: 1.0, green: 103/255, blue: 0, alpha: 1.0)])
             
-            lblPrice2.backgroundColor = UIColor(red: 253/255, green: 133/255, blue: 8/255, alpha: 1)
+            tableView2.backgroundColor = UIColor.clear
+            
+            //viewTab2.applyGradient(colours: [UIColor(red: 151/255, green: 0, blue: 255/255, alpha: 1.0), UIColor(red: 121/255, green: 0, blue: 255/255, alpha: 1.0)])
+            
             
             price1 = true
             price2 = false
@@ -193,17 +209,18 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         else if tableView == tableView2
         {
             //orange
-              tableView1.backgroundColor = UIColor(red: 253/255, green: 166/255, blue: 9/255, alpha: 1)
+            //viewTab1.applyGradient(colours: [UIColor(red: 255/255, green: 189/255, blue: 89/255, alpha: 1.0), UIColor(red: 1.0, green: 139/255, blue: 26/255, alpha: 1.0)])
+            tableView1.backgroundColor = UIColor.clear
+           //lblPrice1.applyGradient(colours: [UIColor(red: 255/255, green: 140/255, blue: 0, alpha: 1.0), UIColor(red: 1.0, green: 103/255, blue: 0, alpha: 1.0)])
             
-            lblPrice1.backgroundColor = UIColor(red: 253/255, green: 166/255, blue: 9/255, alpha: 1)
             
            
             
             //green
             
-            lblPrice2.backgroundColor = UIColor(red: 36/255, green: 212/255, blue: 77/255, alpha: 1)
+            //lblPrice2.backgroundColor = UIColor(red: 36/255, green: 212/255, blue: 77/255, alpha: 1)
             
-            tableView2.backgroundColor = UIColor(red: 36/255, green: 212/255, blue: 77/255, alpha: 1)
+            tableView2.backgroundColor = UIColor(red: 0/255, green: 225/255, blue: 77/255, alpha: 1)
             
             price1 = false
             price2 = true
@@ -398,6 +415,8 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
             
         }
         
+        
+        
 //        dataRef.child("artistProfiles").child(self.userID).child("Price2").child("Price2_3").observe(.value){
 //            (snap: FIRDataSnapshot) in
 //            if snap.exists() == true
@@ -428,6 +447,14 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         
         
 
+    }
+    
+    @IBAction func minChange(_ sender: Any) {
+        //dateWheelEnd.minimumDate = dateWheelStart.date
+    }
+    
+    @IBAction func endChange(_ sender: Any) {
+        //dateWheelStart.minimumDate = dateWheelEnd.date
     }
     
     @IBAction func cancelAction(_ sender: Any) {

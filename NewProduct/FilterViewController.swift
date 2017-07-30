@@ -27,6 +27,7 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.FingerClick.layer.opacity = 0
         tbMaximum.delegate = self
         tbSkills.delegate = self
         
@@ -67,7 +68,12 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
     }
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         loc = pickerData[row].lowercased()
-        FingerClick.isHidden = false
+        UIView.animate(withDuration: 0.5, animations: {
+            
+            self.FingerClick.layer.opacity = 1
+            
+            
+        })
     }
 
     @IBAction func back(_ sender: Any) {
@@ -335,7 +341,13 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        FingerClick.isHidden = false
+        UIView.animate(withDuration: 0.5, animations: {
+            
+            self.FingerClick.layer.opacity = 1
+            
+            
+        })
+
         
     }
 }

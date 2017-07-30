@@ -20,12 +20,13 @@ struct postStruct2 {
     let picture: NSURL!
     let location: String!
     let token: String!
+    let rating: Float!
+    let verified: String!
 }
 
 
 class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
-    @IBOutlet weak var Loader: UIActivityIndicatorView!
     
     @IBOutlet weak var homeTab: UITableView!
     
@@ -43,6 +44,7 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
 
     @IBOutlet weak var pinnedSeg: UISegmentedControl!
     
+ 
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,9 +64,12 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
             
             self.arrayPin.append((snapshot.value as? String)!)
         })
+        
 
         
                 dataRef.child("artistProfiles").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
+                    
+            
 //                    
                     if snapshot.exists() == true{
                     let snapshotValueName = snapshot.value as? NSDictionary
@@ -78,9 +83,18 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
                         
                   
                     let loc = snapshotValuePrice2?["Location"] as? String
+                        
+                    let ver = snapshotValuePrice2?["Verified"] as? String
+                        
                 
                     let snapshotValueDate = snapshot.value as? NSDictionary
                     let Skills = snapshotValueDate?["Skills"] as? String
+                        
+                    var Rating = snapshotValueDate?["Rating"] as? Float
+                        
+                        if Rating == nil{
+                            Rating = 0
+                        }
 
                     let snapshotValuePic = snapshot.value as? NSDictionary
                         var url = NSURL()
@@ -101,14 +115,15 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
 //                        
 //                        }
                         
-                        self.posts.insert(postStruct2(name: name, price1: Price1,price2: Price2, skills: Skills, picture:url, location: loc, token: Token), at: 0)
+                        self.posts.insert(postStruct2(name: name, price1: Price1,price2: Price2, skills: Skills, picture:url, location: loc, token: Token, rating: Rating, verified: ver), at: 0)
                         
                         if self.run == false{
-                        self.filteredPosts.insert(postStruct2(name: name, price1: Price1,price2: Price2, skills: Skills, picture:url, location: loc, token: Token), at: 0)
-                        self.searchPosts.insert(postStruct2(name: name, price1: Price1,price2: Price2, skills: Skills, picture:url, location: loc, token: Token), at: 0)
+                        self.filteredPosts.insert(postStruct2(name: name, price1: Price1,price2: Price2, skills: Skills, picture:url, location: loc, token: Token, rating: Rating, verified: ver), at: 0)
+                        self.searchPosts.insert(postStruct2(name: name, price1: Price1,price2: Price2, skills: Skills, picture:url, location: loc, token: Token, rating: Rating, verified: ver), at: 0)
                         
                             
                         }
+    
                         
                     }
                     else
@@ -133,11 +148,7 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
                 })
         
         //if the title is non existant (post doesn't exist), the activity moniter stops
-        if (title == nil)
-        {
-            self.Loader.stopAnimating()
-            
-        }
+        
        // print(filteredPosts)
     }
 
@@ -163,6 +174,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
        
         
         let label1 = cell?.viewWithTag(1) as! UILabel
+    
         label1.text = searchPosts[indexPath.row].name
         
         let label5 = cell?.viewWithTag(5) as! UILabel
@@ -179,13 +191,23 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     
         
         let label3 = cell?.viewWithTag(3) as! UILabel
+        label3.adjustsFontSizeToFitWidth = true;
         label3.text = searchPosts[indexPath.row].skills
-        
+    
+        let view1 = cell?.viewWithTag(6) as! RatingView
+        view1.rating = searchPosts[indexPath.row].rating
+    
         
         let img4 = cell?.viewWithTag(4) as! UIImageView
         img4.sd_setImage(with: searchPosts[indexPath.row].picture as URL!, placeholderImage: UIImage(named: "ProfileDefault")!)
         img4.layer.cornerRadius = 4
         img4.clipsToBounds = true
+    
+    if searchPosts[indexPath.row].verified != nil{
+        let img5 = cell?.viewWithTag(7) as! UIImageView
+        img5.isHidden = false
+    }
+    
 
         return cell!
 }
@@ -211,6 +233,61 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     @IBAction func refreshAction(_ sender: Any) {
      
         self.viewDidLoad()
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if pinnedSeg.selectedSegmentIndex == 1{
+            return true
+        }
+        else{
+            return false
+        }
+    }
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        if pinnedSeg.selectedSegmentIndex == 1{
+            
+            let delete = UITableViewRowAction(style: .destructive, title: "Unpin") { action, index in
+                //What happens when Edit button is tapped
+               
+                
+
+                
+                        
+                self.dataRef.child("users").child(self.loggedUser!.uid).child("Pins").child(self.searchPosts[indexPath.row].token).removeValue(completionBlock: { (error,ref) in
+                    if error != nil
+                    {
+                    let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
+                    
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                    alertContoller.addAction(defaultAction)
+                    self.present(alertContoller, animated: true, completion: nil)
+                    
+                    
+                    return
+                    }
+                    self.searchPosts.remove(at: indexPath.row)
+                    self.homeTab.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+                    self.homeTab.reloadData()
+                    
+                    })
+
+                        
+                
+
+                
+            }
+            
+
+            
+            
+            return [delete]
+            
+        }
+        else{
+            
+            return nil
+            
+        }
     }
     
     //MARK: Search Bar
@@ -245,6 +322,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
            
             //filters the array
          self.searchPosts = self.posts.filter{arrayPin.contains($0.token)}
+        self.filteredPosts = self.posts.filter{arrayPin.contains($0.token)}
             self.homeTab.reloadData()
 //
     
@@ -252,6 +330,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
         else{
             //resets the array
             self.searchPosts = self.posts
+            self.filteredPosts = self.posts
             self.homeTab.reloadData()
         }
     }
