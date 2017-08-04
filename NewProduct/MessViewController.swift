@@ -251,7 +251,7 @@ extension MessViewController{
         
         if loggedUser!.uid == message.senderId{
             
-            return bubbleFactory?.outgoingMessagesBubbleImage(with: .purple)
+            return bubbleFactory?.outgoingMessagesBubbleImage(with: .orange)
             
         }
         else{
@@ -269,6 +269,7 @@ extension MessViewController{
 extension MessViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
      
         if messages.count == 0
@@ -289,6 +290,7 @@ extension MessViewController {
         
         
         self.messages = getMessage2()
+        self.navigationItem.title = "hein"
         
        
     }

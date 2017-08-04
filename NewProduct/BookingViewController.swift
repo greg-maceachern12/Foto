@@ -179,21 +179,34 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 4
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == tableView1
         {
             //green colour
-            //lblPrice1.backgroundColor = UIColor(red: 36/255, green: 212/255, blue: 77/255, alpha: 1)
-            tableView1.backgroundColor = UIColor(red: 0/255, green: 225/255, blue: 77/255, alpha: 1)
             
+            //tableView1.backgroundColor = UIColor(red: 0/255, green: 225/255, blue: 77/255, alpha: 1)
+            UIView.animate(withDuration: 0.65, animations: {
+            
+                self.tableView1.transform = CGAffineTransform(scaleX: 1.07, y: 1.07)
+                self.tableView2.transform = CGAffineTransform(scaleX: 0.93, y: 0.93)
+                
+                
+                self.viewTab1.transform = CGAffineTransform(scaleX: 1.07, y: 1.07)
+                self.viewTab2.transform = CGAffineTransform(scaleX: 0.93, y: 0.93)
+                //self.viewTab2.layer
+                
+                
+                
+                
+                
+            })
             
             //orange colour
-            //lblPrice2.applyGradient(colours: [UIColor(red: 255/255, green: 189/255, blue: 89/255, alpha: 1.0), UIColor(red: 1.0, green: 139/255, blue: 26/255, alpha: 1.0)])
-            //viewTab2.applyGradient(colours: [UIColor(red: 255/255, green: 140/255, blue: 0, alpha: 1.0), UIColor(red: 1.0, green: 103/255, blue: 0, alpha: 1.0)])
             
-            tableView2.backgroundColor = UIColor.clear
+            
+            //tableView2.backgroundColor = UIColor.clear
             
             //viewTab2.applyGradient(colours: [UIColor(red: 151/255, green: 0, blue: 255/255, alpha: 1.0), UIColor(red: 121/255, green: 0, blue: 255/255, alpha: 1.0)])
             
@@ -210,17 +223,29 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         {
             //orange
             //viewTab1.applyGradient(colours: [UIColor(red: 255/255, green: 189/255, blue: 89/255, alpha: 1.0), UIColor(red: 1.0, green: 139/255, blue: 26/255, alpha: 1.0)])
-            tableView1.backgroundColor = UIColor.clear
+            //tableView1.backgroundColor = UIColor.clear
            //lblPrice1.applyGradient(colours: [UIColor(red: 255/255, green: 140/255, blue: 0, alpha: 1.0), UIColor(red: 1.0, green: 103/255, blue: 0, alpha: 1.0)])
             
-            
+            UIView.animate(withDuration: 0.65, animations: {
+                
+                self.tableView2.transform = CGAffineTransform(scaleX: 1.07, y: 1.07)
+                self.tableView1.transform = CGAffineTransform(scaleX: 0.93, y: 0.93)
+                
+                self.viewTab2.transform = CGAffineTransform(scaleX: 1.07, y: 1.07)
+                self.viewTab1.transform = CGAffineTransform(scaleX: 0.93, y: 0.93)
+                
+                
+                
+                
+                
+            })
            
             
             //green
             
             //lblPrice2.backgroundColor = UIColor(red: 36/255, green: 212/255, blue: 77/255, alpha: 1)
             
-            tableView2.backgroundColor = UIColor(red: 0/255, green: 225/255, blue: 77/255, alpha: 1)
+            //tableView2.backgroundColor = UIColor(red: 0/255, green: 225/255, blue: 77/255, alpha: 1)
             
             price1 = false
             price2 = true
@@ -232,8 +257,21 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         
        
     }
+    
+    func editEntry() -> [String] {
+        if self.pricingOption == price12{
+            return posts2
+        }
+        else if self.pricingOption == price11{
+            return posts
+        }
+        else{
+            return []
+        }
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableView1.frame.height/3
+        return tableView1.frame.height/4
     }
 
     
@@ -336,6 +374,20 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
             }
             
         }
+        dataRef.child("artistProfiles").child(self.userID).child("Pricing1").child("Price1_3").observe(.value){
+            (snap: FIRDataSnapshot) in
+            if snap.exists() == true
+            {
+                let temp1 = snap.value as? String
+                
+                self.posts.insert(temp1!, at: 3)
+                self.tableView1.reloadData()
+            }
+            else{
+                self.posts.insert("Nothing Here!", at: 3)
+            }
+            
+        }
         
 //        dataRef.child("artistProfiles").child(self.userID).child("Price1").child("Price1_3").observe(.value){
 //            (snap: FIRDataSnapshot) in
@@ -414,6 +466,20 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
             }
             
         }
+        dataRef.child("artistProfiles").child(self.userID).child("Pricing2").child("Price2_3").observe(.value){
+            (snap: FIRDataSnapshot) in
+            if snap.exists() == true
+            {
+                let temp1 = snap.value as? String
+                
+                self.posts2.insert(temp1!, at: 3)
+                self.tableView2.reloadData()
+            }
+            else{
+                self.posts2.insert("Nothing Here!", at: 3)
+            }
+            
+        }
         
         
         
@@ -458,11 +524,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
     }
     
     @IBAction func cancelAction(_ sender: Any) {
-        let myVC = storyboard?.instantiateViewController(withIdentifier: "Artist") as! ArtistViewController
-        
-        myVC.token = self.userID
-        
-        //            print(myVC.token)
+
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -545,7 +607,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
                                                      "toName": self.artistName as AnyObject,
                                                      "Start Date": strDate as AnyObject,
                                                      "End Date": strDate2 as AnyObject,
-                                                     "Pricing Option": self.pricingOption as AnyObject,
+                                                     "Pricing Option": "\(self.pricingOption!): \(self.postRef)" as AnyObject,
                                                      "Extra Notes": self.tvNotes.text as AnyObject,
                                                      "code": accessCode as AnyObject,
                                                      "Theme": self.tbTheme.text as AnyObject,

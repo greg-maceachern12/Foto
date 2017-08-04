@@ -154,7 +154,21 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
             let alertContoller = UIAlertController(title: "Pending!", message: "The Artist hasn't gotten to your inquire yet. They'll answer soon", preferredStyle: .alert)
             
             let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            let messageAction = UIAlertAction(title: "Message", style: .default, handler: {
+                alert -> Void in
+                
+                let myVC = self.storyboard?.instantiateViewController(withIdentifier: "Mess") as! MessViewController
+                
+                myVC.token = self.sentInqposts[indexPath.row].token
+                myVC.name = self.sentInqposts[indexPath.row].toName
+                
+                self.present(myVC, animated: true)
+                
+                
+            })
+
             alertContoller.addAction(defaultAction)
+            alertContoller.addAction(messageAction)
             self.present(alertContoller, animated:true, completion: nil)
             
             

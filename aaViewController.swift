@@ -222,6 +222,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
             myVC.token = self.cellID!
         
             homeTab.deselectRow(at: indexPath, animated: true)
+        homeTab.deselectRow(at: indexPath, animated: true)
             self.present(myVC, animated: true)
     
         
@@ -302,7 +303,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
                 return
             }
             
-            self.searchPosts = self.filteredPosts.filter{$0.name.lowercased().contains(searchText.lowercased())}
+            self.searchPosts = self.filteredPosts.filter{$0.name.lowercased().contains(searchText.lowercased()) || $0.skills.lowercased().contains(searchText.lowercased())}
             DispatchQueue.main.async {
                 self.homeTab.reloadData()
             }

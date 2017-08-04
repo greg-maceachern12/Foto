@@ -26,6 +26,7 @@ pod 'JSQMessagesViewController'
 pod 'StarryStars', '~> 0.0.1'
 pod 'PayPal-iOS-SDK'
 #pod 'Stripe'
+pod 'DropDown', '~> 2'
 
 
 

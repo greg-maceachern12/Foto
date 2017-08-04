@@ -13,16 +13,18 @@ protocol SlideMenuDelegate {
     func slideMenuItemSelectedAtIndex(_ index : Int32)
 }
 
-class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     var artistCreate = false
       var artistOn = false
     var dataRef = FIRDatabase.database().reference()
     var loggedUser = FIRAuth.auth()?.currentUser
-    var skills = ""
+    //var skills = ""
     var name: String!
     var loc = ""
     var email: String!
+    var skills = ["Events", "Nature", "Music", "Sports"]
+    var skill: String!
     /**
     *  Array to display menu options
     */
@@ -146,6 +148,32 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         return cell
     }
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        skill = skills[row]
+    }
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        
+        return skills.count
+        
+    }
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        let label = (view as? UILabel) ?? UILabel()
+        
+        label.textColor = .black
+        label.textAlignment = .center
+        label.font = UIFont(name: "Avenir Next", size: 15)
+        
+        // where data is an Array of String
+        label.text = skills[row]
+        
+        return label
+    }
+  
+    
+
     
     func switchStateDidChange(_ sender:UISwitch!)
     {
@@ -174,10 +202,6 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         if snapshot.exists() == true
                         {
                             let snapshotValueSkill = snapshot.value as? NSDictionary
-                            if let tempskills = snapshotValueSkill?["Skills"] as? String {
-                               // print(tempskills)
-                                self.skills = tempskills
-                            }
                             
                             if let temploc = snapshotValueSkill?["Location"] as? String {
                                 // print(tempskills)
@@ -201,25 +225,9 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
                             
                             
                             
-                            if self.skills == ""{
+                            if self.loc == ""{
                                 
-                                let alertContoller2 = UIAlertController(title: "Oops!", message: "You haven't filled out necessary information. \n Go to My Foto and fill out the your skills!", preferredStyle: .alert)
-                                
-                                let defaultAction = UIAlertAction(title: "Okay", style: .default, handler: {
-                                    alert -> Void in
-                                    sender.isOn = false
-                                    myVCHome.artistOn = false
-                                    UserDefaults.standard.removeObject(forKey: "artistOn")
-                                    
-                                })
-                                alertContoller2.addAction(defaultAction)
-                                self.present(alertContoller2, animated:true, completion: nil)
-                                
-                                
-                            }
-                            else if self.skills == ""{
-                                
-                                let alertContoller2 = UIAlertController(title: "Oops!", message: "You haven't filled out necessary information. \n Go to My Foto and fill out your Location!", preferredStyle: .alert)
+                                let alertContoller2 = UIAlertController(title: "Oops!", message: "You haven't filled out necessary information. \n Go to My Foto and fill out the your location!", preferredStyle: .alert)
                                 
                                 let defaultAction = UIAlertAction(title: "Okay", style: .default, handler: {
                                     alert -> Void in
@@ -233,35 +241,75 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
                                 
                                 
                             }
-                            else if self.skills != "" && self.loc != ""{
+                            else{
 //                                
+                                let vc = UIViewController()
+                                vc.preferredContentSize = CGSize(width: 250,height: 100)
+                                let label1 = UILabel(frame: CGRect(x: 0, y: 0, width: 75, height: 50))
+//                                let text1 = UITextField(frame: CGRect(x: 75, y: 0, width: 175, height: 50))
+                                let picker1 = UIPickerView(frame: CGRect(x: 75, y: 0, width: 175, height: 100))
                                 
-                                let inquirePost: [String : AnyObject] = ["Name": self.name as                                                      AnyObject,
-                                                                                                                                          "token": self.loggedUser!.uid as AnyObject,
-                                                                                                     "Skills": self.skills as AnyObject,
-                                                                                                     "Email": self.email as AnyObject,
-                                                                                                     "Location": self.loc as AnyObject]
-
-                               self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).setValue(inquirePost)
-                                self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("Ratings").child(self.loggedUser!.uid).setValue(Float(0))
+//                                text1.font = UIFont(name: "Avenir Next", size: 13)
+//                                text1.placeholder = "Enter Your Skills (Seperated by Commas)"
+                                picker1.dataSource = self
+                                picker1.delegate = self
                                 
-                                self.dataRef.child("users").child(self.loggedUser!.uid).child("pic").observe(.value){
-                                    (snap: FIRDataSnapshot) in
-                                    
-                                    if snap.exists() == true
-                                    {
-                                        self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("pic").setValue(snap.value as! String)
-                                    }
-                                    else{
-                                        self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("pic").setValue("default.ca")
-                                    }
-                                }
-                                UserDefaults.standard.set("true", forKey: "artistOn")
-                                UserDefaults.standard.set(true, forKey: "artistCreate")
-                                myVCHome.artistOn = true
+                                label1.font = UIFont(name: "Avenir Next", size: 13)
+                                
+                                
+                                label1.text = "Skills:"
                             
-                               // myVCArtist.token = self.loggedUser!.uid
-                                self.present(myVCHome, animated: true)
+                                //pickerGender.dataSource = genders as? UIPickerViewDataSource
+                                
+                              
+//                                vc.view.addSubview(text1)
+                                vc.view.addSubview(picker1)
+                                vc.view.addSubview(label1)
+                                let editRadiusAlert = UIAlertController(title: "Add Skills to Procede", message: "", preferredStyle: UIAlertControllerStyle.alert)
+                                editRadiusAlert.setValue(vc, forKey: "contentViewController")
+                                editRadiusAlert.addAction(UIAlertAction(title: "Save", style: .default, handler: {
+                                    alert -> Void in
+                                    
+                                    
+    
+                                        let inquirePost: [String : AnyObject] = ["Name": self.name as AnyObject,
+                                                                                 "token": self.loggedUser!.uid as AnyObject,
+                                                                                 "Skills": self.skill as AnyObject,
+                                                                                 "Email": self.email as AnyObject,
+                                                                                 "Location": self.loc as AnyObject,
+                                                                                 "Price1": Float(0) as AnyObject,
+                                                                                 "Price2": Float(0) as AnyObject]
+                                        
+                                        self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).setValue(inquirePost)
+                                        self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("Ratings").child(self.loggedUser!.uid).setValue(Float(0))
+                                        
+                                        self.dataRef.child("users").child(self.loggedUser!.uid).child("pic").observe(.value){
+                                            (snap: FIRDataSnapshot) in
+                                            
+                                            if snap.exists() == true
+                                            {
+                                                self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("pic").setValue(snap.value as! String)
+                                            }
+                                            else{
+                                                self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("pic").setValue("default.ca")
+                                            }
+                                        }
+                                        UserDefaults.standard.set("true", forKey: "artistOn")
+                                        UserDefaults.standard.set(true, forKey: "artistCreate")
+                                        myVCHome.artistOn = true
+                                        
+                                        // myVCArtist.token = self.loggedUser!.uid
+                                        self.present(myVCHome, animated: true)
+                                        
+
+                                    }))
+                                   
+                                    
+                                    
+                                
+                                
+                                editRadiusAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                                self.present(editRadiusAlert, animated: true)
                                 
                                 
                             }

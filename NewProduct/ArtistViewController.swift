@@ -18,7 +18,6 @@ import AVKit
 
 
 
-
 class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
 
     @IBOutlet weak var viewPrice2: UIView!
@@ -43,7 +42,12 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     @IBOutlet weak var imgVer: UIImageView!
     @IBOutlet weak var Stars: RatingView!
     @IBOutlet weak var progressBar: UIProgressView!
-    
+    @IBOutlet weak var lblReviewNum: UILabel!
+//    @IBOutlet weak var dropDownView: UIButton!
+    @IBOutlet weak var skillField: UITextField!
+    @IBOutlet weak var btnAdd: UIButton!
+    @IBOutlet weak var edit: UIButton!
+
 
     var dataRef = FIRDatabase.database().reference()
     var storageRef = FIRStorage.storage().reference()
@@ -63,11 +67,15 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     var table1 = false
     var count = 0
     
+    let pickerNumber = 0
+    
+    var letEdit = false
+    
     
     var artistRat = Float(0)
     
-    var posts:[String?] = ["Add Something!","Add Something!","Add Something!"]
-    var posts2:[String?] = ["Add Something!","Add Something!","Add Something!"]
+    var posts:[String?] = ["Length of Video?","Do You Offer Shadowing?","How Much Material Will You Accept?","Custom"]
+    var posts2:[String?] = ["Length of Video?","Do You Offer Shadowing?","How Much Material Will You Accept?","Custom"]
   
     
     var imagePicker = UIImagePickerController()
@@ -98,6 +106,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     
     var countRat = Float(0.0)
     
+    let dropDown = DropDown()
     
     
     override func viewDidLoad() {
@@ -113,27 +122,26 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         
         viewTab1.applyGradient(colours: [UIColor(red: 255/255, green: 189/255, blue: 89/255, alpha: 1.0), UIColor(red: 1.0, green: 139/255, blue: 26/255, alpha: 1.0)])
         viewTab2.applyGradient(colours: [UIColor(red: 255/255, green: 140/255, blue: 0, alpha: 1.0), UIColor(red: 1.0, green: 103/255, blue: 0, alpha: 1.0)])
-        
-//        viewTab1.applyGradient(colours: [UIColor(red: 179/255, green: 0, blue: 255/255, alpha: 1.0), UIColor(red: 149/255, green: 0, blue: 245/255, alpha: 1.0)])
-//        viewTab2.applyGradient(colours: [UIColor(red: 151/255, green: 0, blue: 255/255, alpha: 1.0), UIColor(red: 121/255, green: 0, blue: 255/255, alpha: 1.0)])
-//        
-//        viewPrice1.applyGradient(colours: [UIColor(red: 179/255, green: 0, blue: 255/255, alpha: 1.0), UIColor(red: 149/255, green: 0, blue: 245/255, alpha: 1.0)])
-//        viewPrice2.applyGradient(colours: [UIColor(red: 151/255, green: 0, blue: 255/255, alpha: 1.0), UIColor(red: 121/255, green: 0, blue: 255/255, alpha: 1.0)])
+
         
         
         //if the artist profile page is NOT the current user, disable the ability to edit
         if token != loggedUser?.uid
         {
             tbDescription.isEditable = false
+            edit.isHidden = true
             //Long1.isEnabled = false
             LongPrice.isEnabled = false
             LongPrice2.isEnabled = false
+            skillField.isEnabled = false
+            btnAdd.isHidden = true
+//            dropDownView.isEnabled = false
             self.view.frame = CGRect(x: 0, y: 0, width: 1410, height: 1410)
          
             Scroller.contentSize = CGSize(width: self.view.frame.width, height: 1410)
             
-             posts = ["Nothing Here!","Nothing Here!","Nothing Here!"]
-             posts2 = ["Nothing Here!","Nothing Here","Nothing Here!"]
+             posts = ["Nothing Here!","Nothing Here!","Nothing Here!", "Nothing Here!"]
+             posts2 = ["Nothing Here!","Nothing Here","Nothing Here!", "Nothing Here!"]
            
             btnPin.applyDesign()
             btnBook.applyGradient(colours: [UIColor(red: 255/255, green: 140/255, blue: 0, alpha: 1.9), UIColor(red: 1.0, green: 103/255, blue: 0, alpha: 1.0)])
@@ -158,15 +166,18 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         {
             dataRef.child("artistProfiles").child(self.token).child("Name").observe(.value){
                 (snap: FIRDataSnapshot) in
+                if snap.exists() == true{
                 self.NAVTitle.title = "\(snap.value as! String) (Your Profile)"
-                self.btnPin.isHidden = true
-                self.btnBook.isHidden = true
-                self.btnMessage.isHidden = true
-                self.view.frame = CGRect(x: 0, y: 0, width: 375, height: 1390)
-                self.Scroller.contentSize = CGSize(width: self.view.frame.width, height: 1390)
-                self.btnPin.applyDesign()
-                self.btnBook.applyDesign()
-                self.btnMessage.applyDesign()
+                    self.btnPin.isHidden = true
+                    self.btnBook.isHidden = true
+                    self.btnAdd.isHidden = false
+                    self.btnMessage.isHidden = true
+                    self.view.frame = CGRect(x: 0, y: 0, width: 375, height: 1390)
+                    self.Scroller.contentSize = CGSize(width: self.view.frame.width, height: 1390)
+                
+                    
+                
+                }
             }
         }
         
@@ -192,7 +203,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         
         imgVer.sizeToFit()
         
-        
+        lblReviewNum.text = "\(arrayRating.count) Reviews"
         
         
       
@@ -215,16 +226,87 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         toolbar.setItems([flexibleSpace, doneButton], animated: false)
         
         tbDescription.inputAccessoryView = toolbar
-       
+        
+        
+        
+        
+//        
+//        dropDown.anchorView = dropDownView // UIView or UIBarButtonItem
+//        
+//        // The list of items to display. Can be changed dynamically
+//        dropDown.dataSource = ["Car", "Motorcycle", "Truck"]
+//       
+//        dropDown.selectionAction = { [unowned self] (index, item) in
+//            self.dropDownView.setTitle(item, for: .normal)
+//            self.skillField.isEnabled = true
+//            
+//        }
         
         
         //print(takenPosts)
         // Do any additional setup after loading the view.
     }
+    
+//    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
+//        self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("Skills").setValue(skillField.text!)
+//    }
+    
+    
+    @IBAction func editProf(_ sender: Any) {
+        if letEdit == false{
+            
+            tbDescription.alpha = 0
+            skillField.alpha = 0
+        tbDescription.isEditable = true
+        skillField.isEnabled = true
+        
+        edit.setTitle("Save", for: .normal)
+            
+        UIView.animate(withDuration: 0.5, animations: {
+            
+            self.tbDescription.alpha = 1
+            self.skillField.alpha = 1
+            
+            
+            
+        })
+            letEdit = true
+            
+        }
+        else{
+            self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("About").setValue(tbDescription.text!)
+            self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("Skills").setValue(skillField.text!, withCompletionBlock: { (error,ref) in
+                if error != nil
+                {
+                let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
+                
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                alertContoller.addAction(defaultAction)
+                self.present(alertContoller, animated: true, completion: nil)
+                
+                
+                return
+                }
+                
+                
+                self.tbDescription.isEditable = false
+                self.skillField.isEnabled = false
+                self.letEdit = false
+                self.edit.setTitle("Edit", for: .normal)
+                
+                })
+        
+        }
+    }
+    
     func doneClicked(){
         self.view.endEditing(true)
     }
     
+//    @IBAction func dropDownClick(_ sender: Any) {
+//
+//        dropDown.show()
+//    }
   
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -239,10 +321,10 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
  
   
  
-    func textViewDidChange(_ textView: UITextView) {
-       self.dataRef.child("artistProfiles").child(token).child("About").setValue(tbDescription.text)
-        
-    }
+//    func textViewDidChange(_ textView: UITextView) {
+//       self.dataRef.child("artistProfiles").child(token).child("About").setValue(tbDescription.text)
+//        
+//    }
     
     
     
@@ -261,7 +343,12 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if pickerView == picturePicker{
+            if self.token == self.loggedUser!.uid{
         return 3
+            }
+            else{
+                return self.urlArray.count
+            }
         }
         else{
            return 6
@@ -574,6 +661,21 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     
     }
     
+    @IBAction func addVideo(_ sender: Any) {
+        
+
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.savedPhotosAlbum)
+            {
+                self.imagePicker.delegate = self
+                self.imagePicker.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
+                self.imagePicker.allowsEditing = true
+                self.imagePicker.mediaTypes = [kUTTypeMovie as String]
+                self.present(self.imagePicker, animated: true, completion: nil)
+                
+            }
+    }
+    
+    
     
     @IBAction func longPressPicker(_ sender: UILongPressGestureRecognizer) {
         
@@ -588,21 +690,6 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         
         let myActionSheet = UIAlertController(title: "Portfolio", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
         
-        if token == loggedUser?.uid
-        {
-            let photoGallery = UIAlertAction(title: "Upload Video", style: UIAlertActionStyle.default) { (action) in
-                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.savedPhotosAlbum)
-                {
-                    self.imagePicker.delegate = self
-                    self.imagePicker.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
-                    self.imagePicker.allowsEditing = true
-                    self.imagePicker.mediaTypes = [kUTTypeMovie as String]
-                    self.present(self.imagePicker, animated: true, completion: nil)
-                    
-                }
-            }
-            myActionSheet.addAction(photoGallery)
-        }
         
         let play = UIAlertAction(title: "Play Video", style: UIAlertActionStyle.default) { (action) in
             print(self.urlArray[self.tracker!])
@@ -718,7 +805,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
 //                
 //            }
 //        }
-        return 3
+        return 4
     }
     
         
@@ -728,7 +815,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
        
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return 82.5
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -972,6 +1059,24 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         
     }
     
+    func editMessage() -> String {
+        if self.count == 0{
+            return "Length Of Video"
+        }
+        else if self.count == 1{
+            return "Shadowing? If So, Add Details"
+        }
+        else if self.count == 2{
+            return "Amount of Material"
+        }
+        else if self.count == 3{
+            return "Custom Pricing"
+        }
+        else{
+            return ""
+        }
+    }
+    
     
     
 
@@ -985,8 +1090,8 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                 //What happens when Edit button is tapped
                 self.count = index.row
                 
-                
-                if self.posts[index.row] == "Add Something!"
+    
+                if self.posts[index.row] ==  "Length of Video?" || self.posts[index.row] ==  "o You Offer Shadowing?" || self.posts[index.row] ==  "How Much Material Will You Accept?" || self.posts[index.row] ==  "Custom"
                 {
                     return
                 }
@@ -994,7 +1099,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                     if tableView == self.tableView1
                     {
                          //self.posts.remove(at: index.row)
-                        self.posts[index.row] = "Add Something!"
+                        //self.posts[index.row] = "Add Something!"
                         
                         self.dataRef.child("artistProfiles").child(self.token).child("Pricing1").child("Price1_\(self.count)").removeValue()
                         
@@ -1008,10 +1113,10 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                     else
                     {
                          //self.posts2.remove(at: index.row)
-                        self.posts2[index.row] = "Add Something!"
+                        //self.posts2[index.row] = "Add Something!"
                         self.dataRef.child("artistProfiles").child(self.token).child("Pricing2").child("Price2_\(self.count)").removeValue()
                         self.tableView2.reloadData()
-                            //self.tableView2.deleteRows(at: [index], with: UITableViewRowAnimation.automatic)
+                            self.tableView2.deleteRows(at: [index], with: UITableViewRowAnimation.automatic)
                         
                         
                         
@@ -1027,7 +1132,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
             self.count = index.row
 
             
-            let alertController = UIAlertController(title: "Edit", message: "", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "Edit Your Pricing", message: self.editMessage(), preferredStyle: .alert)
             
             let saveAction = UIAlertAction(title: "Save", style: .default, handler: {
                 alert -> Void in
@@ -1059,6 +1164,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                                 
                               
                                 self.posts[index.row] = firstTextField.text
+                                self.tableView1.reloadData()
                                     
                                 })
 
@@ -1069,7 +1175,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                             
                         else
                         {
-                            self.dataRef.child("artistProfiles").child(self.token).child("Pricing2").updateChildValues(["Price1_\(index.row)" : firstTextField.text!], withCompletionBlock: { (error,ref) in
+                            self.dataRef.child("artistProfiles").child(self.token).child("Pricing2").updateChildValues(["Price2_\(index.row)" : firstTextField.text!], withCompletionBlock: { (error,ref) in
                                 if error != nil
                                 {
                                     let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
@@ -1084,7 +1190,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                                 
                                 
                                 self.posts2[index.row] = firstTextField.text
-                                
+                                self.tableView2.reloadData()
                             })
                             
                         }
@@ -1183,6 +1289,11 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         dataRef.child("artistProfiles").child(self.token).child("About").observe(.value){
             (snap: FIRDataSnapshot) in
             self.tbDescription.text = snap.value as? String
+            
+        }
+        dataRef.child("artistProfiles").child(self.token).child("Skills").observe(.value){
+            (snap: FIRDataSnapshot) in
+            self.skillField.text = snap.value as? String
             
         }
         
@@ -1289,6 +1400,21 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
             }
      
         }
+        dataRef.child("artistProfiles").child(self.token).child("Pricing1").child("Price1_3").observe(.value){
+            (snap: FIRDataSnapshot) in
+            if snap.exists() == true
+            {
+                let temp1 = snap.value as? String
+                
+                self.posts[3] = temp1!
+                self.tableView1.reloadData()
+            }
+            else{
+                //               self.posts.insert("Add Something!", at: 2)
+            }
+            
+        }
+        
         
 //        dataRef.child("artistProfiles").child(self.token).child("Price1").child("Price1_3").observe(.value){
 //            (snap: FIRDataSnapshot) in
@@ -1384,6 +1510,20 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
             }
             else{
 //                self.posts2.insert("Add Something!", at: 2)
+            }
+            
+        }
+        dataRef.child("artistProfiles").child(self.token).child("Pricing2").child("Price2_3").observe(.value){
+            (snap: FIRDataSnapshot) in
+            if snap.exists() == true
+            {
+                let temp1 = snap.value as? String
+                
+                self.posts2[3] = temp1!
+                self.tableView2.reloadData()
+            }
+            else{
+                //                self.posts2.insert("Add Something!", at: 2)
             }
             
         }
@@ -1760,6 +1900,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
             alertContoller.addAction(defaultAction)
             self.present(alertContoller, animated: true, completion: nil)
         }
+        
     }
     
     @IBAction func message(_ sender: Any) {

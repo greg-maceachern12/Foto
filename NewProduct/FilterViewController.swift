@@ -89,13 +89,14 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
         
         print(loc!)
         let myVC = storyboard?.instantiateViewController(withIdentifier: "ArtistTable") as! aaViewController
-//        
+       // maxNumber = Float(tbMaximum.text!)
+        
         if tbMaximum.text != "" && tbSkills.text != ""{
             
             skill = tbSkills.text?.lowercased()
             
           
-            maxNumber = Float(tbMaximum.text!)
+            
             
             
             
@@ -105,7 +106,7 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
                 
                 filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(skill!)}
                 
-                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber || $0.price1 < maxNumber}
                 print("hit")
                 
             }
@@ -115,7 +116,7 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
                 
                 filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(skill!)}
                 
-                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber || $0.price1 < maxNumber}
                 
             }
                 
@@ -125,7 +126,7 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
                 
                 filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(skill!)}
                 
-                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber || $0.price1 < maxNumber}
                 
             }
                 
@@ -135,7 +136,7 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
                 
                 filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(skill!)}
                 
-                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber || $0.price1 < maxNumber}
                 
             }
             
@@ -143,7 +144,7 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
     
                 filteredTakenPosts  = self.takenPosts.filter{$0.skills.lowercased().contains(skill!)}
                 
-                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber || $0.price1 < maxNumber}
                 
             }
             
@@ -154,7 +155,7 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
                 
                 filteredTakenPosts  = self.filteredTakenPosts.filter{$0.skills.lowercased().contains(skill!)}
                 
-                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber || $0.price1 < maxNumber}
             }
             
             
@@ -166,14 +167,14 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
         else if tbMaximum.text != "" && tbSkills.text == ""{
             
             
-            maxNumber = Float(tbMaximum.text!)
+            //maxNumber = Float(tbMaximum.text!)
             
             if loc == "kingston area"{
                 
                 filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("kingston") || $0.location.lowercased().contains("odesa") || $0.location.lowercased().contains("napanee")}
 
                 
-                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber || $0.price1 < maxNumber}
                 print("hit")
                 
             }
@@ -182,7 +183,7 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
                 filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("kitchener") || $0.location.lowercased().contains("waterloo") || $0.location.lowercased().contains("cambridge")}
 
                 
-                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber || $0.price1 < maxNumber}
                 
             }
                 
@@ -191,7 +192,7 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
                 filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("ottawa") || $0.location.lowercased().contains("gatineau")}
 
                 
-                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber || $0.price1 < maxNumber}
                 
             }
                 
@@ -200,14 +201,14 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
                 filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains("toronto") || $0.location.lowercased().contains("markham") || $0.location.lowercased().contains("mississauga") || $0.location.lowercased().contains("oakville") || $0.location.lowercased().contains("oshawa")}
                 
                 
-                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber || $0.price1 < maxNumber}
                 
             }
                 
             else if loc == "all of ontario"{
                 
                 
-                filteredTakenPosts  = self.takenPosts.filter{$0.price2 < maxNumber}
+                filteredTakenPosts  = self.takenPosts.filter{$0.price2 < maxNumber || $0.price1 < maxNumber}
                 print("hin")
                 
             }
@@ -218,7 +219,7 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
                 filteredTakenPosts  = self.takenPosts.filter{$0.location.lowercased().contains(loc!)}
 
                 
-                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber}
+                filteredTakenPosts  = self.filteredTakenPosts.filter{$0.price2 < maxNumber || $0.price1 < maxNumber}
             }
     
         }
@@ -334,13 +335,19 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-
+        
+       
         tbMaximum.resignFirstResponder()
         tbSkills.resignFirstResponder()
         return true
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
+//
+        if textField == tbMaximum{
+            maxNumber = Float(tbMaximum.text!)
+            tbMaximum.text = "$\(maxNumber!)"
+        }
         UIView.animate(withDuration: 0.5, animations: {
             
             self.FingerClick.layer.opacity = 1

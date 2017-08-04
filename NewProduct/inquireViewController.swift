@@ -22,6 +22,8 @@ class inquireViewController: UIViewController {
     @IBOutlet weak var Loader: UIActivityIndicatorView!
     @IBOutlet weak var btnAccept: UIButton!
     @IBOutlet weak var btnDecline: UIButton!
+    @IBOutlet weak var Pricing: UILabel!
+    @IBOutlet weak var lblTheme: UILabel!
 
     var loggedUser = FIRAuth.auth()?.currentUser
     var dataRef = FIRDatabase.database().reference()
@@ -70,7 +72,16 @@ func SetUp()
             self.clientEmail = snap.value as? String
             //self.lblEmail.text = snap.value as? String
         }
-        
+        dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("Theme").observe(.value){
+            (snap: FIRDataSnapshot) in
+            self.lblTheme.text = snap.value as? String
+           
+        }
+        dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("Pricing Option").observe(.value){
+            (snap: FIRDataSnapshot) in
+            self.Pricing.text = snap.value as? String
+            
+        }
         dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("Start Date").observe(.value){
             (snap: FIRDataSnapshot) in
             self.lblStart.text = "Start Date: \(snap.value as! String)"
