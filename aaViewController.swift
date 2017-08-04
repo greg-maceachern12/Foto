@@ -11,6 +11,8 @@ import Firebase
 import FirebaseDatabase
 import FirebaseAuth
 import SDWebImage
+import Cosmos
+
 
 struct postStruct2 {
     let name: String!
@@ -20,7 +22,7 @@ struct postStruct2 {
     let picture: NSURL!
     let location: String!
     let token: String!
-    let rating: Float!
+    let rating: Double!
     let verified: String!
 }
 
@@ -90,7 +92,7 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
                     let snapshotValueDate = snapshot.value as? NSDictionary
                     let Skills = snapshotValueDate?["Skills"] as? String
                         
-                    var Rating = snapshotValueDate?["Rating"] as? Float
+                    var Rating = snapshotValueDate?["Rating"] as? Double
                         
                         if Rating == nil{
                             Rating = 0
@@ -194,7 +196,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
         label3.adjustsFontSizeToFitWidth = true;
         label3.text = searchPosts[indexPath.row].skills
     
-        let view1 = cell?.viewWithTag(6) as! RatingView
+        let view1 = cell?.viewWithTag(6) as! CosmosView
         view1.rating = searchPosts[indexPath.row].rating
     
         

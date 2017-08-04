@@ -15,6 +15,7 @@ import SDWebImage
 import MobileCoreServices
 import AVFoundation
 import AVKit
+import Cosmos
 
 
 
@@ -40,7 +41,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     @IBOutlet var LongPrice: UILongPressGestureRecognizer!
     @IBOutlet var LongPrice2: UILongPressGestureRecognizer!
     @IBOutlet weak var imgVer: UIImageView!
-    @IBOutlet weak var Stars: RatingView!
+    @IBOutlet weak var Stars: CosmosView!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var lblReviewNum: UILabel!
 //    @IBOutlet weak var dropDownView: UIButton!
@@ -57,7 +58,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     var price1: Float!
     var price2: Float!
     
-    var arrayRating = [Float?]()
+    var arrayRating = [Double?]()
     
     var upTrack: Int! = 0
     var tracker: Int! = 0
@@ -72,7 +73,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     var letEdit = false
     
     
-    var artistRat = Float(0)
+    var artistRat = Double(0)
     
     var posts:[String?] = ["Length of Video?","Do You Offer Shadowing?","How Much Material Will You Accept?","Custom"]
     var posts2:[String?] = ["Length of Video?","Do You Offer Shadowing?","How Much Material Will You Accept?","Custom"]
@@ -104,7 +105,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     
     var vidURL: URL!
     
-    var countRat = Float(0.0)
+    var countRat = Double(0.0)
     
     let dropDown = DropDown()
     
@@ -1300,7 +1301,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         dataRef.child("artistProfiles").child(self.token).child("Rating").observe(.value){
             (snap: FIRDataSnapshot) in
             if snap.exists() == true{
-            self.Stars.rating = (snap.value as? Float)!
+            self.Stars.rating = (snap.value as? Double)!
             }
             else{
                 self.Stars.rating = 0
@@ -1373,12 +1374,12 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         
         dataRef.child("artistProfiles").child(self.token).child("Ratings").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
            
-                self.arrayRating.append((snapshot.value as! Float))
+                self.arrayRating.append((snapshot.value as! Double))
             
            
                 
             
-                self.countRat = snapshot.value as! Float + self.countRat
+                self.countRat = snapshot.value as! Double + self.countRat
             
             
             
@@ -1538,7 +1539,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         if self.token != self.loggedUser!.uid{
         let vc = UIViewController()
         vc.preferredContentSize = CGSize(width: 250,height: 100)
-        let pickerView2 = RatingView(frame: CGRect(x: 0, y: 0, width: 250, height: 100))
+        let pickerView2 = CosmosView(frame: CGRect(x: 0, y: 0, width: 250, height: 100))
 //        pickerView2.halfImage = #imageLiteral(resourceName: "RatingHalf")
 //        pickerView2.onImage = #imageLiteral(resourceName: "RatingFull")
 //        pickerView2.offImage = #imageLiteral(resourceName: "RatingEmpty")
@@ -1564,15 +1565,15 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                 }
                 self.dataRef.child("artistProfiles").child(self.token).child("Ratings").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
                     
-                    self.arrayRating.append((snapshot.value as! Float))
+                    self.arrayRating.append((snapshot.value as! Double))
                     
-                    self.countRat = snapshot.value as! Float + self.countRat
+                    self.countRat = snapshot.value as! Double + self.countRat
                 })
                 
                 //            self.arrayRating.append(pickerView2.rating)
                 print(self.arrayRating)
                 print(self.countRat)
-                self.artistRat = self.countRat / Float(self.arrayRating.count)
+                self.artistRat = self.countRat / Double(self.arrayRating.count)
                 self.Stars.rating = (self.artistRat)
                 self.dataRef.child("artistProfiles").child(self.token).child("Rating").setValue(self.artistRat)
                 self.arrayRating.removeAll()

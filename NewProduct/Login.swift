@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FirebaseAuth
 
+
 class Login: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var lblUser: UILabel!
@@ -243,6 +244,7 @@ override func viewDidLoad() {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         if FIRAuth.auth()?.currentUser != nil {
+            
             self.Load.startAnimating()
             lblUser.text = "Logging You In"
             UIView.animate(withDuration: 0.5, animations: {

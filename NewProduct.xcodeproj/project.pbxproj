@@ -21,9 +21,6 @@
 		0225B4D81E84BA71006E7F34 /* RobotoSlab-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0225B4D41E84BA1E006E7F34 /* RobotoSlab-Light.ttf */; };
 		0225B4D91E84BA71006E7F34 /* RobotoSlab-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0225B4D51E84BA1E006E7F34 /* RobotoSlab-Regular.ttf */; };
 		0225B4DA1E84BA71006E7F34 /* RobotoSlab-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0225B4D61E84BA1E006E7F34 /* RobotoSlab-Thin.ttf */; };
-		0231DA721F07033300A787F8 /* starryStars_half@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0231DA6F1F07033300A787F8 /* starryStars_half@2x.png */; };
-		0231DA731F07033300A787F8 /* starryStars_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0231DA701F07033300A787F8 /* starryStars_off@2x.png */; };
-		0231DA741F07033300A787F8 /* starryStars_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0231DA711F07033300A787F8 /* starryStars_on@2x.png */; };
 		02484B571EEB2320006B9806 /* inquireViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02484B561EEB2320006B9806 /* inquireViewController.swift */; };
 		025206281F202A7E001937A1 /* AddMemoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025206271F202A7E001937A1 /* AddMemoryViewController.swift */; };
 		0253D3F71EB4FE360003763C /* HomeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0253D3F61EB4FE360003763C /* HomeViewCell.swift */; };
@@ -40,6 +37,7 @@
 		027CAC941F0C728500922D77 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027CAC931F0C728500922D77 /* FilterViewController.swift */; };
 		0280D21C1E7378A40088BEA7 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0280D21B1E7378A40088BEA7 /* Login.swift */; };
 		02855E181EC53E6D0072D9E5 /* ArtistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02855E171EC53E6D0072D9E5 /* ArtistViewController.swift */; };
+		028FDFCF1F350C4800A0CCC9 /* CosmosDistrib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028FDFCE1F350C4800A0CCC9 /* CosmosDistrib.swift */; };
 		029DE7561F19631A0073AD7C /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 029DE74F1F19631A0073AD7C /* Accelerate.framework */; };
 		029DE7571F19631A0073AD7C /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 029DE7501F19631A0073AD7C /* AudioToolbox.framework */; };
 		029DE7581F19631A0073AD7C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 029DE7511F19631A0073AD7C /* AVFoundation.framework */; };
@@ -52,8 +50,6 @@
 		02A3413F1EFCACD900429FC0 /* sentInquireViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A3413E1EFCACD900429FC0 /* sentInquireViewController.swift */; };
 		02A9C6BD1EE76F15001287E9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02A9C6BC1EE76F15001287E9 /* CoreLocation.framework */; };
 		02AB60CB1F003C7F00DD38FC /* MessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AB60CA1F003C7F00DD38FC /* MessViewController.swift */; };
-		02C0854D1F06F4F7006DEBCD /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02C085461F06F4F7006DEBCD /* Info.plist */; };
-		02C0854E1F06F4F7006DEBCD /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C085471F06F4F7006DEBCD /* RatingView.swift */; };
 		02D3290E1EBE61200051F22F /* aaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3290D1EBE61200051F22F /* aaViewController.swift */; };
 		02DD88D31EFDE39F0093DD50 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DD88D21EFDE39F0093DD50 /* BaseViewController.swift */; };
 		02E4F3BB1F03351A002713C8 /* TableMessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E4F3BA1F03351A002713C8 /* TableMessViewController.swift */; };
@@ -98,9 +94,6 @@
 		0225B4D41E84BA1E006E7F34 /* RobotoSlab-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoSlab-Light.ttf"; sourceTree = "<group>"; };
 		0225B4D51E84BA1E006E7F34 /* RobotoSlab-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoSlab-Regular.ttf"; sourceTree = "<group>"; };
 		0225B4D61E84BA1E006E7F34 /* RobotoSlab-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoSlab-Thin.ttf"; sourceTree = "<group>"; };
-		0231DA6F1F07033300A787F8 /* starryStars_half@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "starryStars_half@2x.png"; sourceTree = "<group>"; };
-		0231DA701F07033300A787F8 /* starryStars_off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "starryStars_off@2x.png"; sourceTree = "<group>"; };
-		0231DA711F07033300A787F8 /* starryStars_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "starryStars_on@2x.png"; sourceTree = "<group>"; };
 		02484B561EEB2320006B9806 /* inquireViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = inquireViewController.swift; sourceTree = "<group>"; };
 		025206271F202A7E001937A1 /* AddMemoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddMemoryViewController.swift; sourceTree = "<group>"; };
 		0253D3F61EB4FE360003763C /* HomeViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewCell.swift; sourceTree = "<group>"; };
@@ -123,6 +116,7 @@
 		027CAC931F0C728500922D77 /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		0280D21B1E7378A40088BEA7 /* Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		02855E171EC53E6D0072D9E5 /* ArtistViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistViewController.swift; sourceTree = "<group>"; };
+		028FDFCE1F350C4800A0CCC9 /* CosmosDistrib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CosmosDistrib.swift; sourceTree = "<group>"; };
 		029DE74B1F1961370073AD7C /* NewProduct-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NewProduct-Bridging-Header.h"; sourceTree = "<group>"; };
 		029DE74E1F19619D0073AD7C /* ZZAppDelegat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZZAppDelegat.h; sourceTree = "<group>"; };
 		029DE74F1F19631A0073AD7C /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -137,9 +131,6 @@
 		02A3413E1EFCACD900429FC0 /* sentInquireViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = sentInquireViewController.swift; sourceTree = "<group>"; };
 		02A9C6BC1EE76F15001287E9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		02AB60CA1F003C7F00DD38FC /* MessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessViewController.swift; sourceTree = "<group>"; };
-		02C085461F06F4F7006DEBCD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		02C085471F06F4F7006DEBCD /* RatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
-		02C0854C1F06F4F7006DEBCD /* StarryStars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StarryStars.h; sourceTree = "<group>"; };
 		02D3290D1EBE61200051F22F /* aaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = aaViewController.swift; path = ../aaViewController.swift; sourceTree = "<group>"; };
 		02DD88D21EFDE39F0093DD50 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		02E4F3BA1F03351A002713C8 /* TableMessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableMessViewController.swift; sourceTree = "<group>"; };
@@ -279,11 +270,11 @@
 		026351F91E7332F1008245C7 /* NewProduct */ = {
 			isa = PBXGroup;
 			children = (
+				028FDFCE1F350C4800A0CCC9 /* CosmosDistrib.swift */,
 				021C3E021F2EB9C100521098 /* DropDown */,
 				029FE7EF1EF0BE7700998365 /* Menu  */,
 				0291FEC21F01D50A0015FAF6 /* Messages */,
 				027CAC951F0C728F00922D77 /* ArtistTable */,
-				02C085451F06F4F7006DEBCD /* StarryStars */,
 				025206291F202A88001937A1 /* Profile */,
 				02F511951F05B16E002E36A6 /* Seguee.swift */,
 				026351FA1E7332F1008245C7 /* AppDelegate.swift */,
@@ -352,27 +343,6 @@
 				029FE7EA1EF0BC8C00998365 /* MenuViewController.swift */,
 			);
 			name = "Menu ";
-			sourceTree = "<group>";
-		};
-		02C085451F06F4F7006DEBCD /* StarryStars */ = {
-			isa = PBXGroup;
-			children = (
-				02C085461F06F4F7006DEBCD /* Info.plist */,
-				02C085471F06F4F7006DEBCD /* RatingView.swift */,
-				02C085481F06F4F7006DEBCD /* Resource */,
-				02C0854C1F06F4F7006DEBCD /* StarryStars.h */,
-			);
-			path = StarryStars;
-			sourceTree = "<group>";
-		};
-		02C085481F06F4F7006DEBCD /* Resource */ = {
-			isa = PBXGroup;
-			children = (
-				0231DA6F1F07033300A787F8 /* starryStars_half@2x.png */,
-				0231DA701F07033300A787F8 /* starryStars_off@2x.png */,
-				0231DA711F07033300A787F8 /* starryStars_on@2x.png */,
-			);
-			path = Resource;
 			sourceTree = "<group>";
 		};
 		585C547CD2C024F9D5555D27 /* Pods */ = {
@@ -532,16 +502,12 @@
 				0225B4DA1E84BA71006E7F34 /* RobotoSlab-Thin.ttf in Resources */,
 				026F0C461E7F5F6900273DD2 /* lato in Resources */,
 				021C3E131F2EB9C100521098 /* DropDownCell.xib in Resources */,
-				0231DA731F07033300A787F8 /* starryStars_off@2x.png in Resources */,
-				0231DA721F07033300A787F8 /* starryStars_half@2x.png in Resources */,
-				0231DA741F07033300A787F8 /* starryStars_on@2x.png in Resources */,
 				021C3E121F2EB9C100521098 /* Info.plist in Resources */,
 				0225B4D81E84BA71006E7F34 /* RobotoSlab-Light.ttf in Resources */,
 				026352081E7332F1008245C7 /* LaunchScreen.storyboard in Resources */,
 				0225B4D71E84BA71006E7F34 /* RobotoSlab-Bold.ttf in Resources */,
 				026352051E7332F1008245C7 /* Assets.xcassets in Resources */,
 				027290DE1E733B46007A26E9 /* GoogleService-Info.plist in Resources */,
-				02C0854D1F06F4F7006DEBCD /* Info.plist in Resources */,
 				026352001E7332F1008245C7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -710,12 +676,12 @@
 				02484B571EEB2320006B9806 /* inquireViewController.swift in Sources */,
 				02A3413F1EFCACD900429FC0 /* sentInquireViewController.swift in Sources */,
 				021C3E161F2EB9C100521098 /* DropDownCell.swift in Sources */,
-				02C0854E1F06F4F7006DEBCD /* RatingView.swift in Sources */,
 				02E4F3BB1F03351A002713C8 /* TableMessViewController.swift in Sources */,
 				026351FD1E7332F1008245C7 /* ViewController.swift in Sources */,
 				025206281F202A7E001937A1 /* AddMemoryViewController.swift in Sources */,
 				021215021F16F375000CDE1E /* PaymentViewController.swift in Sources */,
 				02198D091EE201F8008176EE /* BookingViewController.swift in Sources */,
+				028FDFCF1F350C4800A0CCC9 /* CosmosDistrib.swift in Sources */,
 				02F511961F05B16E002E36A6 /* Seguee.swift in Sources */,
 				02DD88D31EFDE39F0093DD50 /* BaseViewController.swift in Sources */,
 				026352031E7332F1008245C7 /* NewProduct.xcdatamodeld in Sources */,
