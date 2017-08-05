@@ -10,6 +10,7 @@ import UIKit
 import MobileCoreServices
 import AVFoundation
 import Firebase
+import DropDown
 
 class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
@@ -20,8 +21,11 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
     @IBOutlet weak var btnComplete: UIButton!
     @IBOutlet weak var Loader: UIActivityIndicatorView!
     @IBOutlet weak var lblPercent: UILabel!
-    @IBOutlet weak var tbArtist: UITextField!
+    //@IBOutlet weak var tbArtist: UITextField!
+    @IBOutlet weak var btnDropDown: UIButton!
     
+    var names = [String!]()
+    let chooseArtist = DropDown()
     var vidURL: URL!
     let dataRef = FIRDatabase.database().reference()
     let loggedUser = FIRAuth.auth()?.currentUser
@@ -29,16 +33,49 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        UIView.animate(withDuration: 0.5, delay: 0, options: [.repeat, .autoreverse], animations: {
+//            
+//            self.btnDropDown.alpha = 0.4
+//            
+//        }, completion: nil)
 
-//        btnComplete.layer.shadowColor = UIColor.darkGray.cgColor
-//        btnComplete.layer.shadowOffset = CGSize(width: 0, height: 2)
-//        btnComplete.layer.shadowOpacity = 1.0
-//        btnComplete.layer.shadowRadius = 0.0
-//        btnComplete.layer.masksToBounds = false
-//        btnComplete.layer.cornerRadius = 4.0
-        btnComplete.applyGradient(colours: [UIColor(red: 255/255, green: 140/255, blue: 0, alpha: 1.9), UIColor(red: 1.0, green: 103/255, blue: 0, alpha: 1.0)])        
+        dataRef.child("users").child(loggedUser!.uid).child("Sent Inquires").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
+            //
+            if snapshot.exists() == true{
+                let snapshotValueName = snapshot.value as? NSDictionary
+                let Name = snapshotValueName?["toName"] as? String
+    
+                
+                self.names.append(Name)
+                self.chooseArtist.dataSource = self.names
+                //print(self.inqposts)
+               
+            }
+        })
+
         
         
+        btnComplete.applyGradient(colours: [UIColor(red: 255/255, green: 140/255, blue: 0, alpha: 1.9), UIColor(red: 1.0, green: 103/255, blue: 0, alpha: 1.0)])
+        
+        
+        
+        chooseArtist.anchorView = btnDropDown
+        
+        chooseArtist.textFont = UIFont(name: "Avenir Next", size: 17)!
+        
+        chooseArtist.bottomOffset = CGPoint(x: 0, y: btnDropDown.bounds.height)
+        
+        
+        // Action triggered on selection
+        chooseArtist.selectionAction = { [unowned self] (index, item) in
+            self.btnDropDown.setTitle(item, for: .normal)
+            self.chooseArtist.deselectRow(at: index)
+            self.btnDropDown.backgroundColor = UIColor.clear
+            self.btnDropDown.setTitleColor(UIColor.black, for: .normal)
+            self.btnDropDown.layer.removeAllAnimations()
+        }
+
         // Do any additional setup after loading the view.
     }
 
@@ -47,6 +84,9 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func clickArtist(_ sender: Any) {
+        chooseArtist.show()
+    }
     func generateRandomStringWithLength(length:Int) -> String {
         
         let randomString:NSMutableString = NSMutableString(capacity: length)
@@ -137,7 +177,7 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
                 let memory: [String : AnyObject] = ["video": storageUrl as AnyObject,
                                                          "Title": self.tbTitle.text as AnyObject,
                                                          
-                                                         "Artist": self.tbArtist.text as AnyObject,
+                                                         "Artist": self.btnDropDown.titleLabel?.text as AnyObject,
                                                          "Date": strDate as AnyObject,
                                                          "code": code as AnyObject]
                 
@@ -203,7 +243,7 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.tbTitle.resignFirstResponder()
-        self.tbArtist.resignFirstResponder()
+        //self.tbArtist.resignFirstResponder()
         
         return true
     }
@@ -215,7 +255,7 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
     
     @IBAction func Add(_ sender: Any) {
         
-        if vidURL != nil && tbTitle.text != nil && tbArtist.text != nil{
+        if vidURL != nil && tbTitle.text != nil && btnDropDown.titleLabel?.text != "Select an Artist"{
             
             self.btnAddVideo.isEnabled = false
             self.DatePick.isEnabled = false

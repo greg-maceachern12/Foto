@@ -119,13 +119,13 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
             
             let payAction = UIAlertAction(title: "Pay Now", style: .default, handler: {
                 alert -> Void in
-                let myVC = self.storyboard?.instantiateViewController(withIdentifier: "Payment") as! PaymentViewController
-                
-               
-                myVC.clientName = self.sentInqposts[indexPath.row].toName
-                myVC.price = self.sentInqposts[indexPath.row].price
-                
-                self.present(myVC, animated: true)
+//                let myVC = self.storyboard?.instantiateViewController(withIdentifier: "Payment") as! PaymentViewController
+//                
+//               
+//                myVC.clientName = self.sentInqposts[indexPath.row].toName
+//                myVC.price = self.sentInqposts[indexPath.row].price
+//                
+//                self.present(myVC, animated: true)
             })
 
             

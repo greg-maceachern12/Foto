@@ -230,7 +230,7 @@ override func viewDidLoad() {
         try! FIRAuth.auth()?.signOut()
         
         self.lblUser.text = "Sign In/Sign Up"
-        self.btnLogout.alpha=0
+        self.btnLogout.alpha = 0
         self.tbPassword.text = ""
         self.tbUser.text = ""
         

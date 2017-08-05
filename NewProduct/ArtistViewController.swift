@@ -506,7 +506,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                 
                 
                 
-                let imgData = UIImagePNGRepresentation(self.tempImg.image!)! as NSData
+                let imgData = UIImagePNGRepresentgrn(self.tempImg.image!)! as NSData
                 UserDefaults.standard.set(imgData, forKey: "\(self.status!) \(self.token!)")
                 
                 
@@ -540,6 +540,10 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
             
             if self.progressBar.progress == 1{
                 self.progressBar.isHidden = true
+                self.picturePicker.isUserInteractionEnabled = true
+            }
+            else{
+                self.picturePicker.isUserInteractionEnabled = false
             }
         }
 
