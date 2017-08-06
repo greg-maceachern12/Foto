@@ -9,23 +9,24 @@
 import UIKit
 import Firebase
 import CoreData
-//import Stripe
+import UserNotifications
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
 
     var window: UIWindow?
 
-    override init(){
+    
+    override init() {
         FIRApp.configure()
     }
-    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
        
-//        Stripe.setDefaultPublishableKey("pk_test_ZtsOL5lnm05iXbC3Fn4ueK85")
+        
+        
         PayPalMobile.initializeWithClientIds(forEnvironments: [PayPalEnvironmentProduction:"ARjyeCMMitQUDqOyO3cJ0qUeE7VWh9DY-7QihoEHeua4DgGYvml_AnNBw5ziWMCCSrCK7ENy5kWY4V0h", PayPalEnvironmentSandbox:"ARjyeCMMitQUDqOyO3cJ0qUeE7VWh9DY-7QihoEHeua4DgGYvml_AnNBw5ziWMCCSrCK7ENy5kWY4V0h"])
         
         UINavigationBar.appearance().titleTextAttributes = [
@@ -36,8 +37,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         DropDown.startListeningToKeyboard()
         
+        if #available(iOS 10.0, *){
+            //notifications for iOS 10
+            UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
+            
+            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+            UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { (_, _) in
+            })
+        }
+        else{
+            let settings: UIUserNotificationSettings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+            application.registerUserNotificationSettings(settings)
+        
+        }
+        
+        application.registerForRemoteNotifications()
+        
 
         return true
+    }
+
+    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
+        let VC: MessViewController = MessViewController()
+        let token: [String: AnyObject] = [Messaging.messaging().fcmToken!: Messaging.messaging().fcmToken as AnyObject]
+        VC.postToken(Token: token)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

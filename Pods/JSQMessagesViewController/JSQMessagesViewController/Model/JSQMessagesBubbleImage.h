@@ -34,6 +34,7 @@
  *  Returns the message bubble image for a regular display state.
  */
 @property (strong, nonatomic, readonly) UIImage *messageBubbleImage;
+
 /**
  *  Returns the message bubble image for a highlighted display state.
  */

@@ -49,6 +49,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Protobuf.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SDWebImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -57,22 +62,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>107A9565F9DF88517DFD3E28C05B2B96</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>25A5F4E03C1A9EFC04BD8065C1BA4825</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2F0FE1E2A5B1EF15139E10A40F05CE94</key>
+		<key>4FDC533A4360A68ABDCE852F04B30927</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>5168099F2EBFC99A707C03C9EADE01A5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6D5CEDECD3D8DC52EA507E0431BDA8A0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>711050860A1590257196112C2D75D564</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>828F8D7C1ED4EF379177BB85F340F227</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -97,12 +112,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DD9C77012A30AD8AA09D78CBFC237A6F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>ED5BCFE6712EA08FC6A8F193DE5CCE7A</key>
+		<key>E461A386E0FB7A8508ACF1260590840A</key>
 		<dict>
 			<key>primary</key>
 			<true/>

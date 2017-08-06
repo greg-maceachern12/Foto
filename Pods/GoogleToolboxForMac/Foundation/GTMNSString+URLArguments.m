@@ -42,7 +42,7 @@
                                 withString:@" "
                                    options:NSLiteralSearch
                                      range:NSMakeRange(0, [resultString length])];
-  return [resultString stringByRemovingPercentEncoding];
+  return [resultString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 
 @end

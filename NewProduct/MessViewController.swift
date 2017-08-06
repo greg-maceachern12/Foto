@@ -50,7 +50,7 @@ extension MessViewController{
                 
                 if let temp1 = snap.value as? String{
                    
-                    
+                    let token: [String: AnyObject] = [Messaging.messaging().fcmToken!: Messaging.messaging().fcmToken as AnyObject]
                     
                     let messPost: [String : AnyObject] = ["toName": self.name as AnyObject,
                                                           "token": self.token as AnyObject,
@@ -61,6 +61,7 @@ extension MessViewController{
                     
                     
                     self.dataRef.child("users").child(self.loggedUser!.uid).child("messages").child(self.token).setValue(messPost)
+                    self.postToken(Token: token)
                     
                 }
             })
@@ -124,6 +125,11 @@ extension MessViewController{
         
     }
     
+    func postToken(Token: [String: AnyObject]){
+        print("FCM Token: \(Token)")
+        let dbRef = FIRDatabase.database().reference()
+        dbRef.child("fcmToken").child(Messaging.messaging().fcmToken!).setValue(Token)
+    }
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
 
         let placeHolderImage = #imageLiteral(resourceName: "Default")

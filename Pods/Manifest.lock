@@ -1,63 +1,66 @@
 PODS:
   - CardIO (5.4.1)
-  - Cosmos (7.0.0)
+  - Cosmos (11.0.3)
   - DropDown (2)
-  - Firebase (3.11.0):
-    - Firebase/Core (= 3.11.0)
-  - Firebase/Auth (3.11.0):
+  - Firebase (3.17.0):
+    - Firebase/Core (= 3.17.0)
+  - Firebase/Auth (3.17.0):
     - Firebase/Core
-    - FirebaseAuth (= 3.1.0)
-  - Firebase/Core (3.11.0):
-    - FirebaseAnalytics (= 3.6.0)
-    - FirebaseCore (= 3.4.6)
-  - Firebase/Database (3.11.0):
+    - FirebaseAuth (= 3.1.1)
+  - Firebase/Core (3.17.0):
+    - FirebaseAnalytics (= 3.9.0)
+    - FirebaseCore (= 3.6.0)
+  - Firebase/Database (3.17.0):
     - Firebase/Core
-    - FirebaseDatabase (= 3.1.1)
-  - Firebase/Storage (3.11.0):
+    - FirebaseDatabase (= 3.1.2)
+  - Firebase/Storage (3.17.0):
     - Firebase/Core
-    - FirebaseStorage (= 1.0.5)
-  - FirebaseAnalytics (3.6.0):
-    - FirebaseCore (~> 3.4)
+    - FirebaseStorage (= 1.1.0)
+  - FirebaseAnalytics (3.9.0):
+    - FirebaseCore (~> 3.6)
     - FirebaseInstanceID (~> 1.0)
-    - GoogleInterchangeUtilities (~> 1.2)
-    - GoogleSymbolUtilities (~> 1.1)
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
-  - FirebaseAuth (3.1.0):
-    - FirebaseAnalytics (~> 3.6)
+  - FirebaseAuth (3.1.1):
+    - FirebaseAnalytics (~> 3.7)
     - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
     - GTMSessionFetcher/Core (~> 1.1)
-  - FirebaseCore (3.4.6):
-    - GoogleInterchangeUtilities (~> 1.2)
+  - FirebaseCore (3.6.0):
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
-  - FirebaseDatabase (3.1.1):
-    - FirebaseAnalytics (~> 3.5)
-  - FirebaseInstanceID (1.0.8)
-  - FirebaseStorage (1.0.5):
-    - FirebaseAnalytics (~> 3.5)
+  - FirebaseDatabase (3.1.2):
+    - FirebaseAnalytics (~> 3.7)
+  - FirebaseInstanceID (1.0.10):
+    - FirebaseCore (~> 3.6)
+  - FirebaseMessaging (1.2.3):
+    - FirebaseAnalytics (~> 3.8)
+    - FirebaseInstanceID (~> 1.0)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - Protobuf (~> 3.1)
+  - FirebaseStorage (1.1.0):
+    - FirebaseAnalytics (~> 3.7)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleInterchangeUtilities (1.2.2):
-    - GoogleSymbolUtilities (~> 1.1)
-  - GoogleSymbolUtilities (1.1.2)
-  - GoogleToolboxForMac/DebugUtils (2.1.0):
-    - GoogleToolboxForMac/Defines (= 2.1.0)
-  - GoogleToolboxForMac/Defines (2.1.0)
-  - GoogleToolboxForMac/NSData+zlib (2.1.0):
-    - GoogleToolboxForMac/Defines (= 2.1.0)
-  - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.0):
-    - GoogleToolboxForMac/DebugUtils (= 2.1.0)
-    - GoogleToolboxForMac/Defines (= 2.1.0)
-    - GoogleToolboxForMac/NSString+URLArguments (= 2.1.0)
-  - GoogleToolboxForMac/NSString+URLArguments (2.1.0)
-  - GTMSessionFetcher/Core (1.1.7)
-  - JSQMessagesViewController (7.3.4):
+  - GoogleToolboxForMac/DebugUtils (2.1.1):
+    - GoogleToolboxForMac/Defines (= 2.1.1)
+  - GoogleToolboxForMac/Defines (2.1.1)
+  - GoogleToolboxForMac/Logger (2.1.1):
+    - GoogleToolboxForMac/Defines (= 2.1.1)
+  - GoogleToolboxForMac/NSData+zlib (2.1.1):
+    - GoogleToolboxForMac/Defines (= 2.1.1)
+  - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.1):
+    - GoogleToolboxForMac/DebugUtils (= 2.1.1)
+    - GoogleToolboxForMac/Defines (= 2.1.1)
+    - GoogleToolboxForMac/NSString+URLArguments (= 2.1.1)
+  - GoogleToolboxForMac/NSString+URLArguments (2.1.1)
+  - GTMSessionFetcher/Core (1.1.11)
+  - JSQMessagesViewController (7.3.5):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
-  - PayPal-iOS-SDK (2.16.1):
-    - PayPal-iOS-SDK/CardIO (= 2.16.1)
-    - PayPal-iOS-SDK/Core (= 2.16.1)
-  - PayPal-iOS-SDK/CardIO (2.16.1):
+  - PayPal-iOS-SDK (2.17.0):
+    - PayPal-iOS-SDK/CardIO (= 2.17.0)
+    - PayPal-iOS-SDK/Core (= 2.17.0)
+  - PayPal-iOS-SDK/CardIO (2.17.0):
     - CardIO (~> 5.4.1)
-  - PayPal-iOS-SDK/Core (2.16.1)
+  - PayPal-iOS-SDK/Core (2.17.0)
+  - Protobuf (3.3.0)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
@@ -70,30 +73,31 @@ DEPENDENCIES:
   - Firebase/Core
   - Firebase/Database
   - Firebase/Storage
+  - FirebaseMessaging (~> 1.2)
   - JSQMessagesViewController
   - PayPal-iOS-SDK
   - SDWebImage (~> 3.8)
 
 SPEC CHECKSUMS:
   CardIO: 56983b39b62f495fc6dae9ad7cf875143df06443
-  Cosmos: 2c8299147138758f6ebbb247cf1aeed77998bdf9
+  Cosmos: eb506859929f4add2d2aec822a27efb2f718a95d
   DropDown: 744784d9c9aa505100e942c16acd05430cbb2f0a
-  Firebase: b8134e285eb33201115bc688bc5d7f112923bc1f
-  FirebaseAnalytics: 9c67af0ebeb8d2146c9b4ea2616439affa947b58
-  FirebaseAuth: b436e4ecebe068bf8e8c6e4e29de5756ffe7ee24
-  FirebaseCore: 03da1cb32615569bbc2830a22f9ad753d9a02ef5
-  FirebaseDatabase: 6de92187481ff0e8e124064f21742e95ee883b02
-  FirebaseInstanceID: ba1e640935235e5fac39dfa816fe7660e72e1a8a
-  FirebaseStorage: 5738284835edb57f0e81d4ae5832bb17c1e4b5fa
-  GoogleInterchangeUtilities: d5bc4d88d5b661ab72f9d70c58d02ca8c27ad1f7
-  GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
-  GoogleToolboxForMac: 2b2596cbb7186865e98cadf2b1e262d851c2b168
-  GTMSessionFetcher: a1f8ed39e4fe21c68957daed472c7afbcdf29166
-  JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
+  Firebase: 4b66b5b59c43edac745b87f0c87e42cdd0279c13
+  FirebaseAnalytics: e5fe8486efc01bec33f6bf82e2fa9fce4b124052
+  FirebaseAuth: cc8a1824170adbd351edb7f994490a3fb5c18be6
+  FirebaseCore: 9691ee2ade70c098d7cf92440f4303f16d83ca75
+  FirebaseDatabase: 05c96d7b43a7368dc91c07791adb49683e1738d1
+  FirebaseInstanceID: b9eedd6846fb5e1f0f7279e1deaa7a7e4cf8392e
+  FirebaseMessaging: 753d05a925e9eb8eadd09a0ffc9b808578b72fac
+  FirebaseStorage: a5c55b23741a49a72af8f30f95b3bb5ddbeda12d
+  GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
+  GTMSessionFetcher: 5ad62e8200fa00ed011fe5e08d27fef72c5b1429
+  JSQMessagesViewController: 6587f56aedbcb150a8ba1d968e1ef58b1bc758b7
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
-  PayPal-iOS-SDK: 774ac7de2d7c3b0ee7e8a35f8b347fd07787321b
+  PayPal-iOS-SDK: 849321f6214a7187ee4cc684f63fe509df4c4a36
+  Protobuf: d582fecf68201eac3d79ed61369ef45734394b9c
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
 
-PODFILE CHECKSUM: ca841bf4a69d4472c0f42112ba51819939b5202f
+PODFILE CHECKSUM: 2c8cb05969764a49f6b7b4612fe829f0ea38b774
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.3.0

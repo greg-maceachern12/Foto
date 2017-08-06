@@ -506,7 +506,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                 
                 
                 
-                let imgData = UIImagePNGRepresentgrn(self.tempImg.image!)! as NSData
+                let imgData = UIImagePNGRepresentation(self.tempImg.image!)! as NSData
                 UserDefaults.standard.set(imgData, forKey: "\(self.status!) \(self.token!)")
                 
                 

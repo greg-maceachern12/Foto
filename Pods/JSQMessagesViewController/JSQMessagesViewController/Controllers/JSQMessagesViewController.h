@@ -48,9 +48,6 @@
 /**
  *  Returns the keyboard controller object used to manage the software keyboard.
  */
--(IBAction)back;
-
-
 @property (strong, nonatomic) JSQMessagesKeyboardController *keyboardController;
 
 /**

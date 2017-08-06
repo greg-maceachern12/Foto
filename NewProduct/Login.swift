@@ -8,7 +8,9 @@
 
 import UIKit
 import Firebase
+import FirebaseCore
 import FirebaseAuth
+import FirebaseDatabase
 
 
 class Login: UIViewController, UITextFieldDelegate {
@@ -223,6 +225,12 @@ override func viewDidLoad() {
         
     }
     
+//    func postToken(Token: [String: AnyObject]){
+//        print("FCM Token: \(Token)")
+//        let dbRef = FIRDatabase.database().reference()
+//        dbRef.child("fcmToken").child(Messaging.messaging().fcmToken!).setValue(Token)
+//    }
+    
     
     @IBAction func Logout(_ sender: Any) {
         
@@ -234,8 +242,12 @@ override func viewDidLoad() {
         self.tbPassword.text = ""
         self.tbUser.text = ""
         
-    
         
+        //when user clicks send
+//        let token: [String: AnyObject] = [Messaging.messaging().fcmToken!: Messaging.messaging().fcmToken as AnyObject]
+//        
+//        //when message sends
+//        self.postToken(Token: token)
         
     }
     

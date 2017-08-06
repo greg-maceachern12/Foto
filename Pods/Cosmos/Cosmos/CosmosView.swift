@@ -9,7 +9,7 @@ Example:
     cosmosView.rating = 4
     cosmosView.text = "(123)"
 
-Shows: ★★★★☆ (132)
+Shows: ★★★★☆ (123)
 
 */
 @IBDesignable open class CosmosView: UIView {
@@ -73,8 +73,6 @@ Shows: ★★★★☆ (132)
   override public init(frame: CGRect) {
     super.init(frame: frame)
     update()
-    self.frame.size = intrinsicContentSize
-    
     improvePerformance()
   }
   
@@ -104,16 +102,22 @@ Shows: ★★★★☆ (132)
     // Create star layers
     // ------------
     
-    var layers = CosmosLayers.createStarLayers(rating, settings: settings)
-    layer.sublayers = layers
+    var layers = CosmosLayers.createStarLayers(
+      rating,
+      settings: settings,
+      isRightToLeft: RightToLeft.isRightToLeft(self)
+    )
     
     // Create text layer
     // ------------
 
     if let text = text {
       let textLayer = createTextLayer(text, layers: layers)
-      layers.append(textLayer)
+      layers = addTextLayer(textLayer: textLayer, layers: layers)
     }
+    
+    layer.sublayers = layers
+    
     
     // Update size
     // ------------
@@ -142,11 +146,40 @@ Shows: ★★★★☆ (132)
     
     let starsSize = CosmosSize.calculateSizeToFitLayers(layers)
     
-    CosmosText.position(textLayer, starsSize: starsSize, textMargin: settings.textMargin)
+    if RightToLeft.isRightToLeft(self) {
+      CosmosText.position(textLayer, starsSize: CGSize(width: 0, height: starsSize.height), textMargin: 0)
+    } else {
+      CosmosText.position(textLayer, starsSize: starsSize, textMargin: settings.textMargin)
+    }
     
     layer.addSublayer(textLayer)
     
     return textLayer
+  }
+  
+  /**
+   
+   Adds text layer to the array of layers
+   
+   - parameter textLayer: A text layer.
+   - parameter layers: An array where the text layer will be added.
+   - returns: An array of layer with the text layer.
+   
+   */
+  private func addTextLayer(textLayer: CALayer, layers: [CALayer]) -> [CALayer] {
+    var allLayers = layers
+    // Position stars after the text for right-to-left languages
+    if RightToLeft.isRightToLeft(self) {
+      for starLayer in layers {
+        starLayer.position.x += textLayer.bounds.width + CGFloat(settings.textMargin);
+      }
+      
+      allLayers.insert(textLayer, at: 0)
+    } else {
+      allLayers.append(textLayer)
+    }
+    
+    return allLayers
   }
   
   /**
@@ -159,6 +192,10 @@ Shows: ★★★★☆ (132)
   private func updateSize(_ layers: [CALayer]) {
     viewSize = CosmosSize.calculateSizeToFitLayers(layers)
     invalidateIntrinsicContentSize()
+
+    // Stretch the view to include all stars and the text.
+    // Needed when used without Auto Layout to receive touches for all stars.
+    frame.size = intrinsicContentSize
   }
   
   /// Returns the content size to fit all the star and text layers.
@@ -201,21 +238,26 @@ Shows: ★★★★☆ (132)
   /// Overriding the function to detect the first touch gesture.
   open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     super.touchesBegan(touches, with: event)
-    
-    if let touch = touches.first {
-      let location = touch.location(in: self).x
-      onDidTouch(location, starsWidth: widthOfStars)
-    }
+    guard let location = touchLocationFromBeginningOfRating(touches) else { return }
+    onDidTouch(location)
   }
   
   /// Overriding the function to detect touch move.
   open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
     super.touchesMoved(touches, with: event)
+    guard let location = touchLocationFromBeginningOfRating(touches) else { return }
+    onDidTouch(location)
+  }
+  
+  /// Returns the distance of the touch relative to the left edge of the first star
+  func touchLocationFromBeginningOfRating(_ touches: Set<UITouch>) -> CGFloat? {
+    guard let touch = touches.first else { return nil }
+    var location = touch.location(in: self).x
     
-    if let touch = touches.first {
-      let location = touch.location(in: self).x
-      onDidTouch(location, starsWidth: widthOfStars)
-    }
+    // In right-to-left languages, the first star will be on the right
+    if RightToLeft.isRightToLeft(self) { location = bounds.width - location }
+    
+    return location
   }
   
   /// Detecting event when the user lifts their finger.
@@ -234,9 +276,8 @@ Shows: ★★★★☆ (132)
   - parameter starsWidth: The width of the stars excluding the text.
   
   */
-  func onDidTouch(_ locationX: CGFloat, starsWidth: CGFloat) {
-    let calculatedTouchRating = CosmosTouch.touchRating(locationX, starsWidth: starsWidth,
-      settings: settings)
+  func onDidTouch(_ locationX: CGFloat) {
+    let calculatedTouchRating = CosmosTouch.touchRating(locationX, settings: settings)
     
     if settings.updateOnTouch {
       rating = calculatedTouchRating
@@ -252,17 +293,6 @@ Shows: ★★★★☆ (132)
   }
   
   private var previousRatingForDidTouchCallback: Double = -123.192
-  
-  
-  /// Width of the stars (excluding the text). Used for calculating touch location.
-  var widthOfStars: CGFloat {
-    if let sublayers = self.layer.sublayers, settings.totalStars <= sublayers.count {
-      let starLayers = Array(sublayers[0..<settings.totalStars])
-      return CosmosSize.calculateSizeToFitLayers(starLayers).width
-    }
-    
-    return 0
-  }
   
   /// Increase the hitsize of the view if it's less than 44px for easier touching.
   override open func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
@@ -295,31 +325,31 @@ Shows: ★★★★☆ (132)
     didSet {
       settings.emptyColor = emptyColor
     }
-    }
+  }
     
-    @IBInspectable var emptyBorderColor: UIColor = CosmosDefaultSettings.emptyBorderColor {
-        didSet {
-            settings.emptyBorderColor = emptyBorderColor
-        }
-    }
-    
-    @IBInspectable var emptyBorderWidth: Double = CosmosDefaultSettings.emptyBorderWidth {
-        didSet {
-            settings.emptyBorderWidth = emptyBorderWidth
-        }
-    }
-    
-    @IBInspectable var filledBorderColor: UIColor = CosmosDefaultSettings.filledBorderColor {
-        didSet {
-            settings.filledBorderColor = filledBorderColor
-        }
-    }
-    
-    @IBInspectable var filledBorderWidth: Double = CosmosDefaultSettings.filledBorderWidth {
-        didSet {
-            settings.filledBorderWidth = filledBorderWidth
-        }
-    }
+  @IBInspectable var emptyBorderColor: UIColor = CosmosDefaultSettings.emptyBorderColor {
+      didSet {
+          settings.emptyBorderColor = emptyBorderColor
+      }
+  }
+  
+  @IBInspectable var emptyBorderWidth: Double = CosmosDefaultSettings.emptyBorderWidth {
+      didSet {
+          settings.emptyBorderWidth = emptyBorderWidth
+      }
+  }
+  
+  @IBInspectable var filledBorderColor: UIColor = CosmosDefaultSettings.filledBorderColor {
+      didSet {
+          settings.filledBorderColor = filledBorderColor
+      }
+  }
+  
+  @IBInspectable var filledBorderWidth: Double = CosmosDefaultSettings.filledBorderWidth {
+      didSet {
+          settings.filledBorderWidth = filledBorderWidth
+      }
+  }
   
   @IBInspectable var starMargin: Double = CosmosDefaultSettings.starMargin {
     didSet {
@@ -360,6 +390,18 @@ Shows: ★★★★☆ (132)
   @IBInspectable var minTouchRating: Double = CosmosDefaultSettings.minTouchRating {
     didSet {
       settings.minTouchRating = minTouchRating
+    }
+  }
+  
+  @IBInspectable var filledImage: UIImage? {
+    didSet {
+      settings.filledImage = filledImage
+    }
+  }
+  
+  @IBInspectable var emptyImage: UIImage? {
+    didSet {
+      settings.emptyImage = emptyImage
     }
   }
   
