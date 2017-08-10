@@ -118,7 +118,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view tag="6" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="azb-hV-oFq" customClass="CosmosView" customModule="NewProduct" customModuleProvider="target">
+                                                <view userInteractionEnabled="NO" tag="6" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="azb-hV-oFq" customClass="CosmosView" customModule="NewProduct" customModuleProvider="target">
                                                     <rect key="frame" x="271" y="16" width="96" height="18"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <userDefinedRuntimeAttributes>
@@ -1856,7 +1856,7 @@
                                                 <action selector="backShow:" destination="TTU-Uw-MPu" id="lN6-8H-X4i"/>
                                             </connections>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" enabled="NO" image="More-35" id="ony-NA-r2E">
+                                        <barButtonItem key="rightBarButtonItem" image="More-35" id="ony-NA-r2E">
                                             <color key="tintColor" red="1" green="0.55117796370000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <connections>
                                                 <action selector="More:" destination="TTU-Uw-MPu" id="cfz-kL-6Rm"/>
@@ -1869,13 +1869,13 @@
                                 <rect key="frame" x="0.0" y="60" width="375" height="1540"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alan Anderson" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="NyJ-ZQ-AGK">
-                                        <rect key="frame" x="104" y="0.0" width="170" height="35"/>
+                                        <rect key="frame" x="104" y="5" width="170" height="35"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="25"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Verfied" translatesAutoresizingMaskIntoConstraints="NO" id="mNI-T7-mEW">
-                                        <rect key="frame" x="282" y="8" width="22" height="22"/>
+                                        <rect key="frame" x="282" y="13" width="22" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22" id="i2R-fh-Ji5"/>
                                         </constraints>
@@ -2147,7 +2147,7 @@
                                             <outletCollection property="gestureRecognizers" destination="SvI-hy-Urs" appends="YES" id="01H-f7-5Wq"/>
                                         </connections>
                                     </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tNx-tW-nln" customClass="CosmosView" customModule="NewProduct" customModuleProvider="target">
+                                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tNx-tW-nln" customClass="CosmosView" customModule="NewProduct" customModuleProvider="target">
                                         <rect key="frame" x="113" y="43" width="152" height="26"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="image" keyPath="filledImage" value="RateFul"/>
@@ -2170,7 +2170,7 @@
                                     <constraint firstItem="wCY-3o-zgG" firstAttribute="top" secondItem="yHG-jR-JKS" secondAttribute="bottom" constant="8" symbolic="YES" id="2Ef-QD-XJi"/>
                                     <constraint firstItem="CsN-rb-x9n" firstAttribute="leading" secondItem="37N-7n-X1q" secondAttribute="leading" id="31E-y9-hOv"/>
                                     <constraint firstItem="yHG-jR-JKS" firstAttribute="top" secondItem="6Yf-mb-Q2x" secondAttribute="bottom" constant="8" symbolic="YES" id="4AE-h9-qRj"/>
-                                    <constraint firstItem="tNx-tW-nln" firstAttribute="top" secondItem="NyJ-ZQ-AGK" secondAttribute="bottom" constant="8" symbolic="YES" id="5KK-IW-e8V"/>
+                                    <constraint firstItem="tNx-tW-nln" firstAttribute="top" secondItem="NyJ-ZQ-AGK" secondAttribute="bottom" constant="3" id="5KK-IW-e8V"/>
                                     <constraint firstItem="wch-6t-5DH" firstAttribute="top" secondItem="v5U-H3-yuj" secondAttribute="top" id="5aP-CP-qf8"/>
                                     <constraint firstItem="vPX-Mz-c1H" firstAttribute="bottom" secondItem="5OE-hH-BTh" secondAttribute="bottom" id="6yW-Hg-uGf"/>
                                     <constraint firstItem="yIz-AJ-1R0" firstAttribute="baseline" secondItem="yHG-jR-JKS" secondAttribute="firstBaseline" id="70y-bw-p03"/>
@@ -2183,7 +2183,7 @@
                                     <constraint firstItem="v5U-H3-yuj" firstAttribute="top" secondItem="6Yf-mb-Q2x" secondAttribute="top" id="Cgn-qH-8DY"/>
                                     <constraint firstItem="5OE-hH-BTh" firstAttribute="trailing" secondItem="37N-7n-X1q" secondAttribute="trailing" id="DCi-5W-KlI"/>
                                     <constraint firstItem="CsN-rb-x9n" firstAttribute="leading" secondItem="0NT-aj-sJf" secondAttribute="leading" id="EqY-r7-X9d"/>
-                                    <constraint firstItem="CsN-rb-x9n" firstAttribute="top" secondItem="mNI-T7-mEW" secondAttribute="bottom" constant="58" id="EsL-cj-hLu"/>
+                                    <constraint firstItem="CsN-rb-x9n" firstAttribute="top" secondItem="mNI-T7-mEW" secondAttribute="bottom" constant="53" id="EsL-cj-hLu"/>
                                     <constraint firstItem="CsN-rb-x9n" firstAttribute="top" secondItem="tNx-tW-nln" secondAttribute="bottom" constant="19" id="F4Q-60-6PC"/>
                                     <constraint firstItem="tJF-Bt-INY" firstAttribute="top" secondItem="1LX-zh-9qV" secondAttribute="bottom" constant="27" id="FKT-JO-pBv"/>
                                     <constraint firstItem="tJF-Bt-INY" firstAttribute="leading" secondItem="2sz-Qv-0FM" secondAttribute="leading" id="FXv-ZG-FXa"/>
@@ -2208,7 +2208,7 @@
                                     <constraint firstItem="wCY-3o-zgG" firstAttribute="bottom" secondItem="0NT-aj-sJf" secondAttribute="bottomMargin" id="Tif-Ao-RnV"/>
                                     <constraint firstItem="1LX-zh-9qV" firstAttribute="leading" secondItem="2sz-Qv-0FM" secondAttribute="leading" id="UCQ-MA-eA4"/>
                                     <constraint firstItem="CgB-bV-2U5" firstAttribute="top" secondItem="CsN-rb-x9n" secondAttribute="bottom" constant="8" symbolic="YES" id="UqC-s4-7in"/>
-                                    <constraint firstItem="mNI-T7-mEW" firstAttribute="top" secondItem="0NT-aj-sJf" secondAttribute="topMargin" id="VwT-hq-9hw"/>
+                                    <constraint firstItem="mNI-T7-mEW" firstAttribute="top" secondItem="0NT-aj-sJf" secondAttribute="topMargin" constant="5" id="VwT-hq-9hw"/>
                                     <constraint firstItem="JJe-fM-YI3" firstAttribute="leading" secondItem="0NT-aj-sJf" secondAttribute="leading" constant="18" id="VzG-wn-uAz"/>
                                     <constraint firstItem="CgB-bV-2U5" firstAttribute="centerY" secondItem="Rhf-Zk-OMy" secondAttribute="centerY" id="W3w-OB-6tJ"/>
                                     <constraint firstItem="mNI-T7-mEW" firstAttribute="leading" secondItem="NyJ-ZQ-AGK" secondAttribute="trailing" constant="8" symbolic="YES" id="WFl-8G-AEd"/>
@@ -2233,7 +2233,7 @@
                                     <constraint firstItem="yHG-jR-JKS" firstAttribute="leading" secondItem="wCY-3o-zgG" secondAttribute="leading" id="n2q-cg-22a"/>
                                     <constraint firstItem="wch-6t-5DH" firstAttribute="top" secondItem="nqZ-i0-4w5" secondAttribute="top" id="oBJ-vP-hC0"/>
                                     <constraint firstItem="37N-7n-X1q" firstAttribute="leading" secondItem="vPX-Mz-c1H" secondAttribute="leading" id="oR3-Y5-LR4"/>
-                                    <constraint firstItem="NyJ-ZQ-AGK" firstAttribute="top" secondItem="0NT-aj-sJf" secondAttribute="top" id="oXU-aI-aKb"/>
+                                    <constraint firstItem="NyJ-ZQ-AGK" firstAttribute="top" secondItem="0NT-aj-sJf" secondAttribute="top" constant="5" id="oXU-aI-aKb"/>
                                     <constraint firstItem="Qb5-E2-wc9" firstAttribute="trailing" secondItem="TVe-gD-OCt" secondAttribute="trailing" id="oZO-oz-anh"/>
                                     <constraint firstItem="tJF-Bt-INY" firstAttribute="top" secondItem="TVe-gD-OCt" secondAttribute="top" id="pMd-wj-nxj"/>
                                     <constraint firstItem="oMM-eR-MFH" firstAttribute="trailing" secondItem="yIz-AJ-1R0" secondAttribute="trailing" id="qC3-Tc-htG"/>

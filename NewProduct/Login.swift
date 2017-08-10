@@ -128,8 +128,11 @@ override func viewDidLoad() {
                         self.tbPassword.text = ""
                         self.lblUser.text = user!.email
                         self.NameRef.child("users").child(self.loggedInUser!.uid).child("Name").setValue(firstTextField.text)
-                         self.NameRef.child("users").child(self.loggedInUser!.uid).child("Email").setValue(FIRAuth.auth()?.currentUser?.email)
-
+                        self.NameRef.child("users").child(self.loggedInUser!.uid).child("Email").setValue(FIRAuth.auth()?.currentUser?.email)
+                        
+                        let VC: MessViewController = MessViewController()
+                        let token: [String: AnyObject] = [Messaging.messaging().fcmToken!: Messaging.messaging().fcmToken as AnyObject]
+                        VC.postToken(Token: token)
                     
                         
                         self.Load.stopAnimating()

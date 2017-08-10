@@ -88,6 +88,10 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     var tempImg2 = UIImageView()
     var tempImg3 = UIImageView()
     
+    
+    var tb1 = UITextView()
+    var placeholder = UILabel()
+    
     var temp1: String!
     var temp2: String!
     var temp3: String!
@@ -317,7 +321,12 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     
     
     func textViewDidChangeSelection(_ textView: UITextView) {
+        if textView == tbDescription{
         placeholderLabel.isHidden = !tbDescription.text.isEmpty
+        }else{
+            placeholder.isHidden = !tb1.text.isEmpty
+            
+        }
     }
  
   
@@ -1542,14 +1551,32 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         
         if self.token != self.loggedUser!.uid{
         let vc = UIViewController()
-        vc.preferredContentSize = CGSize(width: 250,height: 100)
-        let pickerView2 = CosmosView(frame: CGRect(x: 0, y: 0, width: 250, height: 100))
-//        pickerView2.halfImage = #imageLiteral(resourceName: "RatingHalf")
-//        pickerView2.onImage = #imageLiteral(resourceName: "RatingFull")
-//        pickerView2.offImage = #imageLiteral(resourceName: "RatingEmpty")
-        //pickerView2.delegate = self
-        //pickerView2.dataSource = self
+        vc.preferredContentSize = CGSize(width: 250,height: 150)
+        let pickerView2 = CosmosView(frame: CGRect(x: 40, y: 0, width: 250, height: 50))
+        
+            self.tb1 = UITextView(frame: CGRect(x: 0, y: 40, width: 250, height: 100))
+            self.tb1.font = UIFont(name: "Avenir Next", size: 14)
+            //self.placeholder = UILabel(frame: CGRect(x: 0, y: 40, width: 250, height: 100))
+            pickerView2.emptyImage = #imageLiteral(resourceName: "RateEmp")
+            pickerView2.filledImage = #imageLiteral(resourceName: "RateFul")
+            pickerView2.starSize = 30
+            
+            tb1.delegate = self
+            
+            placeholder = UILabel()
+            placeholder.lineBreakMode = NSLineBreakMode.byWordWrapping
+            placeholder.numberOfLines = 1
+            placeholder.text = "Enter your review for this artist!"
+            placeholder.font = UIFont(name: "Avenir Next", size: 14)
+            placeholder.sizeToFit()
+            tb1.addSubview(placeholder)
+            placeholder.frame.origin = CGPoint(x: 5, y: 48)
+            placeholder.textColor = UIColor.lightGray
+            placeholder.isHidden = !tb1.text.isEmpty
+//
         vc.view.addSubview(pickerView2)
+        vc.view.addSubview(tb1)
+        vc.view.addSubview(placeholder)
         let editRadiusAlert = UIAlertController(title: "Rate This Artist", message: "", preferredStyle: UIAlertControllerStyle.alert)
         editRadiusAlert.setValue(vc, forKey: "contentViewController")
         editRadiusAlert.addAction(UIAlertAction(title: "Done", style: .default, handler: {

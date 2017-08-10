@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseMessaging
 
 protocol SlideMenuDelegate {
     func slideMenuItemSelectedAtIndex(_ index : Int32)
@@ -245,16 +246,16 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
 //                                
                                 let vc = UIViewController()
                                 vc.preferredContentSize = CGSize(width: 250,height: 100)
-                                let label1 = UILabel(frame: CGRect(x: 0, y: 0, width: 75, height: 50))
+                                let label1 = UILabel(frame: CGRect(x: 0, y: 0, width: 75, height: 75))
 //                                let text1 = UITextField(frame: CGRect(x: 75, y: 0, width: 175, height: 50))
-                                let picker1 = UIPickerView(frame: CGRect(x: 75, y: 0, width: 175, height: 100))
+                                let picker1 = UIPickerView(frame: CGRect(x: 75, y: 0, width: 175, height: 75))
                                 
 //                                text1.font = UIFont(name: "Avenir Next", size: 13)
 //                                text1.placeholder = "Enter Your Skills (Seperated by Commas)"
                                 picker1.dataSource = self
                                 picker1.delegate = self
                                 
-                                label1.font = UIFont(name: "Avenir Next", size: 13)
+                                label1.font = UIFont(name: "Avenir Next", size: 14)
                                 
                                 
                                 label1.text = "Skills:"
@@ -282,7 +283,9 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
                                         
                                         self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).setValue(inquirePost)
                                         self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("Ratings").child(self.loggedUser!.uid).setValue(Float(0))
-                                        
+                                        let VC: MessViewController = MessViewController()
+                                        let token: [String: AnyObject] = [Messaging.messaging().fcmToken!: Messaging.messaging().fcmToken as AnyObject]
+                                        VC.postToken(Token: token)
                                         self.dataRef.child("users").child(self.loggedUser!.uid).child("pic").observe(.value){
                                             (snap: FIRDataSnapshot) in
                                             

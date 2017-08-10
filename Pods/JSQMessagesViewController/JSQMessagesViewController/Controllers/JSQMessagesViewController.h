@@ -91,6 +91,9 @@
  *  completely overriding many delegate and data source methods for the collectionView, 
  *  including `collectionView:cellForItemAtIndexPath:`.
  */
+
+-(IBAction)back;
+
 @property (copy, nonatomic) NSString *outgoingCellIdentifier;
 
 /**

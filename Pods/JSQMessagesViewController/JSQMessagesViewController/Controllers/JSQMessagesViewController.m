@@ -213,6 +213,11 @@ JSQMessagesKeyboardControllerDelegate>
     }
 }
 
+-(IBAction)back {
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+    }]; }
+
 - (void)dealloc
 {
     [self jsq_registerForNotifications:NO];

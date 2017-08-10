@@ -35,7 +35,9 @@ extension MessViewController{
         let month = Calendar.current.component(.month, from: strDate)
         let year = Calendar.current.component(.year, from: strDate)
         
+        let token: [String: AnyObject] = [Messaging.messaging().fcmToken!: Messaging.messaging().fcmToken as AnyObject]
         
+         self.postToken(Token: token)
         //if messages.count == 0{
             
 //            let strDate = Date()
@@ -50,23 +52,25 @@ extension MessViewController{
                 
                 if let temp1 = snap.value as? String{
                    
-                    let token: [String: AnyObject] = [Messaging.messaging().fcmToken!: Messaging.messaging().fcmToken as AnyObject]
-                    
+                   
                     let messPost: [String : AnyObject] = ["toName": self.name as AnyObject,
                                                           "token": self.token as AnyObject,
                                                           "pic": temp1 as AnyObject,
+                                                          "text": text as AnyObject,
                                                           "date": "\(day)/\(month)/\(year)" as AnyObject]
                     
                     
                     
                     
                     self.dataRef.child("users").child(self.loggedUser!.uid).child("messages").child(self.token).setValue(messPost)
-                    self.postToken(Token: token)
+                   
                     
                 }
             })
             
-            self.dataRef.child("users").child(self.loggedUser!.uid).child("pic").observe(.value, with: { (snap) in
+        
+        
+        self.dataRef.child("users").child(self.loggedUser!.uid).child("pic").observe(.value, with: { (snap) in
                 
                 if let temp1 = snap.value as? String{
                     
@@ -75,6 +79,7 @@ extension MessViewController{
                     let messPost: [String : AnyObject] = ["toName": senderDisplayName as AnyObject,
                                                           "token": self.loggedUser!.uid as AnyObject,
                                                           "pic": temp1 as AnyObject,
+                                                          "text": text as AnyObject,
                                                           "date": "\(day)/\(month)/\(year)" as AnyObject]
                     
                     self.dataRef.child("users").child(self.token).child("messages").child(self.loggedUser!.uid).updateChildValues(messPost)
@@ -128,7 +133,7 @@ extension MessViewController{
     func postToken(Token: [String: AnyObject]){
         print("FCM Token: \(Token)")
         let dbRef = FIRDatabase.database().reference()
-        dbRef.child("fcmToken").child(Messaging.messaging().fcmToken!).setValue(Token)
+        dbRef.child("users").child(self.loggedUser!.uid).child("fcmToken").setValue(Token)
     }
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
 

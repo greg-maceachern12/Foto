@@ -66,6 +66,7 @@
 
 #pragma mark - Initialization
 
+
 /**
  *  Initializes and returns a message object having the given senderId, displayName, text,
  *  and current system date.
