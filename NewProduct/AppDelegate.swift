@@ -56,11 +56,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
 
         return true
     }
+    
+    func resetBadge(){
+        UIApplication.shared.applicationIconBadgeNumber = 0
+    }
 
     func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
         let VC: MessViewController = MessViewController()
         let token: [String: AnyObject] = [Messaging.messaging().fcmToken!: Messaging.messaging().fcmToken as AnyObject]
         VC.postToken(Token: token)
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data)
+    {
+        FIRInstanceID.instanceID().setAPNSToken(deviceToken, type: FIRInstanceIDAPNSTokenType.sandbox)
+        FIRInstanceID.instanceID().setAPNSToken(deviceToken, type: FIRInstanceIDAPNSTokenType.prod)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -71,6 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        resetBadge()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -79,7 +90,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    resetBadge()
     }
+    
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
@@ -146,5 +159,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
         }
     }
 
+
 }
+
+
 
