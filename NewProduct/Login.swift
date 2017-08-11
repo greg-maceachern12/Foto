@@ -130,9 +130,9 @@ override func viewDidLoad() {
                         self.NameRef.child("users").child(self.loggedInUser!.uid).child("Name").setValue(firstTextField.text)
                         self.NameRef.child("users").child(self.loggedInUser!.uid).child("Email").setValue(FIRAuth.auth()?.currentUser?.email)
                         
-                        let VC: MessViewController = MessViewController()
-                        let token: [String: AnyObject] = [Messaging.messaging().fcmToken!: Messaging.messaging().fcmToken as AnyObject]
-                        VC.postToken(Token: token)
+//                        let VC: MessViewController = MessViewController()
+//                        let token: [String: AnyObject] = [Messaging.messaging().fcmToken!: Messaging.messaging().fcmToken as AnyObject]
+//                        VC.postToken(Token: token)
                     
                         
                         self.Load.stopAnimating()
@@ -312,7 +312,12 @@ override func viewDidLoad() {
             }
         })
         
+        let VC: MessViewController = MessViewController()
+        let token: [String: AnyObject] = [Messaging.messaging().fcmToken!: Messaging.messaging().fcmToken as AnyObject]
+        VC.postToken(Token: token)
+        
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        
         
         let vc: UIViewController = storyboard.instantiateViewController(withIdentifier: "Home")
         
