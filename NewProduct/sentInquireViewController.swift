@@ -113,7 +113,7 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
         {
          
             
-            let alertContoller = UIAlertController(title: "Accepted!", message: "The Artist has accepted your inquire! Start a message or pay now :)", preferredStyle: .alert)
+            let alertContoller = UIAlertController(title: "Accepted!", message: "The Artist has accepted your inquiry! Start a message or pay now :)", preferredStyle: .alert)
             
             let defaultAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             
@@ -151,7 +151,7 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
         else if sentInqposts[indexPath.row].status == "Pending"
         {
             
-            let alertContoller = UIAlertController(title: "Pending!", message: "The Artist hasn't gotten to your inquire yet. They'll answer soon", preferredStyle: .alert)
+            let alertContoller = UIAlertController(title: "Pending!", message: "The Artist hasn't gotten to your inquiry yet. They'll answer soon", preferredStyle: .alert)
             
             let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             let messageAction = UIAlertAction(title: "Message", style: .default, handler: {
@@ -176,7 +176,7 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
         else if sentInqposts[indexPath.row].status == "Declined"
         {
             
-            let alertContoller = UIAlertController(title: "Declined!", message: "The Artist has declined your inquire. Don't be discouraged! Keep looking", preferredStyle: .alert)
+            let alertContoller = UIAlertController(title: "Declined!", message: "The Artist has declined your inquiry. Don't be discouraged! Keep looking", preferredStyle: .alert)
             
             let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
          
@@ -197,7 +197,7 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
             //
             if snapshot.exists() == true{
                 let snapshotValueName = snapshot.value as? NSDictionary
-                let Name = snapshotValueName?["Client Name"] as? String
+                let Name = snapshotValueName?["ClientName"] as? String
                 
                 let Token = snapshotValueName?["artistToken"] as? String
                 
@@ -212,7 +212,7 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
                 let snapshotValueCode = snapshot.value as? NSDictionary
                 let Code = snapshotValueCode?["code"] as? String
                 
-                let Price = snapshotValueCode?["Pricing Option"] as? Float
+                let Price = snapshotValueCode?["PricingOption"] as? Float
                 
                 let snapshotValueDeleted = snapshot.value as? NSDictionary
                 

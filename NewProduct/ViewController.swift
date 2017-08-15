@@ -44,7 +44,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
     
     //declarations for about section
     @IBOutlet weak var lblLoc: UILabel!
-    @IBOutlet weak var lblBirth: UILabel!
+    @IBOutlet weak var lblAge: UILabel!
     @IBOutlet weak var lblGend: UILabel!
     @IBOutlet weak var lblID: UILabel!
     @IBOutlet weak var btnEdit: UIButton!
@@ -278,11 +278,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
             }
             
         }
-        NameRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("Birthday").observe(.value){
+        NameRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("Age").observe(.value){
             (snap: FIRDataSnapshot) in
-            if let temp2 = snap.value as? String{
+            if let temp2 = snap.value as? Int{
                 
-                self.lblBirth.text = "Birthday: \(temp2)"
+                self.lblAge.text = "Age: \(temp2)"
             }
         }
         NameRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("Gender").observe(.value){
@@ -706,168 +706,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     @IBAction func editClick(_ sender: Any) {
-        
-        
-        
 
-        
-       // This brings up the dialogue for changing the about field
-//        let alertController = UIAlertController(title: "Edit Information", message: "", preferredStyle: .alert)
-//        
-//        let saveAction = UIAlertAction(title: "Save", style: .default, handler: {
-//            alert -> Void in
-//            
-//            
-//            
-//            
-//            let firstTextField = alertController.textFields![0] as UITextField
-//             firstTextField.placeholder = "Please enter a location (City/State/Country)"
-//            
-//            if firstTextField.text != ""
-//            {
-//               
-//            
-//                //print("firstName \(firstTextField.text)")
-//                if let temp1 = firstTextField.text{
-//                self.lblLoc.text = "Location: \(temp1)"
-//                self.loc = temp1
-//                //self.btnSave.isHidden = false
-//                self.NameRef.child("users").child(self.user!.uid).child("Location").setValue(temp1)
-//                    print(UserDefaults.standard.bool(forKey: "artistCreate"))
-//                    print(self.artistCreate)
-//                    print(UserDefaults.standard.bool(forKey: "artistOn"))
-//                    if self.artistCreate == true{
-//                        self.NameRef.child("artistProfiles").child(self.user!.uid).child("Location").setValue(temp1)
-//                    }
-//                    
-//                }
-//            }
-//            
-//            let secondTextField = alertController.textFields![1] as UITextField
-//            secondTextField.placeholder = "Please enter a birthday(dd/mm/yy)"
-//            if secondTextField.text == ""
-//            {
-//                
-//            }
-//            else
-//            {
-//                //print("firstName \(firstTextField.text)")
-//                if let temp2 = secondTextField.text{
-//                self.lblBirth.text = "Birthday: \(temp2)"
-//                self.birth = temp2
-//                //self.btnSave.isHidden = false
-//                    self.NameRef.child("users").child(self.user!.uid).child("Birthday").setValue(temp2)
-//                    
-//                    if self.artistCreate == true{
-//                        self.NameRef.child("artistProfiles").child(self.user!.uid).child("Birthday").setValue(temp2)
-//                    }
-//                }
-//            }
-//            
-//            let thirdTextField = alertController.textFields![2] as UITextField
-//            thirdTextField.placeholder = "Please enter a gender"
-//            if thirdTextField.text == ""
-//            {
-//                
-//            }
-//            else
-//            {
-//                if let temp3 = thirdTextField.text{
-//                
-//                self.lblGend.text = "Gender: \(temp3)"
-//                self.gend = temp3
-//                //self.btnSave.isHidden = false
-//                    self.NameRef.child("users").child(self.user!.uid).child("Gender").setValue(temp3)
-//                    
-//                    if self.artistCreate == true{
-//                        self.NameRef.child("artistProfiles").child(self.user!.uid).child("Gender").setValue(temp3)
-//                    }
-//                }
-//            }
-//            
-//            let fourthTextField = alertController.textFields![3] as UITextField
-//            fourthTextField.placeholder = "Please enter some skills"
-//            if fourthTextField.text == ""
-//            {
-//                
-//            }
-//            else
-//            {
-//                //print("firstName \(firstTextField.text)")
-//                if let temp4 = fourthTextField.text{
-//                self.lblID.text = "Skills: \(temp4)"
-//                self.skills = temp4
-//                //self.btnSave.isHidden = false
-//                    self.NameRef.child("users").child(self.user!.uid).child("Skills").setValue(temp4)
-//                    
-//                    if self.artistCreate == true{
-//                        self.NameRef.child("artistProfiles").child(self.user!.uid).child("Skills").setValue(temp4)
-//                    }
-//                }
-//            }
-//            
-//            
-//            
-//            
-//            
-//        })
-//        
-//        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: {
-//            (action : UIAlertAction!) -> Void in
-//            self.Loader.stopAnimating()
-//            
-//        })
-//        
-//        alertController.addTextField { (firstTextField : UITextField!) -> Void in
-//            
-//            if (self.lblLoc.text == "Location: Not Declared" || self.lblLoc.text == "Location:")
-//            {
-//            //firstTextField.placeholder = "Please enter a location (City/State/Country)"
-//            }
-//            else
-//            {
-//                firstTextField.text = self.loc
-//            }
-//           
-//        }
-//        alertController.addTextField { (secondTextField : UITextField!) -> Void in
-//            if (self.lblBirth.text == "Birthday: Not Declared" || self.lblBirth.text == "Birthday:")
-//            {
-//               // secondTextField.placeholder = "Please enter a birthday (dd/mm/yyyy)"
-//            }
-//            else
-//            {
-//                secondTextField.text = self.birth
-//            }
-//            
-//        }
-//        alertController.addTextField { (thirdTextField : UITextField!) -> Void in
-//            if (self.lblGend.text == "Gender: Not Declared" || self.lblGend.text == "Gender:")
-//            {
-//                //thirdTextField.placeholder = "Please enter a gender"
-//            }
-//            else
-//            {
-//                thirdTextField.text = self.gend
-//            }
-//            
-//        }
-//        alertController.addTextField { (fourthTextField : UITextField!) -> Void in
-//            if (self.lblID.text == "Skills: Not Declared" || self.lblID.text == "Skills:")
-//            {
-//               // fourthTextField.placeholder = "Please enter your skills (necessary for artist account)"
-//            }
-//            else
-//            {
-//                fourthTextField.text = self.skills
-//            }
-//            
-//        }
-//        
-//        alertController.addAction(saveAction)
-//        alertController.addAction(cancelAction)
-//        
-//        self.present(alertController, animated: true, completion: nil)
         
         
         let vc = UIViewController()
@@ -892,14 +731,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         text1.placeholder = "Enter Your Location"
         
         text2.font = UIFont(name: "Avenir Next", size: 13)
-        text2.placeholder = "Enter Your Birthday (DD/MM/YYYY)"
+        text2.placeholder = "Enter Your Age"
+        text2.keyboardType = UIKeyboardType.numberPad
         
         label1.font = UIFont(name: "Avenir Next", size: 13)
         label2.font = UIFont(name: "Avenir Next", size: 13)
         label3.font = UIFont(name: "Avenir Next", size: 13)
         
         label1.text = "Location:"
-        label2.text = "Birthdate:"
+        label2.text = "Age:"
         label3.text = "Gender:"
         //pickerGender.dataSource = genders as? UIPickerViewDataSource
         
@@ -937,7 +777,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
             }
             
 
-            if text2.text == ""
+            if text2.text == "" || text2.text == nil || Int(text2.text!) == nil
             {
 
             }
@@ -945,13 +785,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
             {
                 //print("firstName \(firstTextField.text)")
                 if let temp2 = text2.text{
-                self.lblBirth.text = "Birthday: \(temp2)"
+                self.lblAge.text = "Age: \(temp2)"
                 //self.birth = temp2
                 //self.btnSave.isHidden = false
-                    self.NameRef.child("users").child(self.user!.uid).child("Birthday").setValue(temp2)
+                    self.NameRef.child("users").child(self.user!.uid).child("Age").setValue(Int(temp2))
 
                     if self.artistCreate == true{
-                        self.NameRef.child("artistProfiles").child(self.user!.uid).child("Birthday").setValue(temp2)
+                        self.NameRef.child("artistProfiles").child(self.user!.uid).child("Age").setValue(Int(temp2))
                     }
                 }
             }

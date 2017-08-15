@@ -129,6 +129,7 @@ class TableMessViewController: UIViewController,UITableViewDelegate,UITableViewD
         
         myVC.token = self.cellID!
         myVC.name = info[indexPath.row].ToName
+        //myVC.viewDidLoad()
         
         self.homeTab.deselectRow(at: indexPath, animated: true)
         

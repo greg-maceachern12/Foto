@@ -13,7 +13,7 @@ import FirebaseAuth
 import FirebaseDatabase
 
 
-class Login: UIViewController, UITextFieldDelegate {
+class Login: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     @IBOutlet weak var lblUser: UILabel!
     @IBOutlet weak var tbUser: UITextField!
@@ -26,6 +26,10 @@ class Login: UIViewController, UITextFieldDelegate {
     
     let NameRef = FIRDatabase.database().reference()
     var loggedInUser:AnyObject?
+    var pickerGend = UIPickerView()
+    var gender: String!
+    
+    let genders = ["Male", "Female", "Other"]
     
 override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,56 +113,153 @@ override func viewDidLoad() {
                 let firstTextField = alertController.textFields![0] as UITextField
               
                 
-                //print("firstName \(firstTextField.text)")
+                    //print("firstName \(firstTextField.text)")
+                    let vc = UIViewController()
+                    vc.preferredContentSize = CGSize(width: 250,height: 150)
+                    let label1 = UILabel(frame: CGRect(x: 0, y: 0, width: 75, height: 50))
+                    let text1 = UITextField(frame: CGRect(x: 75, y: 0, width: 175, height: 50))
+                    
+                    let label2 = UILabel(frame: CGRect(x: 0, y: 40, width: 75, height: 50))
+                    let text2 = UITextField(frame: CGRect(x: 75, y: 40, width: 175, height: 50))
+                    //let pickerDate = UIDatePicker(frame: CGRect(x: 75, y: 50, width: 175, height: 100))
+                    
+                    let label3 = UILabel(frame: CGRect(x: 0, y: 80, width: 75, height: 50))
+                    self.pickerGend = UIPickerView(frame: CGRect(x: 75, y: 80, width: 175, height: 50))
+                    
+                    //pickerDate.datePickerMode = UIDatePickerMode.date
+                    
+                    
+                    self.pickerGend.dataSource = self
+                    self.pickerGend.delegate = self
+                    
+                    text1.font = UIFont(name: "Avenir Next", size: 13)
+                    text1.placeholder = "Enter Your Location"
+                    
+                    text2.font = UIFont(name: "Avenir Next", size: 13)
+                    text2.placeholder = "Enter Your Age"
                 
-                
-                
-                FIRAuth.auth()?.createUser(withEmail: self.tbUser.text!, password: self.tbPassword.text!, completion: { (user, error) in
+                text2.keyboardType = UIKeyboardType.numberPad
                     
-                    //if there is an error
+                    label1.font = UIFont(name: "Avenir Next", size: 13)
+                    label2.font = UIFont(name: "Avenir Next", size: 13)
+                    label3.font = UIFont(name: "Avenir Next", size: 13)
                     
+                    label1.text = "Location:"
+                    label2.text = "Age:"
+                    label3.text = "Gender:"
+                    //pickerGender.dataSource = genders as? UIPickerViewDataSource
                     
-                    //if no error
-                    if error == nil
-                    {
+                    vc.view.addSubview(text2)
+                    vc.view.addSubview(self.pickerGend)
+                    vc.view.addSubview(text1)
+                    vc.view.addSubview(label1)
+                    vc.view.addSubview(label2)
+                    vc.view.addSubview(label3)
+                    let editRadiusAlert = UIAlertController(title: "Edit Your Information", message: "", preferredStyle: UIAlertControllerStyle.alert)
+                    editRadiusAlert.setValue(vc, forKey: "contentViewController")
+                    editRadiusAlert.addAction(UIAlertAction(title: "Save", style: .default, handler: {
+                        alert -> Void in
                         
-                        self.loggedInUser = FIRAuth.auth()?.currentUser
-                        self.btnLogout.alpha=1.0
-                        self.tbUser.text = ""
-                        self.tbPassword.text = ""
-                        self.lblUser.text = user!.email
-                        self.NameRef.child("users").child(self.loggedInUser!.uid).child("Name").setValue(firstTextField.text)
-                        self.NameRef.child("users").child(self.loggedInUser!.uid).child("Email").setValue(FIRAuth.auth()?.currentUser?.email)
                         
-//                        let VC: MessViewController = MessViewController()
-//                        let token: [String: AnyObject] = [Messaging.messaging().fcmToken!: Messaging.messaging().fcmToken as AnyObject]
-//                        VC.postToken(Token: token)
-                    
                         
-                        self.Load.stopAnimating()
-                        UserDefaults.standard.set(false, forKey: "artistCreate")
-                        self.Show()
-                    }
-                    else
-                    {
-                        let alertContoller = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: .alert)
+                        if text1.text == ""
+                        {
+                            
+                            let alertContoller = UIAlertController(title: "Oops!", message: "Enter A Location", preferredStyle: .alert)
+                            
+                            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                            alertContoller.addAction(defaultAction)
+                            self.Load.stopAnimating()
+                            self.present(alertContoller, animated:true, completion: nil)
+                            
+                        return
+                        }
                         
-                        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                        alertContoller.addAction(defaultAction)
-                        self.Load.stopAnimating()
-                        self.present(alertContoller, animated:true, completion: nil)
                         
-                    }
-                    
-                    
-                    
-                    
-                    
-                    //if error
-                    
-                })
+                        if text2.text! == "" || text2.text == nil || Int(text2.text!) == nil
+                        {
+                            let alertContoller = UIAlertController(title: "Oops!", message: "Enter Your Age", preferredStyle: .alert)
+                            
+                            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                            alertContoller.addAction(defaultAction)
+                            self.Load.stopAnimating()
+                            self.present(alertContoller, animated:true, completion: nil)
+                            return
+                        }
+                        
+                        if Int(text2.text!)! <= 12
+                        {
+                            
+                            let alertContoller = UIAlertController(title: "Oops!", message: "You Must Be 12 Years Old To Use This Application", preferredStyle: .alert)
+                            
+                            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                            alertContoller.addAction(defaultAction)
+                            self.Load.stopAnimating()
+                            self.present(alertContoller, animated:true, completion: nil)
 
+                            return
+                        }
+                        
+                        
+                        FIRAuth.auth()?.createUser(withEmail: self.tbUser.text!, password: self.tbPassword.text!, completion: { (user, error) in
+                            
+                            //if there is an error
+                            
+                            
+                            //if no error
+                            if error == nil
+                            {
+                                
+                                self.loggedInUser = FIRAuth.auth()?.currentUser
+                                self.btnLogout.alpha=1.0
+                                self.tbUser.text = ""
+                                self.tbPassword.text = ""
+                                self.lblUser.text = user!.email
+                                self.NameRef.child("users").child(self.loggedInUser!.uid).child("Name").setValue(firstTextField.text)
+                                self.NameRef.child("users").child(self.loggedInUser!.uid).child("Email").setValue(FIRAuth.auth()?.currentUser?.email)
+                                
+                                self.NameRef.child("users").child(self.loggedInUser!.uid).child("Gender").setValue(self.gender)
+                                self.NameRef.child("users").child(self.loggedInUser!.uid).child("Location").setValue(text1.text)
+                               self.NameRef.child("users").child(self.loggedInUser!.uid).child("Age").setValue(Int(text2.text!))
+                                
+                                
+                                self.Load.stopAnimating()
+                                UserDefaults.standard.set(false, forKey: "artistCreate")
+                                self.Show()
+                            }
+                            else
+                            {
+                                let alertContoller = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: .alert)
+                                
+                                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                                alertContoller.addAction(defaultAction)
+                                self.Load.stopAnimating()
+                                self.present(alertContoller, animated:true, completion: nil)
+                                
+                            }
+                            
+                            
+                            
+                            
+                            
+                            //if error
+                            
+                        })
+                        
+
+                        
+                        
+                        
+                        
+                        
+                    }))
+                    
+                editRadiusAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { alert -> Void in
+                    self.Load.stopAnimating()
+                    }))
+                    self.present(editRadiusAlert, animated: true)
                 
+
                 
             })
             
@@ -233,7 +334,31 @@ override func viewDidLoad() {
 //        let dbRef = FIRDatabase.database().reference()
 //        dbRef.child("fcmToken").child(Messaging.messaging().fcmToken!).setValue(Token)
 //    }
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        gender = genders[row]
+    }
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        
+        return 3
+        
+    }
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        let label = (view as? UILabel) ?? UILabel()
+        
+        label.textColor = .black
+        label.textAlignment = .center
+        label.font = UIFont(name: "Avenir Next", size: 15)
+        
+        // where data is an Array of String
+        label.text = genders[row]
+        
+        return label
+    }
     
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
     
     @IBAction func Logout(_ sender: Any) {
         

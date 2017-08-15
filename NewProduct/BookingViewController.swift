@@ -602,13 +602,13 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
             
             let accessCode = self.generateRandomStringWithLength(length: 20)
             
-            let inquirePost: [String : AnyObject] = ["Client Name": self.userName as AnyObject,
-                                                     "Client Email": self.email as AnyObject,
+            let inquirePost: [String : AnyObject] = ["ClientName": self.userName as AnyObject,
+                                                     "ClientEmail": self.email as AnyObject,
                                                      "toName": self.artistName as AnyObject,
-                                                     "Start Date": strDate as AnyObject,
-                                                     "End Date": strDate2 as AnyObject,
-                                                     "Pricing Option": "\(self.pricingOption!): \(self.postRef)" as AnyObject,
-                                                     "Extra Notes": self.tvNotes.text as AnyObject,
+                                                     "StartDate": strDate as AnyObject,
+                                                     "EndDate": strDate2 as AnyObject,
+                                                     "PricingOption": "\(self.pricingOption!): \(self.postRef)" as AnyObject,
+                                                     "ExtraNotes": self.tvNotes.text as AnyObject,
                                                      "code": accessCode as AnyObject,
                                                      "Theme": self.tbTheme.text as AnyObject,
                                                      

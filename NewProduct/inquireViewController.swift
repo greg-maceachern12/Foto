@@ -56,18 +56,18 @@ func SetUp()
         imgprof.layer.cornerRadius = imgprof.frame.width/8
         imgprof.clipsToBounds = true
         
-        btnAccept.layer.cornerRadius = btnAccept.frame.height/6
-        btnAccept.clipsToBounds = true
-        
-        btnDecline.layer.cornerRadius = btnDecline.frame.height/6
-        btnDecline.clipsToBounds = true
-        dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("Client Name").observe(.value){
+//        btnAccept.layer.cornerRadius = btnAccept.frame.height/6
+//        btnAccept.clipsToBounds = true
+//        
+//        btnDecline.layer.cornerRadius = btnDecline.frame.height/6
+//        btnDecline.clipsToBounds = true
+        dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("ClientName").observe(.value){
             (snap: FIRDataSnapshot) in
-            self.navTitle.title = "\(snap.value as! String)'s Inquire"
+            self.navTitle.title = "\(snap.value as! String)'s Inquiry"
             self.lblName.text = snap.value as? String
         }
         
-        dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("Client Email").observe(.value){
+        dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("ClientEmail").observe(.value){
             (snap: FIRDataSnapshot) in
             self.clientEmail = snap.value as? String
             //self.lblEmail.text = snap.value as? String
@@ -77,22 +77,22 @@ func SetUp()
             self.lblTheme.text = snap.value as? String
            
         }
-        dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("Pricing Option").observe(.value){
+        dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("PricingOption").observe(.value){
             (snap: FIRDataSnapshot) in
             self.Pricing.text = snap.value as? String
             
         }
-        dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("Start Date").observe(.value){
+        dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("StartDate").observe(.value){
             (snap: FIRDataSnapshot) in
             self.lblStart.text = "Start Date: \(snap.value as! String)"
         }
         
-        dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("End Date").observe(.value){
+        dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("EndDate").observe(.value){
             (snap: FIRDataSnapshot) in
             self.lblEnd.text = "End Date: \(snap.value as! String)"
         }
         
-        dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("Extra Notes").observe(.value){
+        dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("ExtraNotes").observe(.value){
             (snap: FIRDataSnapshot) in
             self.lblNotes.text = snap.value as? String
         }
@@ -147,14 +147,14 @@ func SetUp()
     }
     
     @IBAction func Decline(_ sender: Any) {
-        let alertContoller = UIAlertController(title: "Confirm!", message: "Are You Sure You Want To Decline This Inquire?", preferredStyle: .alert)
+        let alertContoller = UIAlertController(title: "Confirm!", message: "Are You Sure You Want To Decline This Inquiry?", preferredStyle: .alert)
         
         let defaultAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
         
         let yesAction = UIAlertAction(title: "Yes", style: .default, handler: {
             alert -> Void in
             
-            let alertContoller2 = UIAlertController(title: "Success!", message: "You Successfully Declined This Inquire", preferredStyle: .alert)
+            let alertContoller2 = UIAlertController(title: "Success!", message: "You Successfully Declined This Inquiry", preferredStyle: .alert)
             
             let defaultAction2 = UIAlertAction(title: "Okay", style: .cancel, handler: nil)
             alertContoller2.addAction(defaultAction2)
@@ -180,7 +180,7 @@ func SetUp()
     
     @IBAction func Accept(_ sender: Any) {
         
-        let alertContoller = UIAlertController(title: "Confirm!", message: "Are You Sure You Want To Accept This Inquire?", preferredStyle: .alert)
+        let alertContoller = UIAlertController(title: "Confirm!", message: "Are You Sure You Want To Accept This Inquiry?", preferredStyle: .alert)
         
         let defaultAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
         

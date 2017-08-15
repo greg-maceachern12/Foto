@@ -23,6 +23,8 @@ class MessViewController: JSQMessagesViewController {
     
     let storage = FIRStorage.storage()
     
+    var dates = [String!]()
+    
 }
 
 extension MessViewController{
@@ -34,6 +36,12 @@ extension MessViewController{
         let day = Calendar.current.component(.day, from: strDate)
         let month = Calendar.current.component(.month, from: strDate)
         let year = Calendar.current.component(.year, from: strDate)
+        
+        
+        let formatter = DateFormatter()
+        formatter.dateStyle = DateFormatter.Style.none
+        formatter.timeStyle = .short
+        let dateString = formatter.string(from: strDate)
         
         let token: [String: AnyObject] = [Messaging.messaging().fcmToken!: Messaging.messaging().fcmToken as AnyObject]
         
@@ -106,11 +114,13 @@ extension MessViewController{
                 let FIRmessage: [String : AnyObject] = ["senderID": senderId as AnyObject,
                                                         "displayName": senderDisplayName as AnyObject,
                                                         "text": text as AnyObject,
-                                                        "toID": self.token as AnyObject ]
+                                                        "toID": self.token as AnyObject,
+                                                        "date": dateString as AnyObject]
                 
                 self.dataRef.child("messages").childByAutoId().setValue(FIRmessage)
                 
                 self.messages.append(message!)
+                self.dates.append(dateString)
                 
                 
                 
@@ -135,10 +145,14 @@ extension MessViewController{
         let dbRef = FIRDatabase.database().reference()
         dbRef.child("users").child(self.loggedUser!.uid).child("fcmToken").setValue(Token)
     }
+    
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
 
         let placeHolderImage = #imageLiteral(resourceName: "Default")
         let avatarImage = JSQMessagesAvatarImage(avatarImage: nil, highlightedImage: nil, placeholderImage: placeHolderImage)
+       
+        
+        
         
         let message = messages[indexPath.item]
         
@@ -236,13 +250,20 @@ extension MessViewController{
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForMessageBubbleTopLabelAt indexPath: IndexPath!) ->
         
         NSAttributedString! {
-            let message = messages[indexPath.row]
-            let messageUsername = message.senderDisplayName
+//            let message = messages[indexPath.row]
+//            let messageUsername = String(describing: message.date)
+//        
+//            return NSAttributedString(string: messageUsername)
+            //let date2 = dates[indexPath.row]
+
+            return NSAttributedString(string: dates[indexPath.row])
+
             
-            return NSAttributedString(string: messageUsername!)
+            
+            
     }
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAt indexPath: IndexPath!) -> CGFloat {
-        return 15
+       return 15
     }
     
     
@@ -256,7 +277,8 @@ extension MessViewController{
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
         
-        let bubbleFactory = JSQMessagesBubbleImageFactory()
+        let bubbleFactory = JSQMessagesBubbleImageFactory(bubble: UIImage.jsq_bubbleCompactTailless(), capInsets: .zero)
+    
         
         let message = messages[indexPath.row]
         
@@ -279,14 +301,10 @@ extension MessViewController{
 
 extension MessViewController {
     override func viewDidLoad() {
+        
+       
         super.viewDidLoad()
         
-        
-     
-        if messages.count == 0
-        {
-            
-        }
         self.inputToolbar.contentView.leftBarButtonItem = nil
         //tell JSQMessagesView who is current user
         self.senderId = loggedUser?.uid
@@ -297,14 +315,18 @@ extension MessViewController {
             self.senderDisplayName = snap.value as? String
             
         }
-        
-        
-        
-        self.messages = getMessage2()
         self.navigationItem.title = "hein"
+     
+        
+        
+
+        self.messages = getMessage2()
+        
+        
         
        
     }
+
  
     
 }
@@ -333,6 +355,8 @@ extension MessViewController {
             
             let snapshotValueText = snapshot.value as? NSDictionary
             let texty = snapshotValueText?["text"] as? String
+            
+            let dater = snapshotValueText?["date"] as? String
            
             
             
@@ -340,9 +364,12 @@ extension MessViewController {
             
             if (tokensendertoID == self.loggedUser!.uid || tokensendertoID == self.token) && (tokensenderID == self.loggedUser!.uid || tokensenderID == self.token){
             
-            let message = JSQMessage(senderId: tokensenderID, displayName: toName, text: texty)
-
+                let message = JSQMessage(senderId: tokensenderID, displayName: toName, text: texty)
+                
+                self.dates.append(dater)
+                
             self.messages.append(message!)
+                self.collectionView.reloadData()
                 
                 }
             }

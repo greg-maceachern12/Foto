@@ -102,7 +102,7 @@ class TableInquireViewController: UIViewController, UITableViewDelegate, UITable
             //
             if snapshot.exists() == true{
                 let snapshotValueName = snapshot.value as? NSDictionary
-                let Name = snapshotValueName?["Client Name"] as? String
+                let Name = snapshotValueName?["ClientName"] as? String
                 
                 let snapshotValueTheme = snapshot.value as? NSDictionary
                 let Theme = snapshotValueTheme?["Theme"] as? String
