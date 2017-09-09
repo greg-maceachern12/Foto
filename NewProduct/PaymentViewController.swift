@@ -4,11 +4,16 @@
 //
 //  Created by Greg  MacEachern on 2017-07-12.
 //  Copyright © 2017 Greg MacEachern. All rights reserved.
-//
+
+
+
+
+
+//Currently using paypal as the form of payment but its not finished yet. Considering using stripe instead
 
 import UIKit
 //import Stripe
-//import AFNetworking
+
 
 class PaymentViewController: UIViewController,UITextFieldDelegate, PayPalPaymentDelegate {
     
@@ -83,8 +88,7 @@ class PaymentViewController: UIViewController,UITextFieldDelegate, PayPalPayment
 
     override func viewDidAppear(_ animated: Bool) {
         let item1 = PayPalItem(name: clientName, withQuantity: 1, withPrice: NSDecimalNumber(string: "\(price!)"), withCurrency: "USD", withSku: "FOT-001")
-//        let item2 = PayPalItem(name: "Free rainbow patch", withQuantity: 1, withPrice: NSDecimalNumber(string: "0.00"), withCurrency: "USD", withSku: "Hip-00066")
-//        let item3 = PayPalItem(name: "Long-sleeve plaid shirt (mustache not included)", withQuantity: 1, withPrice: NSDecimalNumber(string: "37.99"), withCurrency: "USD", withSku: "Hip-00291")
+
         
         let items = [item1]
         let subtotal = PayPalItem.totalPrice(forItems: items)
@@ -108,43 +112,13 @@ class PaymentViewController: UIViewController,UITextFieldDelegate, PayPalPayment
         else {
             // This particular payment will always be processable. If, for
             // example, the amount was negative or the shortDescription was
-            // empty, this payment wouldn't be processable, and you'd want
-            // to handle that here.
+            // empty, this payment wouldn't be processable
             print("Payment not processalbe: \(payment)")
         }
 
     }
     @IBAction func payNow(_ sender: Any) {
-//        let item1 = PayPalItem(name: "Old jeans with holes", withQuantity: 2, withPrice: NSDecimalNumber(string: "84.99"), withCurrency: "USD", withSku: "Hip-0037")
-//        let item2 = PayPalItem(name: "Free rainbow patch", withQuantity: 1, withPrice: NSDecimalNumber(string: "0.00"), withCurrency: "USD", withSku: "Hip-00066")
-//        let item3 = PayPalItem(name: "Long-sleeve plaid shirt (mustache not included)", withQuantity: 1, withPrice: NSDecimalNumber(string: "37.99"), withCurrency: "USD", withSku: "Hip-00291")
-//        
-//        let items = [item1, item2, item3]
-//        let subtotal = PayPalItem.totalPrice(forItems: items)
-//        
-//        // Optional: include payment details
-//        let shipping = NSDecimalNumber(string: "5.99")
-//        let tax = NSDecimalNumber(string: "2.50")
-//        let paymentDetails = PayPalPaymentDetails(subtotal: subtotal, withShipping: shipping, withTax: tax)
-//        
-//        let total = subtotal.adding(shipping).adding(tax)
-//        
-//        let payment = PayPalPayment(amount: total, currencyCode: "USD", shortDescription: "Hipster Clothing", intent: .sale)
-//        
-//        payment.items = items
-//        payment.paymentDetails = paymentDetails
-//        
-//        if (payment.processable) {
-//            let paymentViewController = PayPalPaymentViewController(payment: payment, configuration: paypalConfig, delegate: self)
-//            present(paymentViewController!, animated: true, completion: nil)
-//        }
-//        else {
-//            // This particular payment will always be processable. If, for
-//            // example, the amount was negative or the shortDescription was
-//            // empty, this payment wouldn't be processable, and you'd want
-//            // to handle that here.
-//            print("Payment not processalbe: \(payment)")
-//        }
+
         
     }
 

@@ -53,7 +53,6 @@
 		02D3290E1EBE61200051F22F /* aaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3290D1EBE61200051F22F /* aaViewController.swift */; };
 		02DD88D31EFDE39F0093DD50 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DD88D21EFDE39F0093DD50 /* BaseViewController.swift */; };
 		02E4F3BB1F03351A002713C8 /* TableMessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E4F3BA1F03351A002713C8 /* TableMessViewController.swift */; };
-		02F511961F05B16E002E36A6 /* Seguee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F511951F05B16E002E36A6 /* Seguee.swift */; };
 		02F8348B1EEB4B2400F2FF55 /* TableInquireViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F8348A1EEB4B2400F2FF55 /* TableInquireViewController.swift */; };
 		0D87494CEB2EEE7B14B6645F /* Pods_NewProductTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBDE84B653AD105B44574FC2 /* Pods_NewProductTests.framework */; };
 		E6FC06F0FE1397EE1B9C70E4 /* Pods_NewProductUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526E89AD741C55EA68062F55 /* Pods_NewProductUITests.framework */; };
@@ -135,7 +134,6 @@
 		02D3290D1EBE61200051F22F /* aaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = aaViewController.swift; path = ../aaViewController.swift; sourceTree = "<group>"; };
 		02DD88D21EFDE39F0093DD50 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		02E4F3BA1F03351A002713C8 /* TableMessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableMessViewController.swift; sourceTree = "<group>"; };
-		02F511951F05B16E002E36A6 /* Seguee.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Seguee.swift; sourceTree = "<group>"; };
 		02F8348A1EEB4B2400F2FF55 /* TableInquireViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableInquireViewController.swift; sourceTree = "<group>"; };
 		178CFB2F3823D9DD48263B4F /* Pods_NewProduct.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NewProduct.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AD784D4438D7839D97E0135 /* Pods-NewProduct.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NewProduct.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NewProduct/Pods-NewProduct.debug.xcconfig"; sourceTree = "<group>"; };
@@ -278,7 +276,6 @@
 				0291FEC21F01D50A0015FAF6 /* Messages */,
 				027CAC951F0C728F00922D77 /* ArtistTable */,
 				025206291F202A88001937A1 /* Profile */,
-				02F511951F05B16E002E36A6 /* Seguee.swift */,
 				026351FA1E7332F1008245C7 /* AppDelegate.swift */,
 				026351FE1E7332F1008245C7 /* Main.storyboard */,
 				021215011F16F375000CDE1E /* PaymentViewController.swift */,
@@ -718,7 +715,6 @@
 				021215021F16F375000CDE1E /* PaymentViewController.swift in Sources */,
 				02198D091EE201F8008176EE /* BookingViewController.swift in Sources */,
 				028FDFCF1F350C4800A0CCC9 /* CosmosDistrib.swift in Sources */,
-				02F511961F05B16E002E36A6 /* Seguee.swift in Sources */,
 				02DD88D31EFDE39F0093DD50 /* BaseViewController.swift in Sources */,
 				026352031E7332F1008245C7 /* NewProduct.xcdatamodeld in Sources */,
 				021C3E141F2EB9C100521098 /* DropDown+Appearance.swift in Sources */,

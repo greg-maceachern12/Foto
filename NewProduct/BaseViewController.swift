@@ -20,7 +20,9 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-  
+        
+        
+        //determines if a user has already created a user profile. Allows the app to not have to check on firebase if the user is has an artist profile
         if UserDefaults.standard.bool(forKey: "artistCreate") == true
             {
                 self.artistCreate = true
@@ -38,14 +40,13 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
     }
     
     func slideMenuItemSelectedAtIndex(_ index: Int32) {
- 
+        //controls for when the user selects the list of actions in the slide out menu
         switch(index){
         case 0:
 
             
             break
-        case 1:
-            //print("Play\n", terminator: "")
+        case 1:     //if the user selects "Activate artist profile"
             
             let myVC = storyboard?.instantiateViewController(withIdentifier: "TableInquire") as! TableInquireViewController
             if artistCreate == true{
@@ -94,6 +95,8 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
     }
     
     func addSlideMenuButton(){
+        
+        //formating slideout button
         let btnShowMenu = UIButton(type: UIButtonType.system)
         btnShowMenu.setImage(self.defaultMenuImage(), for: UIControlState())
         btnShowMenu.frame = CGRect(x: 0, y: 0, width: 30, height: 30)

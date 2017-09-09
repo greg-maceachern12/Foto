@@ -36,7 +36,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
     @IBOutlet var tap: UITapGestureRecognizer!
     @IBOutlet var longpress: UILongPressGestureRecognizer!
     @IBOutlet weak var btnSave: UIButton!
-    @IBOutlet var longLabel: UILongPressGestureRecognizer!
     @IBOutlet weak var tbAbout: UITextField!
     @IBOutlet weak var tabBar: UITabBarItem!
     @IBOutlet weak var lblEmail: UILabel!
@@ -50,12 +49,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
     @IBOutlet weak var btnEdit: UIButton!
     
     
-     //let pickerDate = UIDatePicker()
+     var overlay : UIView?
+     var overlayAct : UIActivityIndicatorView?
      var pickerGend = UIPickerView()
-     //var pickerSkill = UIPickerView()
     
      let genders = ["Male", "Female", "Other"]
-     //let skill = ["Sports", "Events", "Nature", "Conferences", "Weddings", "Tours"]
    
     //MARK: Declaration of variables
     
@@ -81,15 +79,24 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
     
     let user = FIRAuth.auth()?.currentUser
 
-    //I was being lazy and made variables for these references
-   let NameLoad = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("Name")
-    let aboutLoad = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("About")
+
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //creates a loading view that will dissapear once the data has loaded
+        overlay = UIView(frame: view.frame)
+        
+        overlayAct = UIActivityIndicatorView(frame: CGRect(x: self.view.frame.width/2 - 17, y: self.view.frame.height/2 - 7 , width: 35, height: 35))
+        overlay!.backgroundColor = UIColor.black
+        overlay!.alpha = 0.8
+        overlayAct?.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
+        
+        view.addSubview(overlay!)
+        view.addSubview(overlayAct!)
+        overlayAct?.startAnimating()
         
         lblName.isUserInteractionEnabled = true
         btnSave.layer.mask?.cornerRadius = 5
@@ -99,13 +106,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         if FIRAuth.auth()?.currentUser?.uid == nil
         {
             LogoutSeq()
-            //this removes every saved thing
+            //this removes all of the cached information
             
             
         }
         
-        //set profile qualities
+        
         self.HomeTitle.title = "Loading Data"
+        
+        //set profile qualities
         setupProfile()
         self.NameRef.child("users").child(self.loggedUser!.uid).child("Memories").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
             //
@@ -133,6 +142,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
                 }
                 
                 self.memories.insert(memoryStruct(videoLink: url, title: Title, date: dateFIR, acccessCode: code, artist: Artist), at: 0)
+                print(self.memories)
                 
                 
                 
@@ -140,7 +150,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
             }
             else
             {
-                let alertContoller = UIAlertController(title: "Oops!", message: "No Artists!", preferredStyle: .alert)
+                let alertContoller = UIAlertController(title: "Oops!", message: "No Memories!", preferredStyle: .alert)
                 
                 let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                 alertContoller.addAction(defaultAction)
@@ -159,7 +169,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         //allow the profile pic to be clicked
         self.imgMain.isUserInteractionEnabled = true
         self.HomeTitle.title = "Home"
-       
+
+      
+        
+        
+        
+//       
     }
     
    
@@ -171,8 +186,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
                                                     //SETTING UP THE PROFILE
     func setupProfile(){
         
-//        self.NameRef.child("artistProfiles").child(self.user!.uid).child("token").observe(.value){
-//            (snap: FIRDataSnapshot) in
+        //if the current user is also an artist, set artist create to true. This variable allows the information of this page to be saved in the artistprofile on firebase.
             if UserDefaults.standard.bool(forKey: "artistCreate") == true
             {
                 self.artistCreate = true
@@ -191,17 +205,24 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         
         btnSave.layer.cornerRadius = 5
         btnSave.clipsToBounds = true
+        
+        
 
         self.Loader.startAnimating()
         
         
-        //loading image from database into view. Found this online. Not as efficient as I would have liked but it works
+        //loading image from database into view
+        
+        //if there is no image saved in the cache, grab it from the database
 
         if UserDefaults.standard.object(forKey: "savedImage") != nil
         {
             let imgdata2 = UserDefaults.standard.object(forKey: "savedImage") as! NSData
             imgMain.image = UIImage(data: imgdata2 as Data)
             self.Loader.stopAnimating()
+            overlay?.removeFromSuperview()
+            overlayAct?.removeFromSuperview()
+           
         }
         else
         {
@@ -226,6 +247,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
                                         if data == nil
                                         {
                                             self.Loader.stopAnimating()
+                                            self.overlay?.removeFromSuperview()
+                                            self.overlayAct?.removeFromSuperview()
                                         }
                                         else
                                         {
@@ -233,6 +256,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
                                             UserDefaults.standard.set(data!, forKey: "savedImage")
                                             self.ableToSwitch = true
                                             self.Loader.stopAnimating()
+                                            self.overlay?.removeFromSuperview()
+                                            self.overlayAct?.removeFromSuperview()
                                         }
                                         
             
@@ -243,6 +268,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
                             }
                             else{
                                     self.Loader.stopAnimating()
+                                self.overlay?.removeFromSuperview()
+                                self.overlayAct?.removeFromSuperview()
                                 }
                             }
                     })
@@ -255,7 +282,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         
         
                                             //MARK: Grabbing Data
-        NameLoad.observe(.value){
+        FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("Name").observe(.value){
             (snap: FIRDataSnapshot) in
             self.lblName.text = snap.value as? String
             
@@ -296,139 +323,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
        
     
 }
+    
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    
-    //MARK: Image Pickers
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
-        //btnSave.isHidden = false
-
-        //Seeting the image equal to the profile picture. If the image was edited (cropped) it will upload that instead
-        var selectedImage:UIImage?
-        
-        
-        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage
-        {
-            selectedImage = editedImage
-        }
-        else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage
-        {
-            selectedImage = originalImage
-        }
-        
-        if let selectedImage2 = selectedImage
-        {
-//            Loader.startAnimating()
-            imgMain.image = selectedImage2
-            upload = true
-            saveChange()
-//            Loader.stopAnimating()
-            
-            
-        }
-        dismiss(animated: true, completion: nil)
-    }
-    
-    
-    
-    //if persons presses cancel
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
-   
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    
-                                                    //SAVING CHANGES
-    func saveChange(){
-        
-        Loader.startAnimating()
-        let imageName =  NSUUID().uuidString
-        let storedImage = storageRef.child("imgMain").child(imageName)
-        
-//        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-//        let task = Task(context: context) // Link Task & Context
-//        //task.name = taskTextField.text!
-//        
-//        // Save the data to coredata
-//        (UIApplication.shared.delegate as! AppDelegate).saveContext()
-        
-        
-        
-        
-        //also found this online
-        if let uploadData = UIImagePNGRepresentation(self.imgMain.image!)
-        {
-           
-            
-            
-            storedImage.put(uploadData, metadata: nil, completion: { ( metadata, error) in
-                if error != nil
-                {
-                    let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
-                    
-                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
-                    alertContoller.addAction(defaultAction)
-                    self.present(alertContoller, animated: true, completion: nil)
-                    return
-                }
-                storedImage.downloadURL(completion: { (url,error) in
-                    if error != nil
-                    {
-                        let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
-                        
-                        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
-                        alertContoller.addAction(defaultAction)
-                        self.present(alertContoller, animated: true, completion: nil)
-                        
-                        return
-                    }
-                    if let urlText = url?.absoluteString{
-                        
-                        
-                        
-                        
-                        self.NameRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).updateChildValues(["pic" : urlText], withCompletionBlock: { (error,ref) in
-                            if error != nil
-                            {
-                                let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
-                                
-                                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
-                                alertContoller.addAction(defaultAction)
-                                self.present(alertContoller, animated: true, completion: nil)
-                            
-                                return
-                            }
-                            self.Loader.stopAnimating()
-                            self.ableToSwitch = true
-                            self.btnSave.isHidden = true
-                            let imgData = UIImagePNGRepresentation(self.imgMain.image!)! as NSData
-                            UserDefaults.standard.set(imgData, forKey: "savedImage")
-                        })
-                        if self.artistCreate == true
-                        {
-                        self.NameRef.child("artistProfiles").child((FIRAuth.auth()?.currentUser?.uid)!).updateChildValues(["pic" : urlText], withCompletionBlock: { (error,ref) in
-                            if error != nil
-                            {
-                                let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
-                                
-                                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
-                                alertContoller.addAction(defaultAction)
-                                self.present(alertContoller, animated: true, completion: nil)
-                                
-                                return
-                            }
-                            self.Loader.stopAnimating()
-                            self.ableToSwitch = true
-                            self.btnSave.isHidden = true
-                        })
-                        }
-                    }
-                    })
-                })
-            }
-    }
     
     
 
@@ -436,6 +333,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
     func LogoutSeq(){
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let loginVC: UIViewController = storyboard.instantiateViewController(withIdentifier: "login")
+        
+        //delete all the saved cache information
         
         if UserDefaults.standard.object(forKey: "savedImage") != nil{
         
@@ -446,23 +345,27 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         
         let allKeys = UserDefaults.standard.dictionaryRepresentation().keys
         
-         //Now remove the object for the keys starting with "ProfilePic"
+         //Now remove the object for the keys starting with "ProfilePic" (most of the pictures)
         
         for key in allKeys{
 
-            if key.hasPrefix("ProfilePic"){
+            if key.hasPrefix("Profile"){
                 UserDefaults.standard.removeObject(forKey: key)
             }
             
         }
-        //UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
+
 
         
         self.present(loginVC, animated: true, completion: nil)
         
         }
     
+    //Mark: TableView Data
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        //playing the selected video in the memories section
         let videoURL = memories[indexPath.row].videoLink
         let player = AVPlayer(url: videoURL! as URL)
         let playerViewController = AVPlayerViewController()
@@ -498,6 +401,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
                     return
                 }
                 
+                self.homeTab.deleteRows(at: [index], with: UITableViewRowAnimation.automatic)
                 self.memories.remove(at: indexPath.row)
                 
                 
@@ -507,10 +411,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
                 })
                 
  
-            
-                    //self.posts.remove(at: index.row)
-        
-                    //self.tableView1.deleteRows(at: [index], with: UITableViewRowAnimation.automatic)
+
         }
         return [delete]
     }
@@ -519,9 +420,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell69")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell1")
 
-        
+        print(self.memories[indexPath.row])
         
         let label1 = cell?.viewWithTag(1) as! UILabel
         label1.text = memories[indexPath.row].title
@@ -541,24 +442,36 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         
         do{
             Loader.startAnimating()
-            let thumbnailImage = try imageGen.copyCGImage(at: CMTimeMake(1, 60), actualTime: nil)
-            
-            let img4 = cell?.viewWithTag(4) as! UIImageView
-            img4.image = UIImage(cgImage: thumbnailImage)
-//            img4.layer.cornerRadius = 8
-//            img4.clipsToBounds = true
-            Loader.stopAnimating()
             
             
-        
-            
-        }catch let err{
+            //if the thumbnails for the memories are saved in the cache, use those for the image in the table. If not, use the imagedata variable and set the image using that and save that in the cache
+            if UserDefaults.standard.object(forKey: "ProfileVid\(indexPath.row)") == nil{
+                
+                let thumbnailImage = try imageGen.copyCGImage(at: CMTimeMake(1, 60), actualTime: nil)
+                
+                let img4 = cell?.viewWithTag(4) as! UIImageView
+                img4.image = UIImage(cgImage: thumbnailImage)
+                let imgData2 = UIImagePNGRepresentation(img4.image!)! as NSData
+                UserDefaults.standard.set(imgData2, forKey: "ProfileVid\(indexPath.row)")
+                Loader.stopAnimating()
+            }
+            else{
+                
+                let img4 = cell?.viewWithTag(4) as! UIImageView
+                
+                let imgdata = UserDefaults.standard.object(forKey: "ProfileVid\(indexPath.row)") as! NSData
+                
+                img4.image = UIImage(data: imgdata as Data)
+                
+                Loader.stopAnimating()
+                
+            }
+
+        }
+        catch let err{
             print(err)
         }
-
-        
-        
-        
+  
         
         return cell!
         
@@ -580,7 +493,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         let myActionSheet = UIAlertController(title: "Profile Picture", message: "Select", preferredStyle: UIAlertControllerStyle.actionSheet)
         
         let viewPicture = UIAlertAction(title: "View Picture", style: UIAlertActionStyle.default) { (action) in
-            //Put code for what happens when the button is clicked
+        
+            
             let imageView = sender.view as! UIImageView
             let newImageView = UIImageView(image: imageView.image)
             
@@ -595,14 +509,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
             let tap = UITapGestureRecognizer(target:self,action:#selector(self.dismissFullScreenImage))
             
             newImageView.addGestureRecognizer(tap)
+            
+            newImageView.layer.opacity = 0
             self.view.addSubview(newImageView)
+            
+            UIView.animate(withDuration: 0.4, animations: {
+                
+                newImageView.layer.opacity = 1
+                
+            })
+            
             
         }
         
         let photoGallery = UIAlertAction(title: "Photos", style: UIAlertActionStyle.default) { (action) in
             if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.savedPhotosAlbum)
             {
-                
+             //opens the image picker
                 self.imagePicker.delegate = self
                 self.imagePicker.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
                 self.imagePicker.allowsEditing = true
@@ -637,77 +560,151 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
     
     // This func just dismisses the view when the user tappen "View Picture"
     func dismissFullScreenImage(_sender:UITapGestureRecognizer){
-        _sender.view?.removeFromSuperview()
+        
+       //makes the image fade and disappear
+        UIView.animate(withDuration: 0.4, animations: {
+            
+            _sender.view?.layer.opacity = 0
+            
+        }, completion: { (finished: Bool) in
+            _sender.view?.removeFromSuperview()
+        })
+       
+    }
+    //MARK: Image Pickers
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        //Setting the selected image equal to the profile picture. If the image was edited (cropped) it will upload that instead
+        var selectedImage:UIImage?
+        
+        
+        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage
+        {
+            selectedImage = editedImage
+        }
+        else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage
+        {
+            selectedImage = originalImage
+        }
+        
+        if let selectedImage2 = selectedImage
+        {
+            //save this image to the database
+            imgMain.image = selectedImage2
+            upload = true
+            saveChange()
+ 
+            
+        }
+        dismiss(animated: true, completion: nil)
     }
     
+    
+    
+    //if persons presses cancel
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-
-                        //long press for cover photo (Not being used)
-    @IBAction func LongPress(_ sender: UILongPressGestureRecognizer) {
-}
-
-    @IBAction func longPressLabel(_ sender: UILongPressGestureRecognizer) {
-        //When the label with the name stored in it is long pressed, this occurs
+    
+    //SAVING CHANGES
+    func saveChange(){
         
-        //Allows me to edit the name in the database. I don't like the look of it but it will suffice for now
-        let alertController = UIAlertController(title: "Edit Name", message: "", preferredStyle: .alert)
+        Loader.startAnimating()
+        let imageName =  NSUUID().uuidString
+        let storedImage = storageRef.child("imgMain").child(imageName)
         
-        let saveAction = UIAlertAction(title: "Save", style: .default, handler: {
-            alert -> Void in
-            
-            let firstTextField = alertController.textFields![0] as UITextField
-            
-            if firstTextField.text == ""
-            {
-                
-            }
-            else
-            {
-            //print("firstName \(firstTextField.text)")
-            
-            self.lblName.text = firstTextField.text
-            
-           // self.btnSave.isHidden = false
-            }
-            
-            
-        })
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: {
-            (action : UIAlertAction!) -> Void in
-            self.Loader.stopAnimating()
-            
-        })
-        
-        alertController.addTextField { (textField : UITextField!) -> Void in
-            textField.placeholder = "Enter First and Last Name"
+        //Uploading the selected image to the database
+        if let uploadData = UIImagePNGRepresentation(self.imgMain.image!)
+        {
+            storedImage.put(uploadData, metadata: nil, completion: { ( metadata, error) in
+                if error != nil
+                {
+                    let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
+                    
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                    alertContoller.addAction(defaultAction)
+                    self.present(alertContoller, animated: true, completion: nil)
+                    return
+                }
+                storedImage.downloadURL(completion: { (url,error) in
+                    if error != nil
+                    {
+                        let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
+                        
+                        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                        alertContoller.addAction(defaultAction)
+                        self.present(alertContoller, animated: true, completion: nil)
+                        
+                        return
+                    }
+                    if let urlText = url?.absoluteString{
+                        
+                        
+                        
+                        
+                        self.NameRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).updateChildValues(["pic" : urlText], withCompletionBlock: { (error,ref) in
+                            if error != nil
+                            {
+                                let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
+                                
+                                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                                alertContoller.addAction(defaultAction)
+                                self.present(alertContoller, animated: true, completion: nil)
+                                
+                                return
+                            }
+                            self.Loader.stopAnimating()
+                            self.ableToSwitch = true
+                            self.btnSave.isHidden = true
+                            let imgData = UIImagePNGRepresentation(self.imgMain.image!)! as NSData
+                            UserDefaults.standard.set(imgData, forKey: "savedImage")
+                        })
+                        
+                        //if the user is also an artist, upload this data to the artist profiles node in firebase
+                        if self.artistCreate == true
+                        {
+                            self.NameRef.child("artistProfiles").child((FIRAuth.auth()?.currentUser?.uid)!).updateChildValues(["pic" : urlText], withCompletionBlock: { (error,ref) in
+                                if error != nil
+                                {
+                                    let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
+                                    
+                                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                                    alertContoller.addAction(defaultAction)
+                                    self.present(alertContoller, animated: true, completion: nil)
+                                    
+                                    return
+                                }
+                                self.Loader.stopAnimating()
+                                self.ableToSwitch = true
+                                self.btnSave.isHidden = true
+                            })
+                        }
+                    }
+                })
+            })
         }
-        
-        alertController.addAction(saveAction)
-        alertController.addAction(cancelAction)
-        
-        self.present(alertController, animated: true, completion: nil)
-        
-        
     }
+    
+
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         tbAbout.resignFirstResponder()
         return true
     }
    
-    @IBAction func tbEditBeing(_ sender: Any) {
-       // btnSave.isHidden = false
-    }
-    
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     @IBAction func editClick(_ sender: Any) {
 
-        
+        //edit the usres information which will be saveed to the user profile as well as the artist profile if the variable "artistCreate" is set to true
         
         let vc = UIViewController()
         vc.preferredContentSize = CGSize(width: 250,height: 150)
@@ -766,9 +763,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
                 //self.loc = temp1
                 //self.btnSave.isHidden = false
                 self.NameRef.child("users").child(self.user!.uid).child("Location").setValue(temp1)
-                    print(UserDefaults.standard.bool(forKey: "artistCreate"))
-                    print(self.artistCreate)
-                    print(UserDefaults.standard.bool(forKey: "artistOn"))
+                   
                     if self.artistCreate == true{
                         self.NameRef.child("artistProfiles").child(self.user!.uid).child("Location").setValue(temp1)
                     }
@@ -836,7 +831,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
     }
     @IBAction func btnMoreAction(_ sender: Any) {
         
-
+        //creates the action sheet to logout.
         
         let myActionSheet = UIAlertController(title: "Options", message: "Select", preferredStyle: UIAlertControllerStyle.actionSheet)
         
@@ -850,72 +845,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
             
         }
         
-        
-        
-//        let createArtist = UIAlertAction(title: alertTitle, style: UIAlertActionStyle.default) { (action) in
-//            
-//            
-//                
-//                if self.artistCreate == true
-//                {
-//                    
-//
-//
-//                }
-//                else{
-//                    if self.skills == ""
-//                    {
-//                        let alertContoller = UIAlertController(title: "Oops!", message: "Add a set of skills to procede", preferredStyle: .alert)
-//                        
-//                        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-//                        alertContoller.addAction(defaultAction)
-//                        self.present(alertContoller, animated: true)
-//                    }
-//                    else{
-//                    
-//                    
-//                    self.NameRef.child("artistProfiles").child(self.user!.uid).child("Name").setValue(self.lblName.text)
-//                    
-//                    self.NameRef.child("artistProfiles").child(self.user!.uid).child("token").setValue(self.user!.uid)
-//                    
-//                   
-//                    self.NameRef.child("artistProfiles").child(self.user!.uid).child("skills").setValue(self.skills)
-//                        
-//                    self.NameRef.child("artistProfiles").child(self.user!.uid).child("Email").setValue(self.email)
-//                    
-//                    self.NameRef.child("users").child(self.user!.uid).child("pic").observe(.value){
-//                        (snap: FIRDataSnapshot) in
-//                        
-//                        if snap.exists() == true
-//                        {
-//                            self.NameRef.child("artistProfiles").child(self.user!.uid).child("pic").setValue(snap.value as! String)
-//                        }
-//                        else{
-//                            self.NameRef.child("artistProfiles").child(self.user!.uid).child("pic").setValue("default.ca")
-//                        }
-//                        let myVC = self.storyboard?.instantiateViewController(withIdentifier: "Artist") as! ArtistViewController
-//                        
-//                        myVC.token = self.user!.uid
-//                        
-//                        self.present(myVC, animated: true)
-//                    }
-//                    
-//                }
-//            }
-//            
-        
-            
-
-            
-            
-            
-            
-            
-//        }
-        
-        
-        
-        //myActionSheet.addAction(createArtist)
         myActionSheet.addAction(Logout)
         myActionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
         

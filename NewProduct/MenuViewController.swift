@@ -57,9 +57,9 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         
         tblMenuOptions.tableFooterView = UIView()
-        // Do any additional setup after loading the view.
     }
     override func viewDidAppear(_ animated: Bool) {
+        //checks if the user created an artist profile
         self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).observe(.value, with: { (snapshot) in
             if snapshot.exists() == true
             {
@@ -85,7 +85,8 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func updateArrayMenuOptions(){
-
+        
+        //text for the items on the slide out menu
         arrayMenuOptions.append(["title":"Activate Artist Profile", "icon":"Artist"])
         arrayMenuOptions.append(["title":"Messages", "icon":"Message"])
         arrayMenuOptions.append(["title":"About", "icon":"Info"])
@@ -178,147 +179,131 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func switchStateDidChange(_ sender:UISwitch!)
     {
+        
+        //function for when the user activates the artist profile
           let myVCHome = storyboard?.instantiateViewController(withIdentifier: "Home") as! HomeViewController
-          //let myVCArtist = storyboard?.instantiateViewController(withIdentifier: "Artist") as! ArtistViewController
-        if (sender.isOn == true){
+            if (sender.isOn == true){
             
           
-            
-            if artistCreate == true{
-                myVCHome.artistOn = true
-                UserDefaults.standard.set("true", forKey: "artistOn")
                 
-                
-                present(myVCHome, animated: true)
-                
-            }
-            else
-            {
-                let alertContoller = UIAlertController(title: "Oops!", message: "You haven't created an Artist Profile yet! Would you like to make one?", preferredStyle: .alert)
-                
-                let yesAction = UIAlertAction(title: "Yes", style: .default, handler: {
-                    alert -> Void in
+                if artistCreate == true{
+                    myVCHome.artistOn = true
+                    UserDefaults.standard.set("true", forKey: "artistOn")
                     
-                    self.dataRef.child("users").child(self.loggedUser!.uid).observe(.value, with: { (snapshot) in
-                        if snapshot.exists() == true
-                        {
-                            let snapshotValueSkill = snapshot.value as? NSDictionary
-                            
-                            if let temploc = snapshotValueSkill?["Location"] as? String {
-                                // print(tempskills)
-                                self.loc = temploc
-                            }
-                            
-                            let snapshotValueName = snapshot.value as? NSDictionary
-                            let tempname = snapshotValueName?["Name"] as? String
-                          //  print(tempname!)
-                            self.name = tempname
-                            
-                            let snapshotValueEmail = snapshot.value as? NSDictionary
-                            let tempemail = snapshotValueEmail?["Email"] as? String
-                            self.email = tempemail
-                            
-                            
-                            
-                            
-                            
-//                            let profVC = self.storyboard?.instantiateViewController(withIdentifier: "Profile") as! ViewController
-                            
-                            
-                            
-                            if self.loc == ""{
+                    
+                    present(myVCHome, animated: true)
+                    
+                }
+                else
+                {
+                    let alertContoller = UIAlertController(title: "Oops!", message: "You haven't created an Artist Profile yet! Would you like to make one?", preferredStyle: .alert)
+                    
+                    let yesAction = UIAlertAction(title: "Yes", style: .default, handler: {
+                        alert -> Void in
+                        
+                        self.dataRef.child("users").child(self.loggedUser!.uid).observe(.value, with: { (snapshot) in
+                            if snapshot.exists() == true
+                            {
+                                let snapshotValueSkill = snapshot.value as? NSDictionary
                                 
-                                let alertContoller2 = UIAlertController(title: "Oops!", message: "You haven't filled out necessary information. \n Go to My Foto and fill out the your location!", preferredStyle: .alert)
+                                if let temploc = snapshotValueSkill?["Location"] as? String {
+                                    self.loc = temploc
+                                }
                                 
-                                let defaultAction = UIAlertAction(title: "Okay", style: .default, handler: {
-                                    alert -> Void in
-                                    sender.isOn = false
-                                    myVCHome.artistOn = false
-                                    UserDefaults.standard.removeObject(forKey: "artistOn")
+                                let snapshotValueName = snapshot.value as? NSDictionary
+                                let tempname = snapshotValueName?["Name"] as? String
+                                self.name = tempname
+                                
+                                let snapshotValueEmail = snapshot.value as? NSDictionary
+                                let tempemail = snapshotValueEmail?["Email"] as? String
+                                self.email = tempemail
+                                
+                                if self.loc == ""{
                                     
-                                })
-                                alertContoller2.addAction(defaultAction)
-                                self.present(alertContoller2, animated:true, completion: nil)
-                                
-                                
-                            }
-                            else{
-//                                
-                                let vc = UIViewController()
-                                vc.preferredContentSize = CGSize(width: 250,height: 100)
-                                let label1 = UILabel(frame: CGRect(x: 0, y: 0, width: 75, height: 75))
-//                                let text1 = UITextField(frame: CGRect(x: 75, y: 0, width: 175, height: 50))
-                                let picker1 = UIPickerView(frame: CGRect(x: 75, y: 0, width: 175, height: 75))
-                                
-//                                text1.font = UIFont(name: "Avenir Next", size: 13)
-//                                text1.placeholder = "Enter Your Skills (Seperated by Commas)"
-                                picker1.dataSource = self
-                                picker1.delegate = self
-                                
-                                label1.font = UIFont(name: "Avenir Next", size: 14)
-                                
-                                
-                                label1.text = "Skills:"
-                            
-                                //pickerGender.dataSource = genders as? UIPickerViewDataSource
-                                
-                              
-//                                vc.view.addSubview(text1)
-                                vc.view.addSubview(picker1)
-                                vc.view.addSubview(label1)
-                                let editRadiusAlert = UIAlertController(title: "Add Skills to Procede", message: "", preferredStyle: UIAlertControllerStyle.alert)
-                                editRadiusAlert.setValue(vc, forKey: "contentViewController")
-                                editRadiusAlert.addAction(UIAlertAction(title: "Save", style: .default, handler: {
-                                    alert -> Void in
+                                    let alertContoller2 = UIAlertController(title: "Oops!", message: "You haven't filled out necessary information. \n Go to My Foto and fill out the your location!", preferredStyle: .alert)
                                     
-                                    
-    
-                                        let inquirePost: [String : AnyObject] = ["Name": self.name as AnyObject,
-                                                                                 "token": self.loggedUser!.uid as AnyObject,
-                                                                                 "Skills": self.skill as AnyObject,
-                                                                                 "Email": self.email as AnyObject,
-                                                                                 "Location": self.loc as AnyObject,
-                                                                                 "Price1": Float(0) as AnyObject,
-                                                                                 "Price2": Float(0) as AnyObject]
+                                    let defaultAction = UIAlertAction(title: "Okay", style: .default, handler: {
+                                        alert -> Void in
+                                        sender.isOn = false
+                                        myVCHome.artistOn = false
+                                        UserDefaults.standard.removeObject(forKey: "artistOn")
                                         
-                                        self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).setValue(inquirePost)
-                                        self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("Ratings").child(self.loggedUser!.uid).setValue(Float(0))
-                                        let VC: MessViewController = MessViewController()
-                                        let token: [String: AnyObject] = [Messaging.messaging().fcmToken!: Messaging.messaging().fcmToken as AnyObject]
-                                        VC.postToken(Token: token)
-                                        self.dataRef.child("users").child(self.loggedUser!.uid).child("pic").observe(.value){
-                                            (snap: FIRDataSnapshot) in
+                                    })
+                                    alertContoller2.addAction(defaultAction)
+                                    self.present(alertContoller2, animated:true, completion: nil)
+                                    
+                                    
+                                }
+                                else{
+                                    let vc = UIViewController()
+                                    vc.preferredContentSize = CGSize(width: 250,height: 100)
+                                    let label1 = UILabel(frame: CGRect(x: 0, y: 0, width: 75, height: 75))
+
+                                    let picker1 = UIPickerView(frame: CGRect(x: 75, y: 0, width: 175, height: 75))
+                                
+                                    picker1.dataSource = self
+                                    picker1.delegate = self
+                                    
+                                    label1.font = UIFont(name: "Avenir Next", size: 14)
+                                    
+                                    
+                                    label1.text = "Skills:"
+
+                                    vc.view.addSubview(picker1)
+                                    vc.view.addSubview(label1)
+                                    let editRadiusAlert = UIAlertController(title: "Add Skills to Procede", message: "", preferredStyle: UIAlertControllerStyle.alert)
+                                    editRadiusAlert.setValue(vc, forKey: "contentViewController")
+                                    editRadiusAlert.addAction(UIAlertAction(title: "Save", style: .default, handler: {
+                                        alert -> Void in
+                                        
+                                        
+        
+                                            let inquirePost: [String : AnyObject] = ["Name": self.name as AnyObject,
+                                                                                     "token": self.loggedUser!.uid as AnyObject,
+                                                                                     "Verified": "false" as AnyObject,
+                                                                                     "Skills": self.skill as AnyObject,
+                                                                                     "Email": self.email as AnyObject,
+                                                                                     "Location": self.loc as AnyObject,
+                                                                                     "Price1": Float(0) as AnyObject,
+                                                                                     "Price2": Float(0) as AnyObject]
                                             
-                                            if snap.exists() == true
-                                            {
-                                                self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("pic").setValue(snap.value as! String)
+                                            self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).setValue(inquirePost)
+                                            self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("Ratings").child(self.loggedUser!.uid).setValue(Float(0))
+                                            let VC: MessViewController = MessViewController()
+                                            let token: [String: AnyObject] = [Messaging.messaging().fcmToken!: Messaging.messaging().fcmToken as AnyObject]
+                                            VC.postToken(Token: token)
+                                            self.dataRef.child("users").child(self.loggedUser!.uid).child("pic").observe(.value){
+                                                (snap: FIRDataSnapshot) in
+                                                
+                                                if snap.exists() == true
+                                                {
+                                                    self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("pic").setValue(snap.value as! String)
+                                                }
+                                                else{
+                                                    self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("pic").setValue("default.ca")
+                                                }
                                             }
-                                            else{
-                                                self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("pic").setValue("default.ca")
-                                            }
-                                        }
-                                        UserDefaults.standard.set("true", forKey: "artistOn")
-                                        UserDefaults.standard.set(true, forKey: "artistCreate")
-                                        myVCHome.artistOn = true
-                                        
-                                        // myVCArtist.token = self.loggedUser!.uid
-                                        self.present(myVCHome, animated: true)
-                                        
+                                            UserDefaults.standard.set("true", forKey: "artistOn")
+                                            UserDefaults.standard.set(true, forKey: "artistCreate")
+                                            myVCHome.artistOn = true
 
-                                    }))
-                                   
+                                            self.present(myVCHome, animated: true)
+                                            
+
+                                        }))
+                                       
+                                        
+                                        
                                     
                                     
-                                
-                                
-                                editRadiusAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-                                self.present(editRadiusAlert, animated: true)
-                                
+                                    editRadiusAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                                    self.present(editRadiusAlert, animated: true)
+                                    
+                                    
+                                }
+
                                 
                             }
-
-                            
-                        }
                         
                     })
                     

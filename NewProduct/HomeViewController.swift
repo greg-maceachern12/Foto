@@ -21,14 +21,16 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
     var dataRef = FIRDatabase.database().reference()
     var loggedUser = FIRAuth.auth()?.currentUser
     
+    var overlay: UIView?
+    var overlayAct: UIActivityIndicatorView?
+    
     var artistCreate = false
     
     var artistOn = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //btnInvit.applyDesign()
+    
         btnFindArtist.applyDesign()
         btnMyFoto.applyDesign()
         
@@ -45,6 +47,8 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
         
     }
     override func viewWillAppear(_ animated: Bool) {
+        
+        //change the layout of the page to display the artist options if artistOn exists
         if UserDefaults.standard.object(forKey: "artistOn") != nil
         {
             btnInvit.setImage(#imageLiteral(resourceName: "invitFoto"), for: .normal)
@@ -65,38 +69,16 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
     
     func slideMenuItemSelectedAtIndex(_ index: Int32) {
         
-        //let topViewController : UIViewController = self.navigationController!.topViewController!
-        //print("View Controller is : \(topViewController) \n", terminator: "")
+        
         switch(index){
         case 0:
-            //print("Artist", terminator: "")
-            
-            
+
             
             break
         case 1:
-           // print("Play\n", terminator: "")
-            
-//            let myVC = storyboard?.instantiateViewController(withIdentifier: "TableInquire") as! TableInquireViewController
-//            if artistCreate == true{
-//                present(myVC, animated: true)
-//            }
-//            else
-//            {
-//                let alertContoller = UIAlertController(title: "Oops!", message: "You have no inquires! You haven't created an Artist Profile yet! Make one on your home page \n To view your sent inquires, go to your home profile and click more!", preferredStyle: .alert)
-//                
-//                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-//                alertContoller.addAction(defaultAction)
-//                self.present(alertContoller, animated:true, completion: nil)
-            //}
             let myMessageVC = storyboard?.instantiateViewController(withIdentifier: "TableMess") as! TableMessViewController
-            
-            
-            
+
             present(myMessageVC, animated: true)
-            
-            
-            
             break
         case 2:
             
@@ -109,10 +91,7 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
           
             break
         case 4:
-           // print("Play\n", terminator: "")
-            
-            // self.openViewControllerBasedOnIdentifier("PlayVC")
-            
+
             break
     
         default:
@@ -169,7 +148,7 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
     }
     
     @IBAction func invitAction(_ sender: Any) {
-        
+        //open different pages if the artist mode is on
         if artistOn == true
         {
             let inquireVC : TableInquireViewController = self.storyboard!.instantiateViewController(withIdentifier: "TableInquire") as! TableInquireViewController
@@ -195,9 +174,22 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
         }
         else
         {
+           overlay = UIView(frame: view.frame)
+    
+            overlayAct = UIActivityIndicatorView(frame: CGRect(x: self.view.frame.width/2 - 17, y: self.view.frame.height/2 - 7 , width: 35, height: 35))
+            overlay!.backgroundColor = UIColor.black
+            overlay!.alpha = 0.8
+            overlayAct?.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
+    
+            view.addSubview(overlay!)
+            view.addSubview(overlayAct!)
+            overlayAct?.startAnimating()
             let profVC : ViewController = self.storyboard!.instantiateViewController(withIdentifier: "Profile") as! ViewController
             
-            self.present(profVC, animated: true)
+            self.present(profVC, animated: true, completion: {
+                self.overlayAct?.removeFromSuperview()
+                self.overlay?.removeFromSuperview()
+            })
         }
         
     }

@@ -34,12 +34,7 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        UIView.animate(withDuration: 0.5, delay: 0, options: [.repeat, .autoreverse], animations: {
-//            
-//            self.btnDropDown.alpha = 0.4
-//            
-//        }, completion: nil)
-
+        //retrieving all the names of the artists that the user has inquired
         dataRef.child("users").child(loggedUser!.uid).child("Sent Inquires").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
             //
             if snapshot.exists() == true{
@@ -57,8 +52,6 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
         
         
         btnComplete.applyGradient(colours: [UIColor(red: 255/255, green: 140/255, blue: 0, alpha: 1.9), UIColor(red: 1.0, green: 103/255, blue: 0, alpha: 1.0)])
-        
-        
         
         chooseArtist.anchorView = btnDropDown
         
@@ -87,6 +80,8 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
     @IBAction func clickArtist(_ sender: Any) {
         chooseArtist.show()
     }
+    
+    //random ID generator
     func generateRandomStringWithLength(length:Int) -> String {
         
         let randomString:NSMutableString = NSMutableString(capacity: length)
@@ -118,6 +113,7 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
         
     }
     
+    //the video picker
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         if let videoURL = info[UIImagePickerControllerMediaURL] as? NSURL{
@@ -125,10 +121,13 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
             
             vidURL = videoURL as URL!
             
-            if let thumbnailImage = self.thumbNail(fileURL: videoURL)
-            {
-                self.btnAddVideo.setImage(thumbnailImage, for: .normal)
-            }
+        
+            
+                if let thumbnailImage = self.thumbNail(fileURL: videoURL)
+                {
+                    self.btnAddVideo.setImage(thumbnailImage, for: .normal)
+                }
+            
            
             
         }
@@ -136,6 +135,7 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
         dismiss(animated: true, completion: nil)
     }
     
+    //this function uploads the video to firebase and dismisses the viewcontroller
     func handleVideoSelectedForUrl(url: NSURL){
         
         self.Loader.startAnimating()
@@ -190,14 +190,14 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
                 self.dismiss(animated: true, completion: nil)
                 
                 
-                //about to pass data and add text stuff
+                
             }
             
             
         })
         
+        //progress of the progress bar
         uploadTask.observe(.progress) { (snapshot) in
-            //self.progressBar.progress = snapshot.progress?.completedUnitCount as Any as! Float
             print(snapshot.progress!.completedUnitCount as Any)
             
             let percentComplete = Double(snapshot.progress!.completedUnitCount)
@@ -211,6 +211,7 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
 
     }
     
+    //creates the thumbnail for the selected video
     func thumbNail(fileURL: NSURL) -> UIImage?{
         
         let asset = AVAsset(url: fileURL as URL)
@@ -254,7 +255,7 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
 
     
     @IBAction func Add(_ sender: Any) {
-        
+        //if all the following prereqs have been completed, upload the video and hide the buttons
         if vidURL != nil && tbTitle.text != nil && btnDropDown.titleLabel?.text != "Select an Artist"{
             
             self.btnAddVideo.isEnabled = false

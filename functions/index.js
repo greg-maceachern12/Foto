@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+
 admin.initializeApp(functions.config().firebase);
 //
 exports.sendNotifications = functions.database.ref('/messages/{id}').onWrite(event =>{
@@ -70,3 +71,25 @@ exports.sendNotificationsInquireAnswer = functions.database.ref('/users/{id}/Sen
         };
     });
 });
+
+//exports.updateRating = functions.database.ref('/users/{id}/Ratings/').onUpdate(event =>{
+//    const post = event.data.val()
+//    const id = event.params
+//    return event.data.ref(`users/${id}/Rating`).set(post)
+// 
+//    
+//    
+//})
+
+//exports.scoreOneAverage = functions.database.ref('/users/{id}/Ratings')
+//  .onWrite(event => {
+//    const scores = event.data.val();
+//    const avgSum = 0;
+//    const id = event.params
+//    _.forOwn(scores, (scoreKey, scoreValue) => {
+//      avgSum += scoreValue;
+//    });
+//    return event.data.ref(`users/${id}/Rating`).set(avgSum / _.size(scores)); // this is your average! Do with it what you like
+//    console.log(avgSum / _.size(scores))
+//  });
+

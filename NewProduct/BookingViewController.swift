@@ -61,11 +61,9 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         
         viewTab1.applyGradient(colours: [UIColor(red: 255/255, green: 189/255, blue: 89/255, alpha: 1.0), UIColor(red: 1.0, green: 139/255, blue: 26/255, alpha: 1.0)])
         viewTab2.applyGradient(colours: [UIColor(red: 255/255, green: 140/255, blue: 0, alpha: 1.0), UIColor(red: 1.0, green: 103/255, blue: 0, alpha: 1.0)])
-//        viewTab1.applyGradient(colours: [UIColor(red: 179/255, green: 0, blue: 255/255, alpha: 1.0), UIColor(red: 149/255, green: 0, blue: 245/255, alpha: 1.0)])
-//        viewTab2.applyGradient(colours: [UIColor(red: 151/255, green: 0, blue: 255/255, alpha: 1.0), UIColor(red: 121/255, green: 0, blue: 255/255, alpha: 1.0)])
         
         
-        
+        //makes a placeholder label for a textview (not natively available)
         placeholderLabel = UILabel()
         placeholderLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         placeholderLabel.numberOfLines = 4
@@ -184,10 +182,9 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == tableView1
         {
-            //green colour
-            
-            //tableView1.backgroundColor = UIColor(red: 0/255, green: 225/255, blue: 77/255, alpha: 1)
-            UIView.animate(withDuration: 0.65, animations: {
+         
+            //changes the size based on which option was picked
+            UIView.animate(withDuration: 0.5, animations: {
             
                 self.tableView1.transform = CGAffineTransform(scaleX: 1.07, y: 1.07)
                 self.tableView2.transform = CGAffineTransform(scaleX: 0.93, y: 0.93)
@@ -195,22 +192,14 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
                 
                 self.viewTab1.transform = CGAffineTransform(scaleX: 1.07, y: 1.07)
                 self.viewTab2.transform = CGAffineTransform(scaleX: 0.93, y: 0.93)
-                //self.viewTab2.layer
+
                 
                 
                 
                 
                 
             })
-            
-            //orange colour
-            
-            
-            //tableView2.backgroundColor = UIColor.clear
-            
-            //viewTab2.applyGradient(colours: [UIColor(red: 151/255, green: 0, blue: 255/255, alpha: 1.0), UIColor(red: 121/255, green: 0, blue: 255/255, alpha: 1.0)])
-            
-            
+          
             price1 = true
             price2 = false
             price3 = false
@@ -221,12 +210,8 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         }
         else if tableView == tableView2
         {
-            //orange
-            //viewTab1.applyGradient(colours: [UIColor(red: 255/255, green: 189/255, blue: 89/255, alpha: 1.0), UIColor(red: 1.0, green: 139/255, blue: 26/255, alpha: 1.0)])
-            //tableView1.backgroundColor = UIColor.clear
-           //lblPrice1.applyGradient(colours: [UIColor(red: 255/255, green: 140/255, blue: 0, alpha: 1.0), UIColor(red: 1.0, green: 103/255, blue: 0, alpha: 1.0)])
-            
-            UIView.animate(withDuration: 0.65, animations: {
+           
+            UIView.animate(withDuration: 0.5, animations: {
                 
                 self.tableView2.transform = CGAffineTransform(scaleX: 1.07, y: 1.07)
                 self.tableView1.transform = CGAffineTransform(scaleX: 0.93, y: 0.93)
@@ -241,11 +226,6 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
             })
            
             
-            //green
-            
-            //lblPrice2.backgroundColor = UIColor(red: 36/255, green: 212/255, blue: 77/255, alpha: 1)
-            
-            //tableView2.backgroundColor = UIColor(red: 0/255, green: 225/255, blue: 77/255, alpha: 1)
             
             price1 = false
             price2 = true
@@ -326,10 +306,9 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
             
         }
         
+        
+        
         //Table1
-        
-        
-        
         
         dataRef.child("artistProfiles").child(self.userID).child("Pricing1").child("Price1_0").observe(.value){
             (snap: FIRDataSnapshot) in
@@ -389,37 +368,6 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
             
         }
         
-//        dataRef.child("artistProfiles").child(self.userID).child("Price1").child("Price1_3").observe(.value){
-//            (snap: FIRDataSnapshot) in
-//            if snap.exists() == true
-//            {
-//                let temp1 = snap.value as? String
-//                // self.posts.remove(at: 3)
-//                self.posts.insert(temp1!, at: 3)
-//                self.tableView1.reloadData()
-//            }
-//            else{
-//                //self.posts.remove(at: 3)
-//            }
-//            
-//        }
-//        dataRef.child("artistProfiles").child(self.userID).child("Price1").child("Price1_4").observe(.value){
-//            (snap: FIRDataSnapshot) in
-//            if snap.exists() == true
-//            {
-//                let temp1 = snap.value as? String
-//                // self.posts.remove(at: 4)
-//                self.posts.insert(temp1!, at: 4)
-//                self.tableView1.reloadData()
-//            }
-//            else{
-//                // self.posts.remove(at: 4)
-//            }
-//            
-//        }
-        
-        
-  
         
         //Table2
         
@@ -482,45 +430,10 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         }
         
         
-        
-//        dataRef.child("artistProfiles").child(self.userID).child("Price2").child("Price2_3").observe(.value){
-//            (snap: FIRDataSnapshot) in
-//            if snap.exists() == true
-//            {
-//                let temp1 = snap.value as? String
-//                
-//                self.posts2.insert(temp1!, at: 3)
-//                self.tableView2.reloadData()
-//            }
-//            
-//            
-//        }
-//        dataRef.child("artistProfiles").child(self.userID).child("Price2").child("Price2_4").observe(.value){
-//            (snap: FIRDataSnapshot) in
-//            if snap.exists() == true
-//            {
-//                let temp1 = snap.value as? String
-//                
-//                self.posts2.insert(temp1!, at: 4)
-//                self.tableView2.reloadData()
-//            }
-//            
-//            
-//        }
-        
-        
-        
+    
         
         
 
-    }
-    
-    @IBAction func minChange(_ sender: Any) {
-        //dateWheelEnd.minimumDate = dateWheelStart.date
-    }
-    
-    @IBAction func endChange(_ sender: Any) {
-        //dateWheelStart.minimumDate = dateWheelEnd.date
     }
     
     @IBAction func cancelAction(_ sender: Any) {
@@ -572,6 +485,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         }
         else
         {
+            // if the first price package was selected, postRef becomes the first pricing package.
             if self.price1 == true
             {
                 postRef = posts

@@ -1,5 +1,8 @@
 
 
+
+//The frameworks of the code were taken from the CocoaPod "JSQMessageViewController". I reworked it to operate with firebase and the rest of the application
+
 import UIKit
 import JSQMessagesViewController
 import Firebase
@@ -16,9 +19,7 @@ class MessViewController: JSQMessagesViewController {
     var run = true
     
     var name: String!
-    //var picture: String!
-    
-    
+
     var avatars = [String: JSQMessagesAvatarImage]()
     
     let storage = FIRStorage.storage()
@@ -32,6 +33,8 @@ extension MessViewController{
     
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
         
+        
+        //retrieving information to upload to the database (date,name,token ect.)
         let strDate = Date()
         let day = Calendar.current.component(.day, from: strDate)
         let month = Calendar.current.component(.month, from: strDate)
@@ -46,16 +49,9 @@ extension MessViewController{
         let token: [String: AnyObject] = [Messaging.messaging().fcmToken!: Messaging.messaging().fcmToken as AnyObject]
         
          self.postToken(Token: token)
-        //if messages.count == 0{
-            
-//            let strDate = Date()
-//            let day = Calendar.current.component(.day, from: strDate)
-//            let month = Calendar.current.component(.month, from: strDate)
-//            let year = Calendar.current.component(.year, from: strDate)
-            
-           // self.dataRef.child("users").child(self.loggedUser!.uid).child("messages").child(self.token).setValue("\(day)/\(month)/\(year)")
-            
-//
+        
+        //this data is uploaded to the corresponding locations in the database (3 locations)
+
             self.dataRef.child("users").child(self.token).child("pic").observe(.value, with: { (snap) in
                 
                 if let temp1 = snap.value as? String{
@@ -93,12 +89,7 @@ extension MessViewController{
                     self.dataRef.child("users").child(self.token).child("messages").child(self.loggedUser!.uid).updateChildValues(messPost)
                 }
             })
-            
-                    
-        
-            
-      //  }
-        
+
         
         
                 self.run = false
@@ -122,10 +113,7 @@ extension MessViewController{
                 self.messages.append(message!)
                 self.dates.append(dateString)
                 
-                
-                
-                //print(self.messages)
-                
+
                 self.finishSendingMessage()
                 
 
@@ -141,6 +129,7 @@ extension MessViewController{
     }
     
     func postToken(Token: [String: AnyObject]){
+        //uploads the FCM token to the database to recieve notifications
         print("FCM Token: \(Token)")
         let dbRef = FIRDatabase.database().reference()
         dbRef.child("users").child(self.loggedUser!.uid).child("fcmToken").setValue(Token)
@@ -148,6 +137,8 @@ extension MessViewController{
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
 
+        
+        //the collection view is the message view and is controlled (for the most part) here
         let placeHolderImage = #imageLiteral(resourceName: "Default")
         let avatarImage = JSQMessagesAvatarImage(avatarImage: nil, highlightedImage: nil, placeholderImage: placeHolderImage)
        
@@ -161,7 +152,7 @@ extension MessViewController{
         }
         
         
-        //saving avatar
+        //saving the avatar image in tge cagceso the chat loads faster
         if (message.senderId) != nil {
             if loggedUser?.uid == message.senderId{
             dataRef.child("users").child(loggedUser!.uid).observe(.value, with: { (snapshot) in
@@ -230,10 +221,10 @@ extension MessViewController{
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        //initalizing some charactistics about the bubble(text color, text size, font etc)
         let cell = super.collectionView(collectionView, cellForItemAt: indexPath) as! JSQMessagesCollectionViewCell
         
         let message = messages[indexPath.row]
-        //cell.textView.font = UIFont(name: "Avenir Next", size: 14)
         
         if loggedUser!.uid == message.senderId{
             
@@ -250,12 +241,6 @@ extension MessViewController{
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForMessageBubbleTopLabelAt indexPath: IndexPath!) ->
         
         NSAttributedString! {
-//            let message = messages[indexPath.row]
-//            let messageUsername = String(describing: message.date)
-//        
-//            return NSAttributedString(string: messageUsername)
-            //let date2 = dates[indexPath.row]
-
             return NSAttributedString(string: dates[indexPath.row])
 
             
@@ -272,10 +257,13 @@ extension MessViewController{
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
+        //return the text for the message
         return messages[indexPath.row]
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
+        
+        //gives the ability to change the style of the bubble(shape, colour etc)
         
         let bubbleFactory = JSQMessagesBubbleImageFactory(bubble: UIImage.jsq_bubbleCompactTailless(), capInsets: .zero)
     
@@ -288,8 +276,7 @@ extension MessViewController{
             
         }
         else{
-//            return bubbleFactory?.incomingMessagesBubbleImage(with: UIColor(red: 218/255, green: 218/255, blue: 233/255, alpha: 1))
-            
+
             return bubbleFactory?.incomingMessagesBubbleImage(with: UIColor(red: 218/255, green: 218/255, blue: 233/255, alpha: 1))
             
         }
@@ -306,8 +293,10 @@ extension MessViewController {
         super.viewDidLoad()
         
         self.inputToolbar.contentView.leftBarButtonItem = nil
+        
         //tell JSQMessagesView who is current user
         self.senderId = loggedUser?.uid
+        //the name will be Loading until it has loaded
         self.senderDisplayName = "Loading"
         
         self.dataRef.child("users").child(loggedUser!.uid).child("Name").observe(.value){
@@ -337,10 +326,10 @@ extension MessViewController {
     func getMessage2() -> [JSQMessage]{
         let messages = [JSQMessage]()
         
-       
         
         self.dataRef.child("messages").observe(.childAdded, with: { (snapshot) in
             
+            //added this condition so this segment of the function isnt run when the user sends a new message. 
           if self.run == true
           {
             

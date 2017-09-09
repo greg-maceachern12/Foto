@@ -11,7 +11,7 @@ import Firebase
 import SDWebImage
 
 
-struct messageStruct {
+struct messageStruct { //structure for the items in the tables
     let ToName: String!
     let date: String!
     let picture: NSURL!
@@ -31,6 +31,7 @@ class TableMessViewController: UIViewController,UITableViewDelegate,UITableViewD
 
         self.info.removeAll()
         
+        //retrieve the date, name, photo and user token from firebase
         dataRef.child("users").child(loggedUser!.uid).child("messages").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
             //
             if snapshot.exists() == true{
@@ -73,7 +74,10 @@ class TableMessViewController: UIViewController,UITableViewDelegate,UITableViewD
         return info.count
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    {
+        
+        //will have to change to confine to auto layout.
         return 80
     }
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -82,6 +86,7 @@ class TableMessViewController: UIViewController,UITableViewDelegate,UITableViewD
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { action, index in
             //What happens when delete button is tapped
+            //Removes reference of the message. Does not delete message
             
             self.dataRef.child("users").child(self.loggedUser!.uid).child("messages").child(self.info[indexPath.row].token).removeValue()
             
@@ -97,39 +102,34 @@ class TableMessViewController: UIViewController,UITableViewDelegate,UITableViewD
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
-    //creates a cell in the table and sets information based on the tag (Check tag in main.storyboard)
-    let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
-    
-    
-    
-    let label1 = cell?.viewWithTag(2) as! UILabel
-    label1.text = info[indexPath.row].ToName
-    
-    
-    let label2 = cell?.viewWithTag(3) as! UILabel
-    label2.text = info[indexPath.row].date
-    
-
-    
-    let img4 = cell?.viewWithTag(1) as! UIImageView
-    img4.sd_setImage(with: info[indexPath.row].picture as URL!, placeholderImage: UIImage(named: "ProfileDefault")!)
-    img4.layer.cornerRadius = 15
-    img4.clipsToBounds = true
-    
-    return cell!
+        //creates a cell in the table and sets information based on the tag that was set
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
+        
+        let label1 = cell?.viewWithTag(2) as! UILabel
+        label1.text = info[indexPath.row].ToName
+        
+        
+        let label2 = cell?.viewWithTag(3) as! UILabel
+        label2.text = info[indexPath.row].date
+        
+        let img4 = cell?.viewWithTag(1) as! UIImageView
+        img4.sd_setImage(with: info[indexPath.row].picture as URL!, placeholderImage: UIImage(named: "ProfileDefault")!)
+        img4.layer.cornerRadius = 15
+        img4.clipsToBounds = true
+        
+        return cell!
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
     
+        //retrieving the token from the the array/structure and passing it to the next viewcontroller
         self.cellID = info[indexPath.row].token
-        //        print("token is \(self.cellID)")
         
         let myVC = storyboard?.instantiateViewController(withIdentifier: "Mess") as! MessViewController
         
         myVC.token = self.cellID!
         myVC.name = info[indexPath.row].ToName
-        //myVC.viewDidLoad()
         
         self.homeTab.deselectRow(at: indexPath, animated: true)
         

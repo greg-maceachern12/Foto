@@ -22,7 +22,9 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
     var skill: String!
     var loc: String! = "all of ontario"
     var maxNumber: Float!
-     var pickerData = ["All of Ontario", "Barrie", "Belleville Area", "Brantford", "Brockville", "Chatham-Kent", "Cornwall","Guelph", "Hamilton", "Kapuskasing", "Kenora", "Kingston Area", "Kitchener Area", "Leamington", "London", "Muskoka", "Norfolk Country", "North Bay", "Ottawa Area", "Owen Sound", "Peterborough", "Renfrew County", "Sarnia", "Saugeen Shores", "Sault Ste. Marie", "St.Catharines", "Sudbury", "Thunder Bay", "Timmins", "Toronto (GTA)", "Windsor", "Woodstock"]
+    
+    //currently using hard coded locations for Ontario, as this was going to be our launch area. Will implement the google maps API to make every country and city available.
+    var pickerData = ["All of Ontario", "Barrie", "Belleville Area", "Brantford", "Brockville", "Chatham-Kent", "Cornwall","Guelph", "Hamilton", "Kapuskasing", "Kenora", "Kingston Area", "Kitchener Area", "Leamington", "London", "Muskoka", "Norfolk Country", "North Bay", "Ottawa Area", "Owen Sound", "Peterborough", "Renfrew County", "Sarnia", "Saugeen Shores", "Sault Ste. Marie", "St.Catharines", "Sudbury", "Thunder Bay", "Timmins", "Toronto (GTA)", "Windsor", "Woodstock"]
     
     
     override func viewDidLoad() {
@@ -54,6 +56,7 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
     }
     
     
+    //MARK: Pickerview Data
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -87,18 +90,14 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
    
     @IBAction func FingerApply(_ sender: Any) {
         
-        print(loc!)
+        //Filter the posts based on the entered information. 
         let myVC = storyboard?.instantiateViewController(withIdentifier: "ArtistTable") as! aaViewController
        // maxNumber = Float(tbMaximum.text!)
         
         if tbMaximum.text != "" && tbSkills.text != ""{
             
             skill = tbSkills.text?.lowercased()
-            
-          
-            
-            
-            
+
             
             if loc == "kingston area"{
                 

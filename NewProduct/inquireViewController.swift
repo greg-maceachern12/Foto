@@ -43,7 +43,7 @@ class inquireViewController: UIViewController {
         
         btnDecline.applyGradient(colours: [UIColor(red: 255/255, green: 21/255, blue: 0, alpha: 1.0), UIColor(red: 226/255, green: 0, blue: 10/255, alpha: 1.0)])
         
-        // Do any additional setup after loading the view.
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,12 +55,7 @@ func SetUp()
     {
         imgprof.layer.cornerRadius = imgprof.frame.width/8
         imgprof.clipsToBounds = true
-        
-//        btnAccept.layer.cornerRadius = btnAccept.frame.height/6
-//        btnAccept.clipsToBounds = true
-//        
-//        btnDecline.layer.cornerRadius = btnDecline.frame.height/6
-//        btnDecline.clipsToBounds = true
+
         dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("ClientName").observe(.value){
             (snap: FIRDataSnapshot) in
             self.navTitle.title = "\(snap.value as! String)'s Inquiry"
@@ -70,7 +65,7 @@ func SetUp()
         dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("ClientEmail").observe(.value){
             (snap: FIRDataSnapshot) in
             self.clientEmail = snap.value as? String
-            //self.lblEmail.text = snap.value as? String
+    
         }
         dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("Theme").observe(.value){
             (snap: FIRDataSnapshot) in
@@ -146,6 +141,7 @@ func SetUp()
 
     }
     
+    //the action for the decline button.
     @IBAction func Decline(_ sender: Any) {
         let alertContoller = UIAlertController(title: "Confirm!", message: "Are You Sure You Want To Decline This Inquiry?", preferredStyle: .alert)
         
@@ -164,8 +160,7 @@ func SetUp()
             self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("Inquires").child(self.code).child("Status").setValue("Declined")
             
             let myVC = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! HomeViewController
-            //myVC.token = self.token
-            
+           
             self.present(myVC, animated: true)
             
             self.present(alertContoller2, animated:true, completion: nil)
@@ -178,6 +173,7 @@ func SetUp()
         self.present(alertContoller, animated:true, completion: nil)
     }
     
+    //the action for the accept button.
     @IBAction func Accept(_ sender: Any) {
         
         let alertContoller = UIAlertController(title: "Confirm!", message: "Are You Sure You Want To Accept This Inquiry?", preferredStyle: .alert)

@@ -61,13 +61,13 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
         
                 dataRef = FIRDatabase.database().reference()
         
-        //grabbing the title, price, date and picture to a structure and storing that in an array
+        //grabbing the title, price, date and picture and appending it to a structure and storing that in an array. This is all information pertinant to the artist table cell
         dataRef.child("users").child(self.loggedUser!.uid).child("Pins").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
             
             self.arrayPin.append((snapshot.value as? String)!)
         })
         
-
+        
         
                 dataRef.child("artistProfiles").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
                     
@@ -92,7 +92,7 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
                     let snapshotValueDate = snapshot.value as? NSDictionary
                     let Skills = snapshotValueDate?["Skills"] as? String
                         
-                    var Rating = snapshotValueDate?["Rating"] as? Double
+                    var Rating = snapshotValueDate?["Ratings"] as? Double
                         
                         if Rating == nil{
                             Rating = 0
@@ -113,10 +113,8 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
                     let snapshotValueToken = snapshot.value as? NSDictionary
                     let Token = snapshotValueToken?["token"] as? String
                         
-//                        if self.arrayPin.contains(Token!) == true{
-//                        
-//                        }
-                        
+//                      
+                        //had to create 3 different arrays which are all responsible for different tasks. One is all of the artists, the other is the filtered data from the filtering algoithm. The search array is the list of artists which appear when the user uses the search bar
                         self.posts.insert(postStruct2(name: name, price1: Price1,price2: Price2, skills: Skills, picture:url, location: loc, token: Token, rating: Rating, verified: ver), at: 0)
                         
                         if self.run == false{
@@ -149,9 +147,6 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
                     
                 })
         
-        //if the title is non existant (post doesn't exist), the activity moniter stops
-        
-       // print(filteredPosts)
     }
 
     
@@ -160,7 +155,7 @@ class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSo
                                         //MARK: TABLE FUNCTIONS
     
 func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-                //creates as many rows as there are posts
+    //creates as many rows as there are posts
     return searchPosts.count
 }
 func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -205,9 +200,13 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
         img4.layer.cornerRadius = 4
         img4.clipsToBounds = true
     
-    if searchPosts[indexPath.row].verified != nil{
+    if searchPosts[indexPath.row].verified == "true"{
         let img5 = cell?.viewWithTag(7) as! UIImageView
         img5.isHidden = false
+    }
+    else{
+        let img5 = cell?.viewWithTag(7) as! UIImageView
+        img5.isHidden = true
     }
     
 
@@ -217,7 +216,6 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
         
         cellNumber = indexPath.row
         self.cellID = searchPosts[cellNumber].token
-//        print("token is \(self.cellID)")
         
         let myVC = storyboard?.instantiateViewController(withIdentifier: "Artist") as! ArtistViewController
 
@@ -230,15 +228,17 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
         
         
         
-//        }
+
     }
     
-    @IBAction func refreshAction(_ sender: Any) {
-     
-        self.viewDidLoad()
-    }
+//    @IBAction func refreshAction(_ sender: Any) {
+//     
+//        self.viewDidLoad()
+//    }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        
+        //the rows will be editable if the segment controller is on pinned. The user can unpin artists using the edit function via swiping to the left
         if pinnedSeg.selectedSegmentIndex == 1{
             return true
         }
@@ -250,7 +250,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
         if pinnedSeg.selectedSegmentIndex == 1{
             
             let delete = UITableViewRowAction(style: .destructive, title: "Unpin") { action, index in
-                //What happens when Edit button is tapped
+                //What happens when unpin button is tapped
                
                 
 
@@ -304,7 +304,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
                 }
                 return
             }
-            
+            //filtering the posts based on skills or name
             self.searchPosts = self.filteredPosts.filter{$0.name.lowercased().contains(searchText.lowercased()) || $0.skills.lowercased().contains(searchText.lowercased())}
             DispatchQueue.main.async {
                 self.homeTab.reloadData()
@@ -320,7 +320,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     }
    
     @IBAction func segChange(_ sender: Any) {
-        
+        //when the user switches the segment control to all, the pinned artists will be replaced with all the artists and vice versa.
         if pinnedSeg.selectedSegmentIndex == 1{
            
             //filters the array
@@ -339,7 +339,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     }
     
     @IBAction func showFilter(_ sender: Any) {
-        
+        //opens the filter page
         let myVC = storyboard?.instantiateViewController(withIdentifier: "Filter") as! FilterViewController
         
         myVC.takenPosts = self.posts

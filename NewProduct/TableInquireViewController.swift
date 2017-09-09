@@ -51,7 +51,7 @@ class TableInquireViewController: UIViewController, UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        //creates a cell in the table and sets information based on the tag (Check tag in main.storyboard)
+        //creates a cell in the table and sets information based on the tag
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell2")
         
         
@@ -73,18 +73,16 @@ class TableInquireViewController: UIViewController, UITableViewDelegate, UITable
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        //passes the information to next view controller to load the appropriate data
         let cellNumber = indexPath.row
         let cellID = inqposts[cellNumber].code
         let userID = inqposts[cellNumber].token
-        
-        //print(cellID!)
-    
+ 
         let myVC = storyboard?.instantiateViewController(withIdentifier: "Inquire") as! inquireViewController
         
         myVC.code = cellID!
         myVC.token = userID!
         
-        //            print(myVC.token)
         self.present(myVC, animated: true)
         
         
@@ -99,7 +97,7 @@ class TableInquireViewController: UIViewController, UITableViewDelegate, UITable
          self.inqposts.removeAll()
         
         dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
-            //
+            
             if snapshot.exists() == true{
                 let snapshotValueName = snapshot.value as? NSDictionary
                 let Name = snapshotValueName?["ClientName"] as? String
@@ -120,19 +118,18 @@ class TableInquireViewController: UIViewController, UITableViewDelegate, UITable
                 
                 
                 self.inqposts.insert(inquireStuct(name: Name, theme: Theme, code: Code, token: Token, status: Status), at: 0)
-                
-                //print(self.inqposts)
+
                 self.homeTab.reloadData()
             }
+            else{
+                let alertContoller = UIAlertController(title: "Oops!", message: "You have no inquires! Advertise yourself to get some", preferredStyle: .alert)
+                
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertContoller.addAction(defaultAction)
+                self.present(alertContoller, animated:true, completion: nil)
+            }
         })
-        if inqposts.count == 0
-        {
-            let alertContoller = UIAlertController(title: "Oops!", message: "You have no inquires! Advertise yourself to get some :)", preferredStyle: .alert)
-            
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertContoller.addAction(defaultAction)
-            self.present(alertContoller, animated:true, completion: nil)
-        }
+        
 
     }
     

@@ -44,7 +44,6 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     @IBOutlet weak var Stars: CosmosView!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var lblReviewNum: UILabel!
-//    @IBOutlet weak var dropDownView: UIButton!
     @IBOutlet weak var skillField: UITextField!
     @IBOutlet weak var btnAdd: UIButton!
     @IBOutlet weak var edit: UIButton!
@@ -67,6 +66,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     
     var table1 = false
     var count = 0
+    var times = 0
     
     let pickerNumber = 0
     
@@ -135,12 +135,10 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         {
             tbDescription.isEditable = false
             edit.isHidden = true
-            //Long1.isEnabled = false
             LongPrice.isEnabled = false
             LongPrice2.isEnabled = false
             skillField.isEnabled = false
             btnAdd.isHidden = true
-//            dropDownView.isEnabled = false
             self.view.frame = CGRect(x: 0, y: 0, width: 1410, height: 1410)
          
             Scroller.contentSize = CGSize(width: self.view.frame.width, height: 1410)
@@ -150,9 +148,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
            
             btnPin.applyDesign()
             btnBook.applyGradient(colours: [UIColor(red: 255/255, green: 140/255, blue: 0, alpha: 1.9), UIColor(red: 1.0, green: 103/255, blue: 0, alpha: 1.0)])
-           // btnBook.applyGradient(colours: [UIColor(red: 151/255, green: 0, blue: 255/255, alpha: 1.0), UIColor(red: 121/255, green: 0, blue: 255/255, alpha: 1.0)])
             
-           
             btnMessage.applyDesign()
             
             dataRef.child("artistProfiles").child(self.token).child("Name").observe(.value){
@@ -187,8 +183,6 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         }
         
         
-       // print(posts)
-        
         
         //setting placeholder text for the textview
         tbDescription.delegate = self
@@ -208,18 +202,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         
         imgVer.sizeToFit()
         
-        lblReviewNum.text = "\(arrayRating.count) Reviews"
-        
-        
-      
-        
-        
-        
-        
-        
-        
-        
-       
+        lblReviewNum.text = "\(self.times) Reviews"
         
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
@@ -232,29 +215,8 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         
         tbDescription.inputAccessoryView = toolbar
         
-        
-        
-        
-//        
-//        dropDown.anchorView = dropDownView // UIView or UIBarButtonItem
-//        
-//        // The list of items to display. Can be changed dynamically
-//        dropDown.dataSource = ["Car", "Motorcycle", "Truck"]
-//       
-//        dropDown.selectionAction = { [unowned self] (index, item) in
-//            self.dropDownView.setTitle(item, for: .normal)
-//            self.skillField.isEnabled = true
-//            
-//        }
-        
-        
-        //print(takenPosts)
-        // Do any additional setup after loading the view.
     }
     
-//    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
-//        self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("Skills").setValue(skillField.text!)
-//    }
     
     
     @IBAction func editProf(_ sender: Any) {
@@ -262,42 +224,41 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
             
             tbDescription.alpha = 0
             skillField.alpha = 0
-        tbDescription.isEditable = true
-        skillField.isEnabled = true
+            tbDescription.isEditable = true
+            skillField.isEnabled = true
         
-        edit.setTitle("Save", for: .normal)
+            edit.setTitle("Save", for: .normal)
             
-        UIView.animate(withDuration: 0.5, animations: {
+            UIView.animate(withDuration: 0.5, animations: {
             
             self.tbDescription.alpha = 1
             self.skillField.alpha = 1
+            })
             
-            
-            
-        })
             letEdit = true
             
         }
         else{
             self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("About").setValue(tbDescription.text!)
             self.dataRef.child("artistProfiles").child(self.loggedUser!.uid).child("Skills").setValue(skillField.text!, withCompletionBlock: { (error,ref) in
+               
                 if error != nil
                 {
-                let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
+                    let alertContoller = UIAlertController(title: "Error", message: error! as? String, preferredStyle: .alert)
                 
-                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
-                alertContoller.addAction(defaultAction)
-                self.present(alertContoller, animated: true, completion: nil)
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler:nil)
+                    alertContoller.addAction(defaultAction)
+                    self.present(alertContoller, animated: true, completion: nil)
                 
                 
-                return
+                    return
                 }
                 
                 
-                self.tbDescription.isEditable = false
-                self.skillField.isEnabled = false
-                self.letEdit = false
-                self.edit.setTitle("Edit", for: .normal)
+            self.tbDescription.isEditable = false
+            self.skillField.isEnabled = false
+            self.letEdit = false
+            self.edit.setTitle("Edit", for: .normal)
                 
                 })
         
@@ -307,11 +268,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     func doneClicked(){
         self.view.endEditing(true)
     }
-    
-//    @IBAction func dropDownClick(_ sender: Any) {
-//
-//        dropDown.show()
-//    }
+
   
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -329,18 +286,6 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         }
     }
  
-  
- 
-//    func textViewDidChange(_ textView: UITextView) {
-//       self.dataRef.child("artistProfiles").child(token).child("About").setValue(tbDescription.text)
-//        
-//    }
-    
-    
-    
-    ////////////////////////////////////////////////////////////////////////////////
-
-    
     
     
                             //PICKER VIEW FUNCTIONS
@@ -352,6 +297,8 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        
+        //since there are more than one pickerviews, the pickerview of interest must be specified
         if pickerView == picturePicker{
             if self.token == self.loggedUser!.uid{
         return 3
@@ -378,10 +325,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         if pickerView == picturePicker{
             tracker = row
         }
-        
-        
-        //print(tracker)
-        
+   
     }
     
 
@@ -399,22 +343,21 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
   
         
         Loader.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
-//        Loader.color = UIColor(red: 253/255, green: 133/255, blue: 8/255, alpha: 1)
-        Loader.color = UIColor.purple
+        Loader.color = UIColor.orange
         Loader.startAnimating()
     
         myImageView.image = #imageLiteral(resourceName: "Default")
         
 
-            //initializing the picker rows data
+            //initializing the picker rows thumbnail image
         switch row {
         case 0:
+            //using the "verified" image as a placeholder. If the image is "verified", it couldn't find the image in firebase directory
             if tempImg1.image != nil && tempImg1.image != #imageLiteral(resourceName: "Verfied")
             {
                 
                 myImageView.image = tempImg1.image
-                
-               // picturePicker.reloadComponent(0)
+
                 Loader.stopAnimating()
                
                
@@ -486,7 +429,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         
         
     }
-    
+    //uploading video to firebase
     func handleVideoSelectedForUrl(url: NSURL){
         
         self.Loader.startAnimating()
@@ -559,43 +502,8 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     }
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
         
-        
-//        if (tracker == 0)
-//        {
-//            let player = AVPlayer(url: urltemp1! as URL)
-//            let playerViewController = AVPlayerViewController()
-//            playerViewController.player = player
-//            self.present(playerViewController, animated: true) {
-//                playerViewController.player!.play()
-//            }
-//        }
-//            
-//        else if (tracker == 1)
-//        {
-//
-//            let player = AVPlayer(url: urltemp2! as URL)
-//            let playerViewController = AVPlayerViewController()
-//            playerViewController.player = player
-//            self.present(playerViewController, animated: true) {
-//                playerViewController.player!.play()
-//            }
-//        }
-//        else if tracker == 2
-//        {
-//            let player = AVPlayer(url: urltemp3! as URL)
-//            let playerViewController = AVPlayerViewController()
-//            playerViewController.player = player
-//            self.present(playerViewController, animated: true) {
-//                playerViewController.player!.play()
-//            }
-//        }
-        
-        
-        
-        
-   
     }
-    
+    //creates thumbnail for the video
     func thumbNail(fileURL: NSURL) -> UIImage?{
         
         let asset = AVAsset(url: fileURL as URL)
@@ -619,7 +527,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     }
 
     
-    //method for setting an image and saving it
+    //method for selecting a video and saving it
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
       
@@ -639,7 +547,8 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         }
         
         dismiss(animated: true, completion: nil)
-        //very important. This keeps track of which row was clicked to have the image uploaded. Overall, using the pickercontroller was inefficient and was very slow. Might change
+        
+        //very important. This keeps track of which row was clicked to have the image uploaded.
        
             if (tracker == 0)
             {
@@ -677,26 +586,22 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     
     @IBAction func addVideo(_ sender: Any) {
         
-
-            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.savedPhotosAlbum)
-            {
-                self.imagePicker.delegate = self
-                self.imagePicker.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
-                self.imagePicker.allowsEditing = true
-                self.imagePicker.mediaTypes = [kUTTypeMovie as String]
-                self.present(self.imagePicker, animated: true, completion: nil)
-                
-            }
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.savedPhotosAlbum)
+        {
+            self.imagePicker.delegate = self
+            self.imagePicker.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
+            self.imagePicker.allowsEditing = true
+            self.imagePicker.mediaTypes = [kUTTypeMovie as String]
+            self.present(self.imagePicker, animated: true, completion: nil)
+            
+        }
     }
     
     
     
     @IBAction func longPressPicker(_ sender: UILongPressGestureRecognizer) {
-        
-        
-        
-        
-        // this is for whena  row is long pressed to change the image
+
+        // this is for when a  row is long pressed to change the image
         let picker = UIImagePickerController()
         picker.delegate = self
         picker.allowsEditing = true
@@ -740,52 +645,6 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     }
     
     
-    
-                                //Uploading Images
-//    func UploadImage(){
-//        
-//        let imageName =  NSUUID().uuidString
-//        //let imageNameCover = NSUUID().uuidString
-//        
-//        let storedImage = storageRef.child("imgProfile").child(self.token).child(imageName)
-//
-//        
-//        
-//        if let uploadData = UIImagePNGRepresentation(self.tempImg.image!)
-//        {
-//                storedImage.put(uploadData, metadata: nil, completion: { ( metadata, error) in
-//                    if error != nil
-//                    {
-//                        //print(error!)
-//                        return
-//                    }
-//                    storedImage.downloadURL(completion: { (url,error) in
-//                        if error != nil
-//                        {
-//                           // print(error!)
-//                            return
-//                        }
-//                        if let urlText = url?.absoluteString{
-//                            self.dataRef.child("artistProfiles").child(self.token).updateChildValues(["\(self.status!)" : urlText], withCompletionBlock: { (error,ref) in
-//                                if error != nil
-//                                {
-//                                    
-//                                    //print(error!)
-//                                    return
-//                                }
-//                                let imgData = UIImagePNGRepresentation(self.tempImg.image!)! as NSData
-//                                UserDefaults.standard.set(imgData, forKey: "\(self.status!) \(self.token!)")
-//                                
-//                            })
-//                        }
-//                    })
-//                })
-//            }
-//        
-//        
-//    }
-//    
-    
     ///////////////////////////////////////////////////////////////////////////////////////
     
     
@@ -794,48 +653,15 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       
-//        if token == loggedUser?.uid
-//        {
-//            if tableView == tableView1
-//            {
-//                return posts.count + 1
-//            }
-//            else
-//            {
-//                return posts2.count + 1
-//            
-//            }
-//        }
-//        else
-//        {
-//            if tableView == tableView1
-//            {
-//                return posts.count
-//            }
-//            else
-//            {
-//                return posts2.count
-//                
-//            }
-//        }
         return 4
     }
     
-        
-    
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-       
-    }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 82.5
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //sets the label in the cell to be data from the array "posts" which is a string of values grabbed from the database
-        
-        
         
         if tableView == tableView1
         {
@@ -858,7 +684,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
             
         }
         
-        
+        //this is going to be code to add more rows to the pricing. Still working on it
 //        
 //        if tableView == tableView1
 //        {
@@ -957,11 +783,11 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     func pressButton(button: UIButton) {
         if posts.count <= 5
         {
-       posts.append("Adding Something")
+            posts.append("Adding Something")
         
-        tableView1.insertRows(at: [IndexPath(row: posts.count-1, section: 0)], with: .automatic)
+            tableView1.insertRows(at: [IndexPath(row: posts.count-1, section: 0)], with: .automatic)
         
-        //print(posts)
+       
         }
         else
         {
@@ -975,6 +801,8 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     
     
     @IBAction func LongPrice1(_ sender: UILongPressGestureRecognizer) {
+        
+        //edit the pricing on one of your options
         let alertController = UIAlertController(title: "Edit Pricing", message: "", preferredStyle: .alert)
         
         let saveAction = UIAlertAction(title: "Save", style: .default, handler: {
@@ -1074,6 +902,8 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     }
     
     func editMessage() -> String {
+        
+        //the message when a user tries to edit one of the pricing characteristics
         if self.count == 0{
             return "Length Of Video"
         }
@@ -1101,39 +931,31 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
           {
             
             let delete = UITableViewRowAction(style: .destructive, title: "Delete") { action, index in
-                //What happens when Edit button is tapped
+                //What happens when delete button is tapped
                 self.count = index.row
                 
     
-                if self.posts[index.row] ==  "Length of Video?" || self.posts[index.row] ==  "o You Offer Shadowing?" || self.posts[index.row] ==  "How Much Material Will You Accept?" || self.posts[index.row] ==  "Custom"
+                if self.posts[index.row] ==  "Length of Video?" || self.posts[index.row] ==  "Do You Offer Shadowing?" || self.posts[index.row] ==  "How Much Material Will You Accept?" || self.posts[index.row] ==  "Custom"
                 {
                     return
                 }
                 else{
                     if tableView == self.tableView1
                     {
-                         //self.posts.remove(at: index.row)
-                        //self.posts[index.row] = "Add Something!"
-                        
+                   
                         self.dataRef.child("artistProfiles").child(self.token).child("Pricing1").child("Price1_\(self.count)").removeValue()
                         
                         self.tableView1.reloadData()
-                            //self.tableView1.deleteRows(at: [index], with: UITableViewRowAnimation.automatic)
                         
-                        //print(self.posts)
                         
                     }
                         
                     else
                     {
-                         //self.posts2.remove(at: index.row)
-                        //self.posts2[index.row] = "Add Something!"
                         self.dataRef.child("artistProfiles").child(self.token).child("Pricing2").child("Price2_\(self.count)").removeValue()
                         self.tableView2.reloadData()
                             self.tableView2.deleteRows(at: [index], with: UITableViewRowAnimation.automatic)
-                        
-                        
-                        
+
                     }
                 }
                 
@@ -1256,7 +1078,8 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     
     
     @IBAction func btnMoreAction(_ sender: Any) {
-            }
+        
+    }
     
     
     func SetUp(){
@@ -1363,9 +1186,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                 self.posts[0] = temp1!
                 self.tableView1.reloadData()
             }
-            else{
-//                self.posts.insert("Add Something!", at: 0)
-            }
+           
         }
         
         
@@ -1380,20 +1201,16 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                 self.posts[1] = temp1!
                 self.tableView1.reloadData()
             }
-            else{
-//               self.posts.insert("Add Something!", at: 1)
-            }
+          
         }
         
         dataRef.child("artistProfiles").child(self.token).child("Ratings").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
            
-                self.arrayRating.append((snapshot.value as! Double))
             
-           
-                
+            self.countRat = snapshot.value as! Double + self.countRat
             
-                self.countRat = snapshot.value as! Double + self.countRat
-            
+            self.times = self.times + 1
+            self.Stars.rating = self.countRat
             
             
 
@@ -1409,9 +1226,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                 self.posts[2] = temp1!
                 self.tableView1.reloadData()
             }
-            else{
-//               self.posts.insert("Add Something!", at: 2)
-            }
+            
      
         }
         dataRef.child("artistProfiles").child(self.token).child("Pricing1").child("Price1_3").observe(.value){
@@ -1423,64 +1238,12 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                 self.posts[3] = temp1!
                 self.tableView1.reloadData()
             }
-            else{
-                //               self.posts.insert("Add Something!", at: 2)
-            }
+           
             
         }
         
         
-//        dataRef.child("artistProfiles").child(self.token).child("Price1").child("Price1_3").observe(.value){
-//            (snap: FIRDataSnapshot) in
-//            if snap.exists() == true
-//            {
-//                let temp1 = snap.value as? String
-//               // self.posts.remove(at: 3)
-//                self.posts.insert(temp1!, at: 3)
-//                self.tableView1.reloadData()
-//            }
-//            else{
-//                //self.posts.remove(at: 3)
-//            }
-//            
-//        }
-//        dataRef.child("artistProfiles").child(self.token).child("Price1").child("Price1_4").observe(.value){
-//            (snap: FIRDataSnapshot) in
-//            if snap.exists() == true
-//            {
-//                let temp1 = snap.value as? String
-//               // self.posts.remove(at: 4)
-//                self.posts.insert(temp1!, at: 4)
-//                self.tableView1.reloadData()
-//            }
-//            else{
-//               // self.posts.remove(at: 4)
-//            }
-//            
-//        }
-        
-        
-//
-//        dataRef.child("artistProfiles").child(self.token).child("Price1").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
-//            //
-//            
-//                 
-//                    if snapshot.exists() == true{
-//                        
-//                        let snapshotValue = snapshot.value as? NSDictionary
-//                        let name = snapshotValue?["Price1_\(self.uploadCount)"] as? String
-//                
-//                        self.posts.insert(name, at: self.uploadCount)
-//                        
-//                        print("\(self.posts) okay man" )
-//                        self.uploadCount = self.uploadCount + 1
-//                    }
-//                    else{
-//                        self.uploadVar = false
-//                    }
-//
-//            
-//            })
+
         
         //Table2
         
@@ -1492,9 +1255,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                  self.posts2[0] = temp1!
                 self.tableView2.reloadData()
             }
-            else{
-//                self.posts2.insert("Add Something!", at: 0)
-            }
+
         }
         
         
@@ -1507,9 +1268,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                  self.posts2[1] = temp1!
                 self.tableView2.reloadData()
             }
-            else{
-//                self.posts2.insert("Add Something!", at: 1)
-            }
+
         }
         
         
@@ -1522,9 +1281,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                  self.posts2[2] = temp1!
                 self.tableView2.reloadData()
             }
-            else{
-//                self.posts2.insert("Add Something!", at: 2)
-            }
+        
             
         }
         dataRef.child("artistProfiles").child(self.token).child("Pricing2").child("Price2_3").observe(.value){
@@ -1536,9 +1293,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                 self.posts2[3] = temp1!
                 self.tableView2.reloadData()
             }
-            else{
-                //                self.posts2.insert("Add Something!", at: 2)
-            }
+           
             
         }
         
@@ -1549,6 +1304,8 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     
     @IBAction func More(_ sender: Any) {
         
+        
+        //the rating view will popup with a self made alert view
         if self.token != self.loggedUser!.uid{
         let vc = UIViewController()
         vc.preferredContentSize = CGSize(width: 250,height: 150)
@@ -1594,28 +1351,18 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                     
                     return
                 }
-                self.dataRef.child("artistProfiles").child(self.token).child("Ratings").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
-                    
-                    self.arrayRating.append((snapshot.value as! Double))
-                    
-                    self.countRat = snapshot.value as! Double + self.countRat
-                })
-                
-                //            self.arrayRating.append(pickerView2.rating)
+             
                 print(self.arrayRating)
                 print(self.countRat)
-                self.artistRat = self.countRat / Double(self.arrayRating.count)
+                self.countRat = self.countRat + pickerView2.rating
+                self.times = self.times + 1
+                self.artistRat = self.countRat / Double(self.times)
                 self.Stars.rating = (self.artistRat)
                 self.dataRef.child("artistProfiles").child(self.token).child("Rating").setValue(self.artistRat)
-                self.arrayRating.removeAll()
                 self.countRat = 0
                 
             })
 
-            
-            
-//            self.arrayRating.remove(at: self.arrayRating.count - 1)
-//            print(self.arrayRating)
             
         }))
         
@@ -1628,83 +1375,19 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     
     
 
-    
-//        let myActionSheet = UIAlertController(title: "Options", message: "Select", preferredStyle: UIAlertControllerStyle.actionSheet)
-//        
-//        
-//        let Rate = UIAlertAction(title: "Rate This Artist", style: UIAlertActionStyle.default) { (action) in
-//            
-//       
-//            let alertController = UIAlertController(title: "Rate", message: "", preferredStyle: .alert)
-//
-//            let rateView = UIView(frame: CGRect(x: 10.0, y: 10.0, width: alertController.view.bounds.size.width - 10.0 * 4.0, height: 120))
-//          
-//            rateView.editable = true
-//            
-//            let saveAction = UIAlertAction(title: "Enter", style: .default, handler: {
-//                alert -> Void in
-//                
-//                
-//                
-//                
-//                
-//                
-//                
-//                self.dataRef.child("artistProfiles").child(self.token).child("Rating").setValue(rateView.rating)
-//               
-//                
-//            })
-//            
-//            let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: {
-//                (action : UIAlertAction!) -> Void in
-//                self.Loader.stopAnimating()
-//                
-//            })
-//            
-//            alertController.view.addSubview(rateView)
-//          
-//            
-//            alertController.addAction(saveAction)
-//            alertController.addAction(cancelAction)
-//            
-//            self.present(alertController, animated: true, completion: nil)
-//            
-//            
-//            
-//            
-//        }
-//        myActionSheet.addAction(Rate)
-//        myActionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
-//        
-//        self.present(myActionSheet, animated: true, completion: nil)
-    
-    
-
-
+   
     func SetPic()
     {
       
  
         
-        //saving userdefaults
-        
-        
         dataRef.child("artistProfiles").child(self.token).observeSingleEvent(of: .value, with: {  (snapshot) in
             
             if let snapshotValueName = snapshot.value as? NSDictionary
             {
-              //let pic1 = snapshotValueName["ProfilePic1"] as? String
-            
-//
-//            let pic2 = snapshotValueName?["ProfilePic2"] as? String
-//            
-//            let pic3 = snapshotValueName?["ProfilePic3"] as? String
-//            
+      
             self.urlArray.removeAll()
-           //self.urlArray.insert(pic1, at: 0)
-//            self.urlArray.insert(pic2, at: 1)
-//            self.urlArray.insert(pic3, at: 2)
-            
+       
             for i in 1...3{
                 
                 

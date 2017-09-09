@@ -48,7 +48,7 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        //creates a cell in the table and sets information based on the tag (Check tag in main.storyboard)
+        //creates a cell in the table and sets information based on the tag
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell2")
         
         let label1 = cell?.viewWithTag(1) as! UILabel
@@ -74,8 +74,9 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
         
     
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { action, index in
-            //What happens when Edit button is tapped
+            //What happens when delete button is tapped
             
+            //didn't want to delete the data since the information is valuable.
             self.dataRef.child("users").child(self.loggedUser!.uid).child("Sent Inquires").child(self.sentInqposts[indexPath.row].code).updateChildValues(["deleted" : "true"], withCompletionBlock: { (error,ref) in
                 if error != nil
                 {
@@ -117,8 +118,8 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
             
             let defaultAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             
-            let payAction = UIAlertAction(title: "Pay Now", style: .default, handler: {
-                alert -> Void in
+            //let payAction = UIAlertAction(title: "Pay Now", style: .default, handler: {
+              //  alert -> Void in
 //                let myVC = self.storyboard?.instantiateViewController(withIdentifier: "Payment") as! PaymentViewController
 //                
 //               
@@ -126,7 +127,7 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
 //                myVC.price = self.sentInqposts[indexPath.row].price
 //                
 //                self.present(myVC, animated: true)
-            })
+          //  })
 
             
             let messageAction = UIAlertAction(title: "Message", style: .default, handler: {
@@ -143,7 +144,7 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
             })
             alertContoller.addAction(defaultAction)
             alertContoller.addAction(messageAction)
-            alertContoller.addAction(payAction)
+            //alertContoller.addAction(payAction)
             self.present(alertContoller, animated:true, completion: nil)
             
             
