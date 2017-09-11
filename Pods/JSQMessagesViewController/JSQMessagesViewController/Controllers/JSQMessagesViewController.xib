@@ -44,7 +44,7 @@
                     <items>
                         <navigationItem title="Messages" id="1m6-oC-fNi">
                             <barButtonItem key="leftBarButtonItem" title="Back" id="xDa-au-zvt">
-                                <color key="tintColor" red="1" green="0.55117796370000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <color key="tintColor" red="1" green="0.5096537812081503" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <action selector="back" destination="-1" id="4Ha-lm-sD3"/>
                                 </connections>
