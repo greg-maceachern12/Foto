@@ -91,7 +91,7 @@ class TableInquireViewController: UIViewController, UITableViewDelegate, UITable
         
     }
     
-
+//initial setup function
     func SetUp()
     {
          self.inqposts.removeAll()
