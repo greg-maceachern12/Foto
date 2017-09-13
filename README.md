@@ -15,7 +15,8 @@ This is a marketplace iOS application written in Swift which can locate local co
 
 This project is written in Swift 3.0 and requires Xcode 8.3.3 to build and run.
 
-Foto is compatible with iOS 9.1+.
+Foto is compatible with iOS 9.1+ and only the iPhone 6, iPhone 6s, iPhone 7 and iPhone 8.
+Auto Layout has not been set up yet for other devices.
 
 ## Built With
 
