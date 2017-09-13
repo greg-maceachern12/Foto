@@ -3,7 +3,7 @@ This is a marketplace iOS application written in Swift which can locate local co
 <h3 align="center">
 <img src="Screenshot1.png" alt="Screenshot of the User Profile Page" />]
 <img src="Screenshot2.png" alt="Screenshot of the Login Page" />
-<img src="Screenshot3.png" alt="Screenshot of the Artist Profile" />
+<img src="Screenshot3.png" width="300" height="534" alt="Screenshot of the Artist Profile" />
 </h3>
 
 ## Getting Started
