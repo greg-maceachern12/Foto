@@ -1,9 +1,3 @@
-Open NewProduct.xcworkspace for working project.
-Database is provided by Firebase Realtime Database. 
-Serverside code is written in JavaScript can be found in functions>index.js and is used for detecting new changes in the database and providing notifications to users.
-This project utilizes cococapods and runs several libraries such as DropDown, Cosmos, SDWebImage etc. A comprehensive view of all of the pods can be found in the Pods folder
-
-
 # Foto
 This is a marketplace iOS application written in Swift which can locate local content creators in your area and help you get in contact with them! 
 <h3 align="center">
@@ -24,6 +18,8 @@ This project is written in Swift 3.0 and requires Xcode 8.3.3 to build and run.
 Foto is compatible with iOS 9.1+.
 
 ## Built With
+
+This application utilizes the cocoapods framework using dependencies such as:
 
 * [Firebase](https://cocoapods.org/?q=firebase) - The backend used
 * [Cosmos](https://github.com/evgenyneu/Cosmos) - Rating Dependancy
