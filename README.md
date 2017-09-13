@@ -25,7 +25,7 @@ This application utilizes the cocoapods framework using dependencies such as:
 * [Cosmos](https://github.com/evgenyneu/Cosmos) - Rating Dependancy
 * [DropDown](https://github.com/AssistoLab/DropDown) - Used to create a simple dropdown menu
 * [JSQMessageViewController](https://github.com/jessesquires/JSQMessagesViewController) - Used to implement the UI of the chat feature
-* [SDWebImage](https://github.com/rs/SDWebImage - Asynchronous image downloader
+* [SDWebImage](https://github.com/rs/SDWebImage) - Asynchronous image downloader
 * [PayPal SDK](https://github.com/paypal/PayPal-iOS-SDK) - UI for a paypal feature. Not implemented yet.
 
 ## Author
