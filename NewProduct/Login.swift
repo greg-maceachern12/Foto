@@ -27,7 +27,7 @@ class Login: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPick
     let NameRef = FIRDatabase.database().reference()
     var loggedInUser:AnyObject?
     var pickerGend = UIPickerView()
-    var gender: String!
+    var gender = "Male"
     
     let genders = ["Male", "Female", "Other"]
     
@@ -113,7 +113,7 @@ override func viewDidLoad() {
                 let firstTextField = alertController.textFields![0] as UITextField
               
                 
-                    //print("firstName \(firstTextField.text)")
+  
                     let vc = UIViewController()
                     vc.preferredContentSize = CGSize(width: 250,height: 150)
                     let label1 = UILabel(frame: CGRect(x: 0, y: 0, width: 75, height: 50))
@@ -121,12 +121,12 @@ override func viewDidLoad() {
                     
                     let label2 = UILabel(frame: CGRect(x: 0, y: 40, width: 75, height: 50))
                     let text2 = UITextField(frame: CGRect(x: 75, y: 40, width: 175, height: 50))
-                    //let pickerDate = UIDatePicker(frame: CGRect(x: 75, y: 50, width: 175, height: 100))
+ 
                     
                     let label3 = UILabel(frame: CGRect(x: 0, y: 80, width: 75, height: 50))
                     self.pickerGend = UIPickerView(frame: CGRect(x: 75, y: 80, width: 175, height: 50))
                     
-                    //pickerDate.datePickerMode = UIDatePickerMode.date
+ 
                     
                     
                     self.pickerGend.dataSource = self
@@ -221,7 +221,7 @@ override func viewDidLoad() {
                                 self.NameRef.child("users").child(self.loggedInUser!.uid).child("Gender").setValue(self.gender)
                                 self.NameRef.child("users").child(self.loggedInUser!.uid).child("Location").setValue(text1.text)
                                self.NameRef.child("users").child(self.loggedInUser!.uid).child("Age").setValue(Int(text2.text!))
-                                
+                                //self.NameRef.child("users").child(self.loggedInUser!.uid).child("pic").setValue("default.ca")
                                 
                                 self.Load.stopAnimating()
                                 UserDefaults.standard.set(false, forKey: "artistCreate")

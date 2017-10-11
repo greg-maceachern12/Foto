@@ -22,7 +22,7 @@ struct sentInqStuct {
     let deleted: String!
 }
 
-class sentInquireViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
+class sentInquireViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIBarPositioningDelegate  {
 
     @IBOutlet weak var homeTab: UITableView!
     
@@ -66,6 +66,10 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
+    }
+    func position(for bar: UIBarPositioning) -> UIBarPosition {
+        return .topAttached
+
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 62

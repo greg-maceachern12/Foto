@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
         PayPalMobile.initializeWithClientIds(forEnvironments: [PayPalEnvironmentProduction:"ARjyeCMMitQUDqOyO3cJ0qUeE7VWh9DY-7QihoEHeua4DgGYvml_AnNBw5ziWMCCSrCK7ENy5kWY4V0h", PayPalEnvironmentSandbox:"ARjyeCMMitQUDqOyO3cJ0qUeE7VWh9DY-7QihoEHeua4DgGYvml_AnNBw5ziWMCCSrCK7ENy5kWY4V0h"])
         
         UINavigationBar.appearance().titleTextAttributes = [
-            NSFontAttributeName: UIFont(name: "Avenir Next", size: 15)!
+            NSAttributedStringKey.font: UIFont(name: "Avenir Next", size: 15)!
         ]
     
         UITabBar.appearance().tintColor = UIColor(red: 253.0/255.0, green: 146.0/255.0, blue: 9.0/255.0, alpha: 1.0)

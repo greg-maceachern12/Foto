@@ -20,7 +20,7 @@ struct inquireStuct {
     let status: String!
 }
 
-class TableInquireViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TableInquireViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIBarPositioningDelegate {
     
     @IBOutlet weak var homeTab: UITableView!
     
@@ -131,6 +131,9 @@ class TableInquireViewController: UIViewController, UITableViewDelegate, UITable
         })
         
 
+    }
+    func position(for bar: UIBarPositioning) -> UIBarPosition {
+        return .topAttached
     }
     
     @IBAction func backClick(_ sender: Any) {

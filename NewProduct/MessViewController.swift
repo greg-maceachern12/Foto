@@ -9,7 +9,7 @@ import Firebase
 import SDWebImage
 
 
-class MessViewController: JSQMessagesViewController {
+class MessViewController: JSQMessagesViewController, UIBarPositioningDelegate {
     
     
     var messages = [JSQMessage]()
@@ -52,14 +52,20 @@ extension MessViewController{
         
         //this data is uploaded to the corresponding locations in the database (3 locations)
 
-            self.dataRef.child("users").child(self.token).child("pic").observe(.value, with: { (snap) in
+            self.dataRef.child("users").child(self.token).observeSingleEvent(of: .value, with: {  (snap) in
+                if let dict = snap.value as? [String: AnyObject]
+                {
+                    
+                    var temp1 = dict["pic"] as? String
+                    if temp1 == nil{
+                        temp1 = "default.ca"
+                    }
                 
-                if let temp1 = snap.value as? String{
-                   
+        
                    
                     let messPost: [String : AnyObject] = ["toName": self.name as AnyObject,
                                                           "token": self.token as AnyObject,
-                                                          "pic": temp1 as AnyObject,
+                                                          //"pic": temp1 as AnyObject,
                                                           "text": text as AnyObject,
                                                           "date": "\(day)/\(month)/\(year)" as AnyObject]
                     
@@ -70,13 +76,24 @@ extension MessViewController{
                    
                     
                 }
+                
             })
             
         
         
-        self.dataRef.child("users").child(self.loggedUser!.uid).child("pic").observe(.value, with: { (snap) in
+        self.dataRef.child("users").child(self.loggedUser!.uid).observeSingleEvent(of: .value, with: {  (snap) in
                 
-                if let temp1 = snap.value as? String{
+            if let dict = snap.value as? [String: AnyObject]
+            {
+                
+                var temp1 = dict["pic"] as? String
+                
+                if temp1 == nil{
+                    temp1 = "default.ca"
+                }
+                    
+                
+                
                     
                     
                     
@@ -87,7 +104,8 @@ extension MessViewController{
                                                           "date": "\(day)/\(month)/\(year)" as AnyObject]
                     
                     self.dataRef.child("users").child(self.token).child("messages").child(self.loggedUser!.uid).updateChildValues(messPost)
-                }
+            }
+                
             })
 
         
@@ -314,6 +332,9 @@ extension MessViewController {
         
         
        
+    }
+    func position(for bar: UIBarPositioning) -> UIBarPosition {
+        return .topAttached
     }
 
  

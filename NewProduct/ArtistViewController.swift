@@ -19,7 +19,7 @@ import Cosmos
 
 
 
-class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIBarPositioningDelegate {
 
     @IBOutlet weak var viewPrice2: UIView!
     @IBOutlet weak var viewPrice1: UIView!
@@ -37,7 +37,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
     @IBOutlet weak var lblPrice1: UILabel!
     @IBOutlet weak var lblPrice2: UILabel!
     @IBOutlet var Long1: UILongPressGestureRecognizer!
-    @IBOutlet weak var NAVTitle: UINavigationItem!
+    @IBOutlet weak var NAVTitle: UILabel!
     @IBOutlet var LongPrice: UILongPressGestureRecognizer!
     @IBOutlet var LongPrice2: UILongPressGestureRecognizer!
     @IBOutlet weak var imgVer: UIImageView!
@@ -155,11 +155,11 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
                 (snap: FIRDataSnapshot) in
                 if snap.exists() == true
                 {
-                self.NAVTitle.title = "\(snap.value as! String)'s Profile"
+                self.NAVTitle.text = "\(snap.value as! String)'s Profile"
                     self.artistname = snap.value as? String
                 }
                 else{
-                    self.NAVTitle.title = ""
+                    self.NAVTitle.text = ""
                 }
             }
         }
@@ -168,7 +168,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
             dataRef.child("artistProfiles").child(self.token).child("Name").observe(.value){
                 (snap: FIRDataSnapshot) in
                 if snap.exists() == true{
-                self.NAVTitle.title = "\(snap.value as! String) (Your Profile)"
+                self.NAVTitle.text = "\(snap.value as! String) (Your Profile)"
                     self.btnPin.isHidden = true
                     self.btnBook.isHidden = true
                     self.btnAdd.isHidden = false
@@ -217,6 +217,9 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         
     }
     
+    func position(for bar: UIBarPositioning) -> UIBarPosition {
+        return .topAttached
+    }
     
     
     @IBAction func editProf(_ sender: Any) {
@@ -265,7 +268,7 @@ class ArtistViewController: UIViewController, UITextViewDelegate, UIPickerViewDe
         }
     }
     
-    func doneClicked(){
+    @objc func doneClicked(){
         self.view.endEditing(true)
     }
 

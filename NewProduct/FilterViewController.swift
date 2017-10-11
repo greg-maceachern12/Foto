@@ -7,7 +7,7 @@
 //
 import UIKit
 
-class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UIBarPositioningDelegate {
 
  
     @IBOutlet weak var tbSkills: UITextField!
@@ -46,7 +46,7 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
         tbMaximum.inputAccessoryView = toolbar
 
     }
-    func doneClicked(){
+    @objc func doneClicked(){
         self.view.endEditing(true)
     }
 
@@ -339,6 +339,9 @@ class FilterViewController: UIViewController, UITextFieldDelegate, UIPickerViewD
         tbMaximum.resignFirstResponder()
         tbSkills.resignFirstResponder()
         return true
+    }
+    func position(for bar: UIBarPositioning) -> UIBarPosition {
+        return .topAttached
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {

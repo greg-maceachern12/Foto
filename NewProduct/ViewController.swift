@@ -26,9 +26,10 @@ struct memoryStruct{
 }
 
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate, UITextFieldDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource {
+class ViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate, UITextFieldDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, UIBarPositioningDelegate {
     
-    @IBOutlet weak var HomeTitle: UINavigationItem!
+
+    @IBOutlet weak var HomeTitle: UILabel!
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var imgMain: UIImageView!
     //@IBOutlet weak var Logout: UIButton!
@@ -112,7 +113,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         }
         
         
-        self.HomeTitle.title = "Loading Data"
+        self.HomeTitle.text = "Loading Data"
         
         //set profile qualities
         setupProfile()
@@ -168,7 +169,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         
         //allow the profile pic to be clicked
         self.imgMain.isUserInteractionEnabled = true
-        self.HomeTitle.title = "Home"
+        self.HomeTitle.text = "Home"
 
       
         
@@ -244,7 +245,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
                                     }
                                     DispatchQueue.main.async {
             
-                                        if data == nil
+                                        if data == nil || profileImageURL == "default.ca"
                                         {
                                             self.Loader.stopAnimating()
                                             self.overlay?.removeFromSuperview()
@@ -361,6 +362,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
         
         }
     
+    
+    func position(for bar: UIBarPositioning) -> UIBarPosition {
+        return .topAttached
+    }
     //Mark: TableView Data
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -559,7 +564,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,UINaviga
     }
     
     // This func just dismisses the view when the user tappen "View Picture"
-    func dismissFullScreenImage(_sender:UITapGestureRecognizer){
+    @objc func dismissFullScreenImage(_sender:UITapGestureRecognizer){
         
        //makes the image fade and disappear
         UIView.animate(withDuration: 0.4, animations: {

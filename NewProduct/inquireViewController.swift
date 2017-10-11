@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class inquireViewController: UIViewController {
+class inquireViewController: UIViewController, UIBarPositioningDelegate {
     
     
     @IBOutlet weak var lblName: UILabel!
@@ -17,7 +17,8 @@ class inquireViewController: UIViewController {
     @IBOutlet weak var lblStart: UILabel!
     @IBOutlet weak var lblEnd: UILabel!
     @IBOutlet weak var lblNotes: UILabel!
-    @IBOutlet weak var navTitle: UINavigationItem!
+    @IBOutlet weak var navTitle: UILabel!
+    
     @IBOutlet weak var imgprof: UIImageView!
     @IBOutlet weak var Loader: UIActivityIndicatorView!
     @IBOutlet weak var btnAccept: UIButton!
@@ -50,6 +51,9 @@ class inquireViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    func position(for bar: UIBarPositioning) -> UIBarPosition {
+        return .topAttached
+    }
     
 func SetUp()
     {
@@ -58,7 +62,7 @@ func SetUp()
 
         dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("ClientName").observe(.value){
             (snap: FIRDataSnapshot) in
-            self.navTitle.title = "\(snap.value as! String)'s Inquiry"
+            self.navTitle.text = "\(snap.value as! String)'s Inquiry"
             self.lblName.text = snap.value as? String
         }
         

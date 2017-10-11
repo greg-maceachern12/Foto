@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="AvenirNext.ttc">
+            <string>AvenirNext-Medium</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JSQMessagesViewController">
             <connections>
                 <outlet property="collectionView" destination="l9u-2b-4LK" id="bLP-6g-CkO"/>
                 <outlet property="inputToolbar" destination="BoD-Az-3DM" id="w74-g9-1qA"/>
-                <outlet property="toolbarBottomLayoutGuide" destination="rHs-6q-NX4" id="d6h-iu-VMX"/>
-                <outlet property="toolbarHeightConstraint" destination="HIk-02-qcW" id="jE8-xC-1eD"/>
                 <outlet property="view" destination="mUa-cS-ru4" id="nki-T1-RTI"/>
             </connections>
         </placeholder>
@@ -24,55 +28,57 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="l9u-2b-4LK" customClass="JSQMessagesCollectionView">
-                    <rect key="frame" x="0.0" y="60" width="375" height="607"/>
+                    <rect key="frame" x="0.0" y="64" width="375" height="559"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <collectionViewLayout key="collectionViewLayout" id="dZl-7C-LHR" customClass="JSQMessagesCollectionViewFlowLayout"/>
                     <cells/>
                 </collectionView>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lBz-vo-KyO">
+                    <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <items>
+                        <barButtonItem title="Back" id="sWW-ZQ-QwI">
+                            <color key="tintColor" red="1" green="0.55117796370000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <connections>
+                                <action selector="back" destination="-1" id="Vxg-uZ-hVX"/>
+                            </connections>
+                        </barButtonItem>
+                    </items>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="BNT-DH-ELV"/>
+                    </connections>
+                </toolbar>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ewK-CI-Epd">
+                    <rect key="frame" x="150" y="20" width="74" height="44"/>
+                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="18"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BoD-Az-3DM" customClass="JSQMessagesInputToolbar">
                     <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="44" id="HIk-02-qcW"/>
+                        <constraint firstAttribute="height" constant="44" id="A1c-HK-c3r"/>
                     </constraints>
                     <items/>
                 </toolbar>
-                <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XGj-Fv-OzH">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="60" id="LJe-H0-xCW"/>
-                    </constraints>
-                    <items>
-                        <navigationItem title="Messages" id="1m6-oC-fNi">
-                            <barButtonItem key="leftBarButtonItem" title="Back" id="xDa-au-zvt">
-                                <color key="tintColor" red="1" green="0.5096537812081503" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <connections>
-                                    <action selector="back" destination="-1" id="4Ha-lm-sD3"/>
-                                </connections>
-                            </barButtonItem>
-                        </navigationItem>
-                    </items>
-                </navigationBar>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="BoD-Az-3DM" secondAttribute="trailing" id="7xc-Ha-asg"/>
-                <constraint firstItem="l9u-2b-4LK" firstAttribute="leading" secondItem="mUa-cS-ru4" secondAttribute="leading" id="MmF-oh-Y75"/>
-                <constraint firstAttribute="trailing" secondItem="l9u-2b-4LK" secondAttribute="trailing" id="O9u-TA-A0e"/>
-                <constraint firstAttribute="bottom" secondItem="l9u-2b-4LK" secondAttribute="bottom" id="Re7-WW-UmS"/>
-                <constraint firstItem="XGj-Fv-OzH" firstAttribute="top" secondItem="l9u-2b-4LK" secondAttribute="top" constant="-60" id="aKe-AJ-lLR"/>
-                <constraint firstItem="l9u-2b-4LK" firstAttribute="top" secondItem="mUa-cS-ru4" secondAttribute="top" constant="60" id="dCQ-DM-Wdj"/>
-                <constraint firstItem="XGj-Fv-OzH" firstAttribute="trailing" secondItem="l9u-2b-4LK" secondAttribute="trailing" id="hHi-QD-HXR"/>
-                <constraint firstItem="XGj-Fv-OzH" firstAttribute="leading" secondItem="BoD-Az-3DM" secondAttribute="leading" id="lc5-YP-CQ3"/>
-                <constraint firstAttribute="bottom" secondItem="BoD-Az-3DM" secondAttribute="bottom" id="rHs-6q-NX4"/>
-                <constraint firstItem="BoD-Az-3DM" firstAttribute="leading" secondItem="mUa-cS-ru4" secondAttribute="leading" id="ts7-8f-0lH"/>
+                <constraint firstItem="ewK-CI-Epd" firstAttribute="centerX" secondItem="lBz-vo-KyO" secondAttribute="centerX" id="96L-YJ-J2p"/>
+                <constraint firstItem="l9u-2b-4LK" firstAttribute="leading" secondItem="BoD-Az-3DM" secondAttribute="leading" id="CJG-Ql-rKU"/>
+                <constraint firstItem="lBz-vo-KyO" firstAttribute="top" secondItem="mUa-cS-ru4" secondAttribute="topMargin" id="EKj-C8-fSj"/>
+                <constraint firstItem="l9u-2b-4LK" firstAttribute="trailing" secondItem="BoD-Az-3DM" secondAttribute="trailing" id="IdI-7m-oBV"/>
+                <constraint firstItem="lBz-vo-KyO" firstAttribute="leading" secondItem="l9u-2b-4LK" secondAttribute="leading" id="SOK-lJ-Qwt"/>
+                <constraint firstAttribute="bottom" secondItem="BoD-Az-3DM" secondAttribute="bottom" id="Vtd-KR-I3l"/>
+                <constraint firstItem="BoD-Az-3DM" firstAttribute="top" secondItem="l9u-2b-4LK" secondAttribute="bottom" id="ddv-ig-tP5"/>
+                <constraint firstAttribute="trailing" secondItem="lBz-vo-KyO" secondAttribute="trailing" id="j0n-RG-0eA"/>
+                <constraint firstItem="lBz-vo-KyO" firstAttribute="leading" secondItem="mUa-cS-ru4" secondAttribute="leading" id="oQH-UV-xaq"/>
+                <constraint firstItem="lBz-vo-KyO" firstAttribute="bottom" secondItem="ewK-CI-Epd" secondAttribute="bottom" id="qD1-Ec-w2s"/>
+                <constraint firstItem="lBz-vo-KyO" firstAttribute="trailing" secondItem="l9u-2b-4LK" secondAttribute="trailing" id="w7U-Ey-rbP"/>
+                <constraint firstItem="l9u-2b-4LK" firstAttribute="top" secondItem="lBz-vo-KyO" secondAttribute="bottom" id="xyl-iq-lD5"/>
+                <constraint firstItem="lBz-vo-KyO" firstAttribute="top" secondItem="ewK-CI-Epd" secondAttribute="top" id="yKv-VV-D7T"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <point key="canvasLocation" x="24.5" y="51.5"/>
         </view>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
-    </simulatedMetricsContainer>
 </document>

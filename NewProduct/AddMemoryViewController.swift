@@ -12,7 +12,7 @@ import AVFoundation
 import Firebase
 import DropDown
 
-class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIBarPositioningDelegate {
     
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var btnAddVideo: UIButton!
@@ -79,6 +79,9 @@ class AddMemoryViewController: UIViewController, UIImagePickerControllerDelegate
     
     @IBAction func clickArtist(_ sender: Any) {
         chooseArtist.show()
+    }
+    func position(for bar: UIBarPositioning) -> UIBarPosition {
+        return .topAttached
     }
     
     //random ID generator

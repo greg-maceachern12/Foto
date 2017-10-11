@@ -51,9 +51,12 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
         //change the layout of the page to display the artist options if artistOn exists
         if UserDefaults.standard.object(forKey: "artistOn") != nil
         {
-            btnInvit.setImage(#imageLiteral(resourceName: "invitFoto"), for: .normal)
-            btnFindArtist.setImage(#imageLiteral(resourceName: "findFoto"), for: .normal)
-            btnMyFoto.setImage(#imageLiteral(resourceName: "artistFoto1"), for: .normal)
+//            btnInvit.setImage(#imageLiteral(resourceName: "invitFoto"), for: .normal)
+//            btnFindArtist.setImage(#imageLiteral(resourceName: "findFoto"), for: .normal)
+//            btnMyFoto.setImage(#imageLiteral(resourceName: "artistFoto1"), for: .normal)
+            btnMyFoto.setTitle("ARTIST PAGE", for: .normal)
+            btnInvit.setTitle("RECIEVED\nINVITATIONS", for: .normal)
+            btnFindArtist.setTitle("FIND ARTISTS", for: .normal)
        // btnInvit.setTitle("   RECIEVED\nINVITATIONS", for: .normal)
             artistOn = true
             

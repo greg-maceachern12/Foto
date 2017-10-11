@@ -14,13 +14,14 @@ import FirebaseDatabase
 import MessageUI
 
 
-class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDataSource, MFMailComposeViewControllerDelegate, UITextViewDelegate, UITextFieldDelegate {
+class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDataSource, MFMailComposeViewControllerDelegate, UITextViewDelegate, UITextFieldDelegate, UIBarPositioningDelegate {
     
     @IBOutlet weak var lblPrice1: UILabel!
     @IBOutlet weak var lblPrice2: UILabel!
     @IBOutlet weak var tableView1: UITableView!
     @IBOutlet weak var tableView2: UITableView!
-    @IBOutlet weak var navTitle: UINavigationItem!
+
+    @IBOutlet weak var navTitle: UILabel!
     @IBOutlet weak var dateWheelStart: UIDatePicker!
     @IBOutlet weak var dateWheelEnd: UIDatePicker!
     @IBOutlet weak var tvNotes: UITextView!
@@ -99,7 +100,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         //print(takenPosts)
         // Do any additional setup after loading the view.
     }
-    func doneClicked(){
+    @objc func doneClicked(){
         self.view.endEditing(true)
     }
 
@@ -132,6 +133,10 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
     
     func textViewDidChangeSelection(_ textView: UITextView) {
         placeholderLabel.isHidden = !tvNotes.text.isEmpty
+    }
+    
+    func position(for bar: UIBarPositioning) -> UIBarPosition {
+        return .topAttached
     }
 
     
@@ -263,7 +268,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         dataRef.child("artistProfiles").child(self.userID).child("Name").observe(.value){
             (snap: FIRDataSnapshot) in
             self.name = snap.value as? String
-            self.navTitle.title = snap.value as? String
+            self.navTitle.text = snap.value as? String
         }
         
         dataRef.child("users").child(loggedUser!.uid).child("Name").observe(.value){

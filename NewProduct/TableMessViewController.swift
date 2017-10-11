@@ -17,7 +17,7 @@ struct messageStruct { //structure for the items in the tables
     let picture: NSURL!
     let token: String!
 }
-class TableMessViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+class TableMessViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIBarPositioningDelegate {
     
     @IBOutlet weak var homeTab: UITableView!
     
@@ -118,6 +118,10 @@ class TableMessViewController: UIViewController,UITableViewDelegate,UITableViewD
         img4.clipsToBounds = true
         
         return cell!
+    }
+    
+    func position(for bar: UIBarPositioning) -> UIBarPosition {
+        return .topAttached
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -177,7 +177,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
 
     
-    func switchStateDidChange(_ sender:UISwitch!)
+    @objc func switchStateDidChange(_ sender:UISwitch!)
     {
         
         //function for when the user activates the artist profile

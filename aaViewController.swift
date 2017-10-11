@@ -27,7 +27,7 @@ struct postStruct2 {
 }
 
 
-class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+class aaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIBarPositioningDelegate {
     
     
     @IBOutlet weak var homeTab: UITableView!
@@ -158,6 +158,14 @@ func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> 
     //creates as many rows as there are posts
     return searchPosts.count
 }
+    
+    
+    func position(for bar: UIBarPositioning) -> UIBarPosition {
+        return .topAttached
+    }
+    
+    
+    
 func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return 75
 }
