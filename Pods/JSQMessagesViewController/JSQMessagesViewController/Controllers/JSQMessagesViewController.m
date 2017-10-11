@@ -42,6 +42,7 @@
 #import <objc/runtime.h>
 
 
+
 // Fixes rdar://26295020
 // See issue #1247 and Peter Steinberger's comment:
 // https://github.com/jessesquires/JSQMessagesViewController/issues/1247#issuecomment-219386199
@@ -178,7 +179,7 @@ JSQMessagesKeyboardControllerDelegate>
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
 
-//    self.inputToolbar.delegate = self;
+    self.inputToolbar.delegate = self;
     self.inputToolbar.contentView.textView.placeHolder = [NSBundle jsq_localizedStringForKey:@"new_message"];
 
     self.inputToolbar.contentView.textView.accessibilityLabel = [NSBundle jsq_localizedStringForKey:@"new_message"];

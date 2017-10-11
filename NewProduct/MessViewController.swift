@@ -26,6 +26,8 @@ class MessViewController: JSQMessagesViewController, UIBarPositioningDelegate {
     
     var dates = [String!]()
     
+    var offsetY:CGFloat = 0
+    
 }
 
 extension MessViewController{
@@ -310,7 +312,11 @@ extension MessViewController {
        
         super.viewDidLoad()
         
+        
+        
         self.inputToolbar.contentView.leftBarButtonItem = nil
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(MessViewController.keyboardFrameChangeNotification(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
         
         //tell JSQMessagesView who is current user
         self.senderId = loggedUser?.uid
@@ -332,6 +338,28 @@ extension MessViewController {
         
         
        
+    }
+    
+    @objc func keyboardFrameChangeNotification(notification: Notification) {
+        if let userInfo = notification.userInfo {
+            let endFrame = userInfo[UIKeyboardFrameEndUserInfoKey] as? CGRect
+            let animationDuration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double ?? 0
+            let animationCurveRawValue = (userInfo[UIKeyboardAnimationCurveUserInfoKey] as? Int) ?? Int(UIViewAnimationOptions.curveEaseInOut.rawValue)
+            let animationCurve = UIViewAnimationOptions(rawValue: UInt(animationCurveRawValue))
+            if let _ = endFrame, endFrame!.intersects(self.inputToolbar.frame) {
+                self.offsetY = self.inputToolbar.frame.maxY - endFrame!.minY
+                UIView.animate(withDuration: animationDuration, delay: TimeInterval(0), options: animationCurve, animations: {
+                    self.inputToolbar.frame.origin.y = self.inputToolbar.frame.origin.y - self.offsetY
+                }, completion: nil)
+            } else {
+                if self.offsetY != 0 {
+                    UIView.animate(withDuration: animationDuration, delay: TimeInterval(0), options: animationCurve, animations: {
+                        self.inputToolbar.frame.origin.y = self.inputToolbar.frame.origin.y + self.offsetY
+                        self.offsetY = 0
+                    }, completion: nil)
+                }
+            }
+        }
     }
     func position(for bar: UIBarPositioning) -> UIBarPosition {
         return .topAttached
