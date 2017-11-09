@@ -17,7 +17,12 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
     @IBOutlet weak var btnMyFoto: UIButton!
     @IBOutlet weak var btnFindArtist: UIButton!
     @IBOutlet weak var btnInvit: UIButton!
-
+    @IBOutlet weak var newHome: UIImageView!
+    @IBOutlet weak var lblSent: UILabel!
+    @IBOutlet weak var lblFoto: UILabel!
+    @IBOutlet weak var imgFoto: UIImageView!
+    @IBOutlet weak var imgSent: UIImageView!
+    
     var dataRef = FIRDatabase.database().reference()
     var loggedUser = FIRAuth.auth()?.currentUser
     
@@ -31,8 +36,12 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        btnFindArtist.applyDesign()
-        btnMyFoto.applyDesign()
+//        btnFindArtist.layer.borderWidth = 0.5
+//        btnFindArtist.layer.borderColor = UIColor.lightGray.cgColor
+        btnInvit.layer.borderWidth = 0.5
+        btnInvit.layer.borderColor = UIColor.lightGray.cgColor
+        btnMyFoto.layer.borderWidth = 0.5
+        btnMyFoto.layer.borderColor = UIColor.lightGray.cgColor
         
             if UserDefaults.standard.bool(forKey: "artistCreate") == true
             {
@@ -51,13 +60,9 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
         //change the layout of the page to display the artist options if artistOn exists
         if UserDefaults.standard.object(forKey: "artistOn") != nil
         {
-//            btnInvit.setImage(#imageLiteral(resourceName: "invitFoto"), for: .normal)
-//            btnFindArtist.setImage(#imageLiteral(resourceName: "findFoto"), for: .normal)
-//            btnMyFoto.setImage(#imageLiteral(resourceName: "artistFoto1"), for: .normal)
-            btnMyFoto.setTitle("ARTIST PAGE", for: .normal)
-            btnInvit.setTitle("RECIEVED\nINVITATIONS", for: .normal)
-            btnFindArtist.setTitle("FIND ARTISTS", for: .normal)
-       // btnInvit.setTitle("   RECIEVED\nINVITATIONS", for: .normal)
+ 
+            btnInvit.setImage(#imageLiteral(resourceName: "invitFoto"), for: .normal)
+            btnMyFoto.setImage(#imageLiteral(resourceName: "artistFoto1"), for: .normal)
             artistOn = true
             
             
