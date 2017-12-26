@@ -25,7 +25,8 @@ class inquireViewController: UIViewController, UIBarPositioningDelegate {
     @IBOutlet weak var btnDecline: UIButton!
     @IBOutlet weak var Pricing: UILabel!
     @IBOutlet weak var lblTheme: UILabel!
-
+    @IBOutlet weak var lblPrice: UILabel!
+    
     var loggedUser = FIRAuth.auth()?.currentUser
     var dataRef = FIRDatabase.database().reference()
     
@@ -81,14 +82,20 @@ func SetUp()
             self.Pricing.text = snap.value as? String
             
         }
+        dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("PriceOption").observe(.value){
+            (snap: FIRDataSnapshot) in
+            self.lblPrice.text = "$\(snap.value as! Float)"
+//            print(snap.value as? String!)
+            
+        }
         dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("StartDate").observe(.value){
             (snap: FIRDataSnapshot) in
-            self.lblStart.text = "Start Date: \(snap.value as! String)"
+            self.lblStart.text = "Start: \(snap.value as! String)"
         }
         
         dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("EndDate").observe(.value){
             (snap: FIRDataSnapshot) in
-            self.lblEnd.text = "End Date: \(snap.value as! String)"
+            self.lblEnd.text = "End: \(snap.value as! String)"
         }
         
         dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("ExtraNotes").observe(.value){
