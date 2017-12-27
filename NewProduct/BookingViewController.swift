@@ -64,7 +64,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         viewTab2.applyGradient(colours: [UIColor(red: 255/255, green: 140/255, blue: 0, alpha: 1.0), UIColor(red: 1.0, green: 103/255, blue: 0, alpha: 1.0)])
         
         
-        //makes a placeholder label for a textview (not natively available)
+        //makes a placeholder label for a textview (not natively available
         placeholderLabel = UILabel()
         placeholderLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         placeholderLabel.numberOfLines = 4
@@ -79,11 +79,9 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         tbTheme.delegate = self
         tvNotes.delegate = self
         scroller.delegate = self
-    
-        
+
         SetUp()
-
-
+        
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
         
@@ -94,11 +92,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         toolbar.setItems([flexibleSpace, doneButton], animated: false)
         
         tvNotes.inputAccessoryView = toolbar
-      
-        
-        
-        //print(takenPosts)
-        // Do any additional setup after loading the view.
+
     }
     @objc func doneClicked(){
         self.view.endEditing(true)
@@ -158,23 +152,15 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
             
             let tb1 = cell?.viewWithTag(1) as! UILabel
             tb1.text = posts[indexPath.row]!
-            
-            
-            
-            
+
             return cell!
-            
         }
             
         else
         {
             let cell2 = tableView.dequeueReusableCell(withIdentifier: "Cell2")
-            
             let tb1 = cell2?.viewWithTag(2) as! UILabel
             tb1.text = posts2[indexPath.row]!
-            
-           
-            
             return cell2!
             
         }
@@ -197,12 +183,6 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
                 
                 self.viewTab1.transform = CGAffineTransform(scaleX: 1.07, y: 1.07)
                 self.viewTab2.transform = CGAffineTransform(scaleX: 0.93, y: 0.93)
-
-                
-                
-                
-                
-                
             })
           
             price1 = true
@@ -223,10 +203,6 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
                 
                 self.viewTab2.transform = CGAffineTransform(scaleX: 1.07, y: 1.07)
                 self.viewTab1.transform = CGAffineTransform(scaleX: 0.93, y: 0.93)
-                
-                
-                
-                
                 
             })
            

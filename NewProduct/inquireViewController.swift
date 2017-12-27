@@ -47,11 +47,6 @@ class inquireViewController: UIViewController, UIBarPositioningDelegate {
         
 
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     func position(for bar: UIBarPositioning) -> UIBarPosition {
         return .topAttached
     }
@@ -85,7 +80,6 @@ func SetUp()
         dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("PriceOption").observe(.value){
             (snap: FIRDataSnapshot) in
             self.lblPrice.text = "$\(snap.value as! Float)"
-//            print(snap.value as? String!)
             
         }
         dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").child(code).child("StartDate").observe(.value){
@@ -123,7 +117,6 @@ func SetUp()
                     let url = URL(string: profileImageURL)
                     URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
                         if error != nil{
-                           // print(error!)
                             return
                         }
                         DispatchQueue.main.async {
@@ -152,7 +145,6 @@ func SetUp()
 
     }
     
-    //the action for the decline button.
     @IBAction func Decline(_ sender: Any) {
         let alertContoller = UIAlertController(title: "Confirm!", message: "Are You Sure You Want To Decline This Inquiry?", preferredStyle: .alert)
         
@@ -200,7 +192,7 @@ func SetUp()
             self.dataRef.child("users").child(self.token).child("Sent Inquires").child(self.code).child("Status").setValue("Accepted")
             
             let myVC = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! HomeViewController
-             //myVC.token = self.token
+
           
             self.present(myVC, animated: true)
             
