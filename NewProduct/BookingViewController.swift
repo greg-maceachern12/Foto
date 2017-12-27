@@ -97,12 +97,6 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
     @objc func doneClicked(){
         self.view.endEditing(true)
     }
-
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     /////////////////////////////////////////////////////////////////
                         //Code for the textfields and textviews
@@ -351,8 +345,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         
         
         //Table2
-        
-        dataRef.child("artistProfiles").child(self.userID).child("Pricing2").child("Price2_0").observe(.value){
+    dataRef.child("artistProfiles").child(self.userID).child("Pricing2").child("Price2_0").observe(.value){
             (snap: FIRDataSnapshot) in
             if snap.exists() == true
             {
@@ -364,8 +357,6 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
                 self.posts2.insert("Nothing Here!", at: 0)
             }
         }
-        
-        
         dataRef.child("artistProfiles").child(self.userID).child("Pricing2").child("Price2_1").observe(.value){
             (snap: FIRDataSnapshot) in
             if snap.exists() == true
@@ -410,11 +401,6 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
             
         }
         
-        
-    
-        
-        
-
     }
     
     @IBAction func cancelAction(_ sender: Any) {
@@ -438,7 +424,6 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
             randomString.append("\(Character( UnicodeScalar( letters.character(at: randomIndex))!))")
             i += 1
         }
-        
         return String(randomString)
     }
     
@@ -466,7 +451,7 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
         }
         else
         {
-            // if the first price package was selected, postRef becomes the first pricing package.
+            // If the first price package was selected, postRef becomes the first pricing package.
             if self.price1 == true
             {
                 postRef = posts
@@ -576,13 +561,8 @@ class BookingViewController: UIViewController, UITableViewDelegate,UITableViewDa
                 
                 self.present(alertContoller2, animated: true, completion: nil)
                 
-            })
+                })
 
-            
-            
-            
-           
-            
             })
         let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: {
             (action : UIAlertAction!) -> Void in
