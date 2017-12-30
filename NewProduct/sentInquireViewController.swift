@@ -36,7 +36,6 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
         SetUp()
         
     }
@@ -48,7 +47,6 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        //creates a cell in the table and sets information based on the tag
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell2")
         
         let label1 = cell?.viewWithTag(1) as! UILabel
@@ -57,7 +55,6 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
         
         let label2 = cell?.viewWithTag(2) as! UILabel
         label2.text = "\(sentInqposts[indexPath.row].theme!) (\(sentInqposts[indexPath.row].status!))"
-        
         
         return cell!
         
@@ -76,11 +73,10 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
     }
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-    
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { action, index in
             //What happens when delete button is tapped
             
-            //didn't want to delete the data since the information is valuable.
+            //first, make sure data is stored in the database, then delete it from the users phone
             self.dataRef.child("users").child(self.loggedUser!.uid).child("Sent Inquires").child(self.sentInqposts[indexPath.row].code).updateChildValues(["deleted" : "true"], withCompletionBlock: { (error,ref) in
                 if error != nil
                 {
@@ -94,46 +90,23 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
                 }
                 
                 self.sentInqposts.remove(at: indexPath.row)
-                
-                
                 self.homeTab.deleteRows(at: [index], with: UITableViewRowAnimation.automatic)
             })
-            
-            
-            
-
-            
-            
         }
         return [delete]
         
-            
-            
     }
   
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //The status of each inquiry will always only ever have 3 status's unless its nil.
+        
         
         if sentInqposts[indexPath.row].status == "Accepted"
         {
-         
-            
             let alertContoller = UIAlertController(title: "Accepted!", message: "The Artist has accepted your inquiry! Start a message or pay now :)", preferredStyle: .alert)
             
             let defaultAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            
-            //let payAction = UIAlertAction(title: "Pay Now", style: .default, handler: {
-              //  alert -> Void in
-//                let myVC = self.storyboard?.instantiateViewController(withIdentifier: "Payment") as! PaymentViewController
-//                
-//               
-//                myVC.clientName = self.sentInqposts[indexPath.row].toName
-//                myVC.price = self.sentInqposts[indexPath.row].price
-//                
-//                self.present(myVC, animated: true)
-          //  })
-
-            
             let messageAction = UIAlertAction(title: "Message", style: .default, handler: {
                 alert -> Void in
                 
@@ -143,14 +116,10 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
                 myVC.name = self.sentInqposts[indexPath.row].toName
                 
                 self.present(myVC, animated: true)
-                
-
             })
             alertContoller.addAction(defaultAction)
             alertContoller.addAction(messageAction)
-            //alertContoller.addAction(payAction)
             self.present(alertContoller, animated:true, completion: nil)
-            
             
         }
         else if sentInqposts[indexPath.row].status == "Pending"
@@ -168,26 +137,25 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
                 myVC.name = self.sentInqposts[indexPath.row].toName
                 
                 self.present(myVC, animated: true)
-                
-                
             })
 
             alertContoller.addAction(defaultAction)
             alertContoller.addAction(messageAction)
             self.present(alertContoller, animated:true, completion: nil)
-            
-            
         }
         else if sentInqposts[indexPath.row].status == "Declined"
         {
-            
             let alertContoller = UIAlertController(title: "Declined!", message: "The Artist has declined your inquiry. Don't be discouraged! Keep looking", preferredStyle: .alert)
-            
             let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-         
-                
             alertContoller.addAction(defaultAction)
-          
+            self.present(alertContoller, animated:true, completion: nil)
+            
+        }
+        else{
+            
+            let alertContoller = UIAlertController(title: "Error!", message: "An error has occured. Please try again later", preferredStyle: .alert)
+            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertContoller.addAction(defaultAction)
             self.present(alertContoller, animated:true, completion: nil)
             
         }
@@ -199,44 +167,27 @@ class sentInquireViewController: UIViewController, UITableViewDelegate, UITableV
         self.sentInqposts.removeAll()
         
         dataRef.child("users").child(loggedUser!.uid).child("Sent Inquires").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
-            //
             if snapshot.exists() == true{
-                let snapshotValueName = snapshot.value as? NSDictionary
-                let Name = snapshotValueName?["ClientName"] as? String
+                let snapshotValue = snapshot.value as? NSDictionary
                 
-                let Token = snapshotValueName?["artistToken"] as? String
-                
-                let ToName = snapshotValueName?["toName"] as? String
-                
-                let snapshotValueTheme = snapshot.value as? NSDictionary
-                let Theme = snapshotValueTheme?["Theme"] as? String
-                
-                let snapshotValueStatus = snapshot.value as? NSDictionary
-                let Status = snapshotValueStatus?["Status"] as? String
-                
-                let snapshotValueCode = snapshot.value as? NSDictionary
-                let Code = snapshotValueCode?["code"] as? String
-                
-                let Price = snapshotValueCode?["PricingOption"] as? Float
-                
-                let snapshotValueDeleted = snapshot.value as? NSDictionary
-                
-                let Deleted = snapshotValueDeleted?["deleted"] as? String
-              
-                
-                
+                let Name = snapshotValue?["ClientName"] as? String
+                let Token = snapshotValue?["artistToken"] as? String
+                let ToName = snapshotValue?["toName"] as? String
+                let Theme = snapshotValue?["Theme"] as? String
+                let Status = snapshotValue?["Status"] as? String
+                let Code = snapshotValue?["code"] as? String
+                let Price = snapshotValue?["PricingOption"] as? Float
+                let Deleted = snapshotValue?["deleted"] as? String
+ 
                 if Deleted != "true"
                 {
                     self.sentInqposts.insert(sentInqStuct(name: Name, toName: ToName, theme: Theme, price: Price, status: Status, token: Token, code: Code, deleted: Deleted), at: 0)
-                    
-                    //print(self.inqposts)
                     self.homeTab.reloadData()
                 }
-                
-               
-              
+
             }
         })
+        
         if sentInqposts.count == 0
         {
             let alertContoller = UIAlertController(title: "Oops!", message: "You've sent no inquires! Find an artist and send some out :)", preferredStyle: .alert)

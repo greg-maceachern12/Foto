@@ -1,7 +1,12 @@
-
-
-
-//The frameworks of the code were taken from the CocoaPod "JSQMessageViewController". I reworked it to operate with firebase and the rest of the application
+//
+//  MessViewController.swift
+//  NewProduct
+//
+//  Created by Greg  MacEachern on 2017-06-28.
+//  Copyright © 2017 Greg MacEachern. All rights reserved.
+//
+//The frameworks of the code were based off of the dependency, "JSQMessageViewController" available on Cococapods.
+//I reworked it to operate with firebase and the rest of the application
 
 import UIKit
 import JSQMessagesViewController
@@ -10,8 +15,6 @@ import SDWebImage
 
 
 class MessViewController: JSQMessagesViewController, UIBarPositioningDelegate {
-    
-    
     var messages = [JSQMessage]()
     var token: String!
     var loggedUser = FIRAuth.auth()?.currentUser
@@ -34,8 +37,6 @@ extension MessViewController{
 
     
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
-        
-        
         //retrieving information to upload to the database (date,name,token ect.)
         let strDate = Date()
         let day = Calendar.current.component(.day, from: strDate)
@@ -50,38 +51,27 @@ extension MessViewController{
         
         let token: [String: AnyObject] = [Messaging.messaging().fcmToken!: Messaging.messaging().fcmToken as AnyObject]
         
-         self.postToken(Token: token)
+        self.postToken(Token: token)
         
         //this data is uploaded to the corresponding locations in the database (3 locations)
 
-            self.dataRef.child("users").child(self.token).observeSingleEvent(of: .value, with: {  (snap) in
-                if let dict = snap.value as? [String: AnyObject]
-                {
-                    
-                    var temp1 = dict["pic"] as? String
-                    if temp1 == nil{
-                        temp1 = "default.ca"
-                    }
+        self.dataRef.child("users").child(self.token).observeSingleEvent(of: .value, with: {  (snap) in
+            if let dict = snap.value as? [String: AnyObject]
+            {
                 
-        
-                   
-                    let messPost: [String : AnyObject] = ["toName": self.name as AnyObject,
-                                                          "token": self.token as AnyObject,
-                                                          //"pic": temp1 as AnyObject,
-                                                          "text": text as AnyObject,
-                                                          "date": "\(day)/\(month)/\(year)" as AnyObject]
-                    
-                    
-                    
-                    
-                    self.dataRef.child("users").child(self.loggedUser!.uid).child("messages").child(self.token).setValue(messPost)
-                   
-                    
+                var temp1 = dict["pic"] as? String
+                if temp1 == nil{
+                    temp1 = "default.ca"
                 }
+                let messPost: [String : AnyObject] = ["toName": self.name as AnyObject,
+                                                      "token": self.token as AnyObject,
+                                                      "text": text as AnyObject,
+                                                      "date": "\(day)/\(month)/\(year)" as AnyObject]
                 
-            })
-            
-        
+                self.dataRef.child("users").child(self.loggedUser!.uid).child("messages").child(self.token).setValue(messPost)
+                
+            }
+        })
         
         self.dataRef.child("users").child(self.loggedUser!.uid).observeSingleEvent(of: .value, with: {  (snap) in
                 
@@ -93,59 +83,37 @@ extension MessViewController{
                 if temp1 == nil{
                     temp1 = "default.ca"
                 }
+                let messPost: [String : AnyObject] = ["toName": senderDisplayName as AnyObject,
+                                                      "token": self.loggedUser!.uid as AnyObject,
+                                                      "pic": temp1 as AnyObject,
+                                                      "text": text as AnyObject,
+                                                      "date": "\(day)/\(month)/\(year)" as AnyObject]
                     
-                
-                
-                    
-                    
-                    
-                    let messPost: [String : AnyObject] = ["toName": senderDisplayName as AnyObject,
-                                                          "token": self.loggedUser!.uid as AnyObject,
-                                                          "pic": temp1 as AnyObject,
-                                                          "text": text as AnyObject,
-                                                          "date": "\(day)/\(month)/\(year)" as AnyObject]
-                    
-                    self.dataRef.child("users").child(self.token).child("messages").child(self.loggedUser!.uid).updateChildValues(messPost)
+                self.dataRef.child("users").child(self.token).child("messages").child(self.loggedUser!.uid).updateChildValues(messPost)
             }
                 
-            })
+        })
+        
+        self.run = false
 
-        
-        
-                self.run = false
-        
-        
-        
-                self.dataRef.child("users").child(self.loggedUser!.uid).child("messages").child(self.token).child("date").setValue("\(day)/\(month)/\(year)")
-                self.dataRef.child("users").child(self.token).child("messages").child(self.loggedUser!.uid).child("date").setValue("\(day)/\(month)/\(year)")
-        
-        
-                let message = JSQMessage(senderId: senderId, displayName: senderDisplayName, text: text)
-                
-                let FIRmessage: [String : AnyObject] = ["senderID": senderId as AnyObject,
-                                                        "displayName": senderDisplayName as AnyObject,
-                                                        "text": text as AnyObject,
-                                                        "toID": self.token as AnyObject,
-                                                        "date": dateString as AnyObject]
-                
-                self.dataRef.child("messages").childByAutoId().setValue(FIRmessage)
-                
-                self.messages.append(message!)
-                self.dates.append(dateString)
-                
+        self.dataRef.child("users").child(self.loggedUser!.uid).child("messages").child(self.token).child("date").setValue("\(day)/\(month)/\(year)")
+        self.dataRef.child("users").child(self.token).child("messages").child(self.loggedUser!.uid).child("date").setValue("\(day)/\(month)/\(year)")
 
-                self.finishSendingMessage()
-                
 
-            
-           
-           
-            
-            
+        let message = JSQMessage(senderId: senderId, displayName: senderDisplayName, text: text)
         
+        let FIRmessage: [String : AnyObject] = ["senderID": senderId as AnyObject,
+                                                "displayName": senderDisplayName as AnyObject,
+                                                "text": text as AnyObject,
+                                                "toID": self.token as AnyObject,
+                                                "date": dateString as AnyObject]
         
+        self.dataRef.child("messages").childByAutoId().setValue(FIRmessage)
         
-        
+        self.messages.append(message!)
+        self.dates.append(dateString)
+        self.finishSendingMessage()
+   
     }
     
     func postToken(Token: [String: AnyObject]){
@@ -156,52 +124,43 @@ extension MessViewController{
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
-
-        
         //the collection view is the message view and is controlled (for the most part) here
         let placeHolderImage = #imageLiteral(resourceName: "Default")
         let avatarImage = JSQMessagesAvatarImage(avatarImage: nil, highlightedImage: nil, placeholderImage: placeHolderImage)
-       
-        
-        
         
         let message = messages[indexPath.item]
         
         if avatarImage?.avatarImage == nil {
             avatarImage?.avatarImage = SDImageCache.shared().imageFromDiskCache(forKey: message.senderId)
         }
-        
-        
-        //saving the avatar image in tge cagceso the chat loads faster
+    
+        //saving the avatar image in the cache of the chat loads faster
         if (message.senderId) != nil {
             if loggedUser?.uid == message.senderId{
-            dataRef.child("users").child(loggedUser!.uid).observe(.value, with: { (snapshot) in
-                
-                if let profileURL = (snapshot.value as AnyObject!)!["pic"] as! String! {
+                dataRef.child("users").child(loggedUser!.uid).observe(.value, with: { (snapshot) in
                     
-                    let profileNSURL: NSURL = NSURL(string: profileURL)!
-                    
-                    // download avatar image here somehow!?
-                    let manager: SDWebImageManager = SDWebImageManager.shared()
-                    manager.downloadImage(with: profileNSURL as URL!, options: [], progress: { (receivedSize: Int, actualSize: Int) in
-                        //print(receivedSize, actualSize)
-                    }, completed: { (image, error, cached, finished, url) in
-                        if image != nil {
-                            manager.imageCache.store(image, forKey: message.senderId)
-                            
-                            DispatchQueue.main.async
-                                {
-                                    
-                                    avatarImage!.avatarImage = image
-                                    avatarImage!.avatarHighlightedImage = image
+                    if let profileURL = (snapshot.value as AnyObject!)!["pic"] as! String! {
+                        
+                        let profileNSURL: NSURL = NSURL(string: profileURL)!
+                        
+                        let manager: SDWebImageManager = SDWebImageManager.shared()
+                        manager.downloadImage(with: profileNSURL as URL!, options: [], progress: { (receivedSize: Int, actualSize: Int) in
+                        }, completed: { (image, error, cached, finished, url) in
+                            if image != nil {
+                                manager.imageCache.store(image, forKey: message.senderId)
+                                
+                                DispatchQueue.main.async
+                                    {
+                                        
+                                        avatarImage!.avatarImage = image
+                                        avatarImage!.avatarHighlightedImage = image
+                                }
                             }
-                        }
-                    })
-                }
-            })
+                        })
+                    }
+                })
             }
             else{
-                
                 
                 dataRef.child("users").child(self.token).observe(.value, with: { (snapshot) in
                     
@@ -209,10 +168,8 @@ extension MessViewController{
                         
                         let profileNSURL: NSURL = NSURL(string: profileURL)!
                         
-                        // download avatar image here somehow!?
                         let manager: SDWebImageManager = SDWebImageManager.shared()
                         manager.downloadImage(with: profileNSURL as URL!, options: [], progress: { (receivedSize: Int, actualSize: Int) in
-                           // print(receivedSize, actualSize)
                         }, completed: { (image, error, cached, finished, url) in
                             if image != nil {
                                 manager.imageCache.store(image, forKey: message.senderId)
@@ -262,15 +219,11 @@ extension MessViewController{
         
         NSAttributedString! {
             return NSAttributedString(string: dates[indexPath.row])
-
-            
-            
             
     }
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAt indexPath: IndexPath!) -> CGFloat {
        return 15
     }
-    
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
@@ -286,8 +239,7 @@ extension MessViewController{
         //gives the ability to change the style of the bubble(shape, colour etc)
         
         let bubbleFactory = JSQMessagesBubbleImageFactory(bubble: UIImage.jsq_bubbleCompactTailless(), capInsets: .zero)
-    
-        
+
         let message = messages[indexPath.row]
         
         if loggedUser!.uid == message.senderId{
@@ -312,8 +264,6 @@ extension MessViewController {
        
         super.viewDidLoad()
         
-        
-        
         self.inputToolbar.contentView.leftBarButtonItem = nil
         
         NotificationCenter.default.addObserver(self, selector: #selector(MessViewController.keyboardFrameChangeNotification(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
@@ -328,16 +278,10 @@ extension MessViewController {
             self.senderDisplayName = snap.value as? String
             
         }
-        self.navigationItem.title = "hein"
-     
-        
-        
+        self.navigationItem.title = "NA"
 
         self.messages = getMessage2()
-        
-        
-        
-       
+   
     }
     
     @objc func keyboardFrameChangeNotification(notification: Notification) {
@@ -364,21 +308,15 @@ extension MessViewController {
     func position(for bar: UIBarPositioning) -> UIBarPosition {
         return .topAttached
     }
-
- 
-    
 }
-
-
 
 extension MessViewController {
     func getMessage2() -> [JSQMessage]{
         let messages = [JSQMessage]()
         
-        
         self.dataRef.child("messages").observe(.childAdded, with: { (snapshot) in
             
-            //added this condition so this segment of the function isnt run when the user sends a new message. 
+            //added this condition so this segment of the function isn't run everytime the user sends a new message. "run" becomes false when the user opens the chat.
           if self.run == true
           {
             
@@ -395,10 +333,6 @@ extension MessViewController {
             let texty = snapshotValueText?["text"] as? String
             
             let dater = snapshotValueText?["date"] as? String
-           
-            
-            
-            
             
             if (tokensendertoID == self.loggedUser!.uid || tokensendertoID == self.token) && (tokensenderID == self.loggedUser!.uid || tokensenderID == self.token){
             
@@ -411,17 +345,10 @@ extension MessViewController {
                 
                 }
             }
-           
             
         })
-        
-            return messages
-        
-        
+        return messages
 
-        
-        
-        
     }
     
 }

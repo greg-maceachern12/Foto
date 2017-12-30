@@ -34,17 +34,10 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
         
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     func slideMenuItemSelectedAtIndex(_ index: Int32) {
         //controls for when the user selects the list of actions in the slide out menu
         switch(index){
         case 0:
-
-            
             break
         case 1:     //if the user selects "Activate artist profile"
             
@@ -88,7 +81,6 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
         let topViewController : UIViewController = self.navigationController!.topViewController!
         
         if (topViewController.restorationIdentifier! == destViewController.restorationIdentifier!){
-            //print("Same VC")
         } else {
             self.navigationController!.pushViewController(destViewController, animated: true)
         }
@@ -96,7 +88,6 @@ class BaseViewController: UIViewController, SlideMenuDelegate {
     
     func addSlideMenuButton(){
         
-        //formating slideout button
         let btnShowMenu = UIButton(type: UIButtonType.system)
         btnShowMenu.setImage(self.defaultMenuImage(), for: UIControlState())
         btnShowMenu.frame = CGRect(x: 0, y: 0, width: 30, height: 30)

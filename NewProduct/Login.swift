@@ -28,48 +28,42 @@ class Login: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPick
     var loggedInUser:AnyObject?
     var pickerGend = UIPickerView()
     var gender = "Male"
-    
     let genders = ["Male", "Female", "Other"]
     
-override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
 
-    
-    self.Load.stopAnimating()
-    
-    tbUser.delegate = self
-    tbPassword.delegate = self
-    
-    btnCreate.layer.cornerRadius = 5
-    btnLogin.layer.cornerRadius = 5
-    
-    btnLogout.isEnabled = false
-    
-    //if there is a user logged in
-    if let user = FIRAuth.auth()?.currentUser
-    {
-       // print("true")
-        //self.Show()
-       self.btnLogout.alpha = 1.0
-       self.btnLogout.isEnabled = true
-       self.tbUser.text = user.email
-       self.lblUser.text = "Enter Password"
-       
-    }
-        //there is not a user logged in
-    else
-    {
-       self.btnLogout.alpha = 0
-       self.lblUser.text = ""
-        self.lblUser.text = "Sign In/Sign Up"
-    }
-    self.loginView.alpha = 0
-    UIView.animate(withDuration: 0.4, animations: {
-        self.loginView.alpha = 1
-
+        self.Load.stopAnimating()
         
-    })
-    
+        tbUser.delegate = self
+        tbPassword.delegate = self
+        
+        btnCreate.layer.cornerRadius = 5
+        btnLogin.layer.cornerRadius = 5
+        
+        btnLogout.isEnabled = false
+        
+        //if there is a user logged in
+        if let user = FIRAuth.auth()?.currentUser
+        {
+           self.btnLogout.alpha = 1.0
+           self.btnLogout.isEnabled = true
+           self.tbUser.text = user.email
+           self.lblUser.text = "Enter Password"
+           
+        }
+            //there is not a user logged in
+        else
+        {
+           self.btnLogout.alpha = 0
+           self.lblUser.text = ""
+            self.lblUser.text = "Sign In/Sign Up"
+        }
+        self.loginView.alpha = 0
+        UIView.animate(withDuration: 0.4, animations: {
+            self.loginView.alpha = 1
+        })
+        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -84,51 +78,36 @@ override func viewDidLoad() {
     @IBAction func CreateAccount(_ sender: Any) {
         self.view.endEditing(true)
         
-        
-        //checks to see if textbox is blank.
-        
-        
-        
         //if blank show alert
         if self.tbUser.text == "" || self.tbPassword.text == ""
         {
             let alertContoller = UIAlertController(title: "Oops!", message: "Please Enter a Username/Password", preferredStyle: .alert)
-            
             let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alertContoller.addAction(defaultAction)
-            
             self.Load.stopAnimating()
             self.present(alertContoller, animated:true, completion: nil)
         }
-            
         //Creates account
         else
         {
             self.Load.startAnimating()
             let alertController = UIAlertController(title: "Enter Your Name", message: "This cannot be changed", preferredStyle: .alert)
-            
             let saveAction = UIAlertAction(title: "Save", style: .default, handler: {
                 alert -> Void in
                 
                 let firstTextField = alertController.textFields![0] as UITextField
-              
-                
-  
+
                     let vc = UIViewController()
                     vc.preferredContentSize = CGSize(width: 250,height: 150)
                     let label1 = UILabel(frame: CGRect(x: 0, y: 0, width: 75, height: 50))
                     let text1 = UITextField(frame: CGRect(x: 75, y: 0, width: 175, height: 50))
-                    
                     let label2 = UILabel(frame: CGRect(x: 0, y: 40, width: 75, height: 50))
                     let text2 = UITextField(frame: CGRect(x: 75, y: 40, width: 175, height: 50))
  
                     
                     let label3 = UILabel(frame: CGRect(x: 0, y: 80, width: 75, height: 50))
                     self.pickerGend = UIPickerView(frame: CGRect(x: 75, y: 80, width: 175, height: 50))
-                    
- 
-                    
-                    
+                
                     self.pickerGend.dataSource = self
                     self.pickerGend.delegate = self
                     
@@ -138,7 +117,7 @@ override func viewDidLoad() {
                     text2.font = UIFont(name: "Avenir Next", size: 13)
                     text2.placeholder = "Enter Your Age"
                 
-                text2.keyboardType = UIKeyboardType.numberPad
+                    text2.keyboardType = UIKeyboardType.numberPad
                     
                     label1.font = UIFont(name: "Avenir Next", size: 13)
                     label2.font = UIFont(name: "Avenir Next", size: 13)
@@ -147,7 +126,6 @@ override func viewDidLoad() {
                     label1.text = "Location:"
                     label2.text = "Age:"
                     label3.text = "Gender:"
-                    //pickerGender.dataSource = genders as? UIPickerViewDataSource
                     
                     vc.view.addSubview(text2)
                     vc.view.addSubview(self.pickerGend)
@@ -160,25 +138,8 @@ override func viewDidLoad() {
                     editRadiusAlert.addAction(UIAlertAction(title: "Save", style: .default, handler: {
                         alert -> Void in
                         
-                        
-                        
-                        if text1.text == ""
-                        {
-                            
+                        if text1.text == "" {
                             let alertContoller = UIAlertController(title: "Oops!", message: "Enter A Location", preferredStyle: .alert)
-                            
-                            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                            alertContoller.addAction(defaultAction)
-                            self.Load.stopAnimating()
-                            self.present(alertContoller, animated:true, completion: nil)
-                            
-                        return
-                        }
-                        
-                        
-                        if text2.text! == "" || text2.text == nil || Int(text2.text!) == nil
-                        {
-                            let alertContoller = UIAlertController(title: "Oops!", message: "Enter Your Age", preferredStyle: .alert)
                             
                             let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                             alertContoller.addAction(defaultAction)
@@ -186,12 +147,19 @@ override func viewDidLoad() {
                             self.present(alertContoller, animated:true, completion: nil)
                             return
                         }
+            
+                        if text2.text! == "" || text2.text == nil || Int(text2.text!) == nil{
+                            let alertContoller = UIAlertController(title: "Oops!", message: "Enter Your Age", preferredStyle: .alert)
+                            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                            alertContoller.addAction(defaultAction)
+                            self.Load.stopAnimating()
+                            self.present(alertContoller, animated:true, completion: nil)
+                            return
+                        }
                         
-                        if Int(text2.text!)! <= 12
-                        {
+                        if Int(text2.text!)! <= 12{
                             
                             let alertContoller = UIAlertController(title: "Oops!", message: "You Must Be 12 Years Old To Use This Application", preferredStyle: .alert)
-                            
                             let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                             alertContoller.addAction(defaultAction)
                             self.Load.stopAnimating()
@@ -202,14 +170,7 @@ override func viewDidLoad() {
                         
                         
                         FIRAuth.auth()?.createUser(withEmail: self.tbUser.text!, password: self.tbPassword.text!, completion: { (user, error) in
-                            
-                            //if there is an error
-                            
-                            
-                            //if no error
-                            if error == nil
-                            {
-                                
+                            if error == nil{
                                 self.loggedInUser = FIRAuth.auth()?.currentUser
                                 self.btnLogout.alpha=1.0
                                 self.tbUser.text = ""
@@ -220,46 +181,27 @@ override func viewDidLoad() {
                                 
                                 self.NameRef.child("users").child(self.loggedInUser!.uid).child("Gender").setValue(self.gender)
                                 self.NameRef.child("users").child(self.loggedInUser!.uid).child("Location").setValue(text1.text)
-                               self.NameRef.child("users").child(self.loggedInUser!.uid).child("Age").setValue(Int(text2.text!))
-                                //self.NameRef.child("users").child(self.loggedInUser!.uid).child("pic").setValue("default.ca")
+                                self.NameRef.child("users").child(self.loggedInUser!.uid).child("Age").setValue(Int(text2.text!))
                                 
                                 self.Load.stopAnimating()
                                 UserDefaults.standard.set(false, forKey: "artistCreate")
                                 self.Show()
                             }
-                            else
-                            {
+                            else {
                                 let alertContoller = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: .alert)
-                                
                                 let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                                 alertContoller.addAction(defaultAction)
                                 self.Load.stopAnimating()
                                 self.present(alertContoller, animated:true, completion: nil)
                                 
                             }
-                            
-                            
-                            
-                            
-                            
-                            //if error
-                            
                         })
-                        
-
-                        
-                        
-                        
-                        
-                        
                     }))
                     
                 editRadiusAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { alert -> Void in
                     self.Load.stopAnimating()
                     }))
                     self.present(editRadiusAlert, animated: true)
-                
-
                 
             })
             
@@ -283,14 +225,11 @@ override func viewDidLoad() {
     
     @IBAction func LoginAction(_ sender: Any) {
         
-        
         self.view.endEditing(true)
         self.Load.startAnimating()
         //if user's text field is empty when login is clicked
-        if self.tbUser.text == "" || self.tbPassword.text == ""
-        {
+        if self.tbUser.text == "" || self.tbPassword.text == ""{
             let alertContoller = UIAlertController(title: "Oops!", message: "Please Enter a Username/Password", preferredStyle: .alert)
-            
             let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alertContoller.addAction(defaultAction)
             self.Load.stopAnimating()
@@ -328,27 +267,17 @@ override func viewDidLoad() {
         
         
     }
-    
-//    func postToken(Token: [String: AnyObject]){
-//        print("FCM Token: \(Token)")
-//        let dbRef = FIRDatabase.database().reference()
-//        dbRef.child("fcmToken").child(Messaging.messaging().fcmToken!).setValue(Token)
-//    }
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         gender = genders[row]
     }
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        
         return 3
-        
     }
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         let label = (view as? UILabel) ?? UILabel()
-        
         label.textColor = .black
         label.textAlignment = .center
         label.font = UIFont(name: "Avenir Next", size: 15)
-        
         // where data is an Array of String
         label.text = genders[row]
         
@@ -370,13 +299,6 @@ override func viewDidLoad() {
         self.tbPassword.text = ""
         self.tbUser.text = ""
         
-        
-        //when user clicks send
-//        let token: [String: AnyObject] = [Messaging.messaging().fcmToken!: Messaging.messaging().fcmToken as AnyObject]
-//        
-//        //when message sends
-//        self.postToken(Token: token)
-        
     }
     
     
@@ -390,8 +312,6 @@ override func viewDidLoad() {
             UIView.animate(withDuration: 0.5, animations: {
                 
                 self.loginView.layer.opacity = 1
-                
-                
             })
             tbUser.isEnabled = false
             tbPassword.isEnabled = false
@@ -403,15 +323,11 @@ override func viewDidLoad() {
             self.NameRef.child("artistProfiles").child((FIRAuth.auth()?.currentUser!.uid)!).observe(.value, with: { (snapshot) in
                 
                 print(snapshot.value!)
-                if snapshot.exists() == true
-                {
+                if snapshot.exists() == true {
                     UserDefaults.standard.set(true, forKey: "artistCreate")
-                    
                 }
-                else
-                {
+                else{
                      UserDefaults.standard.set(false, forKey: "artistCreate")
-                    
                 }
             })
             
@@ -425,15 +341,11 @@ override func viewDidLoad() {
         self.NameRef.child("artistProfiles").child((FIRAuth.auth()?.currentUser!.uid)!).observe(.value, with: { (snapshot) in
             
             print(snapshot.value!)
-            if snapshot.exists() == true
-            {
+            if snapshot.exists() == true{
                 UserDefaults.standard.set(true, forKey: "artistCreate")
-                
             }
-            else
-            {
-                UserDefaults.standard.set(false, forKey: "artistCreate")
-                
+            else{
+                UserDefaults.standard.set(false, forKey: "artistCreate") 
             }
         })
         

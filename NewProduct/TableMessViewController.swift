@@ -17,6 +17,7 @@ struct messageStruct { //structure for the items in the tables
     let picture: NSURL!
     let token: String!
 }
+
 class TableMessViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIBarPositioningDelegate {
     
     @IBOutlet weak var homeTab: UITableView!
@@ -60,13 +61,9 @@ class TableMessViewController: UIViewController,UITableViewDelegate,UITableViewD
                 self.info.insert(messageStruct(ToName: toName, date: FIRDate, picture: url, token: Token), at:0)
             }
             
-            
             self.homeTab.reloadData()
             
         })
-    
-        
-
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -76,8 +73,6 @@ class TableMessViewController: UIViewController,UITableViewDelegate,UITableViewD
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
-        
-        //will have to change to confine to auto layout.
         return 80
     }
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -85,19 +80,16 @@ class TableMessViewController: UIViewController,UITableViewDelegate,UITableViewD
     }
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { action, index in
-            //What happens when delete button is tapped
+            //Delete button is tapped
             //Removes reference of the message. Does not delete message
             
             self.dataRef.child("users").child(self.loggedUser!.uid).child("messages").child(self.info[indexPath.row].token).removeValue()
             
             self.info.remove(at: indexPath.row)
             
-            
             self.homeTab.deleteRows(at: [index], with: UITableViewRowAnimation.automatic)
         }
         return [delete]
-        
-
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -125,8 +117,6 @@ class TableMessViewController: UIViewController,UITableViewDelegate,UITableViewD
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-    
         //retrieving the token from the the array/structure and passing it to the next viewcontroller
         self.cellID = info[indexPath.row].token
         
@@ -139,7 +129,6 @@ class TableMessViewController: UIViewController,UITableViewDelegate,UITableViewD
         
        self.present(myVC, animated: true)
         
-//
     }
     
     @IBAction func backClick(_ sender: Any) {

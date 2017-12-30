@@ -74,11 +74,6 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
         })
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateArrayMenuOptions()
@@ -92,10 +87,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
         arrayMenuOptions.append(["title":"About", "icon":"Info"])
         arrayMenuOptions.append(["title":"Privacy Policy", "icon":"Privacy"])
         arrayMenuOptions.append(["title":"Payment Information", "icon":"Payment"])
-        
         tblMenuOptions.reloadData()
-        
-        
     }
     
     @IBAction func onCloseMenuClick(_ button:UIButton!){
@@ -174,9 +166,6 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return label
     }
   
-    
-
-    
     @objc func switchStateDidChange(_ sender:UISwitch!)
     {
         
@@ -288,21 +277,16 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
                                             myVCHome.artistOn = true
 
                                             self.present(myVCHome, animated: true)
-                                            
+            
 
                                         }))
-                                       
-                                        
-                                        
                                     
                                     
                                     editRadiusAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
                                     self.present(editRadiusAlert, animated: true)
                                     
-                                    
                                 }
 
-                                
                             }
                         
                     })

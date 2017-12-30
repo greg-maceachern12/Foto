@@ -35,25 +35,17 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
-//        btnFindArtist.layer.borderWidth = 0.5
-//        btnFindArtist.layer.borderColor = UIColor.lightGray.cgColor
         btnInvit.layer.borderWidth = 0.5
         btnInvit.layer.borderColor = UIColor.lightGray.cgColor
         btnMyFoto.layer.borderWidth = 0.5
         btnMyFoto.layer.borderColor = UIColor.lightGray.cgColor
         
-            if UserDefaults.standard.bool(forKey: "artistCreate") == true
-            {
-                self.artistCreate = true
-            }
-            else
-            {
-                self.artistCreate = false
-            }
-        
-        
-        
+        if UserDefaults.standard.bool(forKey: "artistCreate") == true{
+            self.artistCreate = true
+        }
+        else{
+            self.artistCreate = false
+        }
     }
     override func viewWillAppear(_ animated: Bool) {
         
@@ -64,24 +56,13 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
             btnInvit.setImage(#imageLiteral(resourceName: "invitFoto"), for: .normal)
             btnMyFoto.setImage(#imageLiteral(resourceName: "artistFoto1"), for: .normal)
             artistOn = true
-            
-            
         }
-        
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     func slideMenuItemSelectedAtIndex(_ index: Int32) {
-        
         
         switch(index){
         case 0:
 
-            
             break
         case 1:
             let myMessageVC = storyboard?.instantiateViewController(withIdentifier: "TableMess") as! TableMessViewController
@@ -89,11 +70,7 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
             present(myMessageVC, animated: true)
             break
         case 2:
-            
-         
-            
-          
-            
+ 
             break
         case 3:
           
@@ -106,10 +83,6 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
             print("default\n", terminator: "")
         }
     }
-    
-
-    
-    
     @IBAction func SliderClick(_ sender: UIButton) {
         if (sender.tag == 10)
         {
@@ -145,8 +118,6 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
         self.view.addSubview(menuVC.view)
         self.addChildViewController(menuVC)
         menuVC.view.layoutIfNeeded()
-        
-        
         menuVC.view.frame=CGRect(x: 0 - UIScreen.main.bounds.size.width, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height);
         
         UIView.animate(withDuration: 0.3, animations: { () -> Void in
@@ -157,33 +128,24 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
     
     @IBAction func invitAction(_ sender: Any) {
         //open different pages if the artist mode is on
-        if artistOn == true
-        {
+        if artistOn == true{
             let inquireVC : TableInquireViewController = self.storyboard!.instantiateViewController(withIdentifier: "TableInquire") as! TableInquireViewController
-            
             self.present(inquireVC, animated: true)
         }
-        else
-        {
+        else{
             let selfinquireVC : sentInquireViewController = self.storyboard!.instantiateViewController(withIdentifier: "sentInquire") as! sentInquireViewController
-            
             self.present(selfinquireVC, animated: true)
         }
     }
     @IBAction func myFoto(_ sender: Any) {
         
-        if artistOn == true
-        {
+        if artistOn == true{
             let artistVC : ArtistViewController = self.storyboard!.instantiateViewController(withIdentifier: "Artist") as! ArtistViewController
-            
             artistVC.token = self.loggedUser!.uid
-            
             self.present(artistVC, animated: true)
         }
-        else
-        {
-           overlay = UIView(frame: view.frame)
-    
+        else{
+            overlay = UIView(frame: view.frame)
             overlayAct = UIActivityIndicatorView(frame: CGRect(x: self.view.frame.width/2 - 17, y: self.view.frame.height/2 - 7 , width: 35, height: 35))
             overlay!.backgroundColor = UIColor.black
             overlay!.alpha = 0.8
@@ -201,7 +163,6 @@ class HomeViewController: UIViewController, SlideMenuDelegate {
         }
         
     }
-    
     
 }
 

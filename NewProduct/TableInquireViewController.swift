@@ -31,21 +31,10 @@ class TableInquireViewController: UIViewController, UITableViewDelegate, UITable
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         
         SetUp()
-
-        
-        // Do any additional setup after loading the view.
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //creates as many rows as there are posts
         return inqposts.count
     }
     
@@ -53,17 +42,10 @@ class TableInquireViewController: UIViewController, UITableViewDelegate, UITable
         
         //creates a cell in the table and sets information based on the tag
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell2")
-        
-        
-        
         let label1 = cell?.viewWithTag(1) as! UILabel
         label1.text = inqposts[indexPath.row].name
-        
-        
         let label2 = cell?.viewWithTag(2) as! UILabel
         label2.text = "\(inqposts[indexPath.row].theme!) (\(inqposts[indexPath.row].status!))"
-            
-        
         return cell!
     }
     
@@ -77,53 +59,32 @@ class TableInquireViewController: UIViewController, UITableViewDelegate, UITable
         let cellNumber = indexPath.row
         let cellID = inqposts[cellNumber].code
         let userID = inqposts[cellNumber].token
- 
         let myVC = storyboard?.instantiateViewController(withIdentifier: "Inquire") as! inquireViewController
-        
         myVC.code = cellID!
         myVC.token = userID!
-        
         self.present(myVC, animated: true)
-        
-        
-        
-        
-        
     }
     
 //initial setup function
     func SetUp()
     {
-         self.inqposts.removeAll()
+        self.inqposts.removeAll()
         
         dataRef.child("artistProfiles").child(loggedUser!.uid).child("Inquires").queryOrderedByKey().observe(.childAdded, with: { (snapshot) in
             
             if snapshot.exists() == true{
-                let snapshotValueName = snapshot.value as? NSDictionary
-                let Name = snapshotValueName?["ClientName"] as? String
+                let snapshotValue = snapshot.value as? NSDictionary
                 
-                let snapshotValueTheme = snapshot.value as? NSDictionary
-                let Theme = snapshotValueTheme?["Theme"] as? String
-                
-                let snapshotValueCode = snapshot.value as? NSDictionary
-                let Code = snapshotValueCode?["code"] as? String
-                
-                let snapshotValueToken = snapshot.value as? NSDictionary
-                let Token = snapshotValueToken?["token"] as? String
-                
-                let snapshotValueStatus = snapshot.value as? NSDictionary
-                let Status = snapshotValueStatus?["Status"] as? String
-                
-                
-                
-                
+                let Name = snapshotValue?["ClientName"] as? String
+                let Theme = snapshotValue?["Theme"] as? String
+                let Code = snapshotValue?["code"] as? String
+                let Token = snapshotValue?["token"] as? String
+                let Status = snapshotValue?["Status"] as? String
                 self.inqposts.insert(inquireStuct(name: Name, theme: Theme, code: Code, token: Token, status: Status), at: 0)
-
                 self.homeTab.reloadData()
             }
             else{
                 let alertContoller = UIAlertController(title: "Oops!", message: "You have no inquires! Advertise yourself to get some", preferredStyle: .alert)
-                
                 let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                 alertContoller.addAction(defaultAction)
                 self.present(alertContoller, animated:true, completion: nil)

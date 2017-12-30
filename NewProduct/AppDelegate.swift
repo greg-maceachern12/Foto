@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
        
         
         
-        PayPalMobile.initializeWithClientIds(forEnvironments: [PayPalEnvironmentProduction:"ARjyeCMMitQUDqOyO3cJ0qUeE7VWh9DY-7QihoEHeua4DgGYvml_AnNBw5ziWMCCSrCK7ENy5kWY4V0h", PayPalEnvironmentSandbox:"ARjyeCMMitQUDqOyO3cJ0qUeE7VWh9DY-7QihoEHeua4DgGYvml_AnNBw5ziWMCCSrCK7ENy5kWY4V0h"])
+//        PayPalMobile.initializeWithClientIds(forEnvironments: [PayPalEnvironmentProduction:"ARjyeCMMitQUDqOyO3cJ0qUeE7VWh9DY-7QihoEHeua4DgGYvml_AnNBw5ziWMCCSrCK7ENy5kWY4V0h", PayPalEnvironmentSandbox:"ARjyeCMMitQUDqOyO3cJ0qUeE7VWh9DY-7QihoEHeua4DgGYvml_AnNBw5ziWMCCSrCK7ENy5kWY4V0h"])
         
         UINavigationBar.appearance().titleTextAttributes = [
             NSAttributedStringKey.font: UIFont(name: "Avenir Next", size: 15)!
